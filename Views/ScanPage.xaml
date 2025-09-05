@@ -19,7 +19,7 @@
             <StackLayout Padding="20" Spacing="20">
                 
                 <!-- Header Section -->
-                <Frame Style="{StaticResource CardStyle}" Padding="20">
+                <Border Style="{StaticResource CardStyle}" Padding="20">
                     <StackLayout Spacing="10">
                         <Label 
                             Text="Scan Hymn Lyrics" 
@@ -31,10 +31,10 @@
                             HorizontalOptions="Center" 
                             HorizontalTextAlignment="Center" />
                     </StackLayout>
-                </Frame>
+                </Border>
 
                 <!-- Camera Controls -->
-                <Frame Style="{StaticResource CardStyle}" Padding="20">
+                <Border Style="{StaticResource CardStyle}" Padding="20">
                     <StackLayout Spacing="15">
                         <Label Text="Capture Options" Style="{StaticResource SubtitleLabelStyle}" />
                         
@@ -68,10 +68,10 @@
                             </Button>
                         </Grid>
                     </StackLayout>
-                </Frame>
+                </Border>
 
                 <!-- OCR Settings -->
-                <Frame Style="{StaticResource CardStyle}" Padding="20">
+                <Border Style="{StaticResource CardStyle}" Padding="20">
                     <StackLayout Spacing="15">
                         <Label Text="OCR Settings" Style="{StaticResource SubtitleLabelStyle}" />
                         
@@ -99,10 +99,10 @@
                                 OnColor="{DynamicResource PrimaryColor}" />
                         </Grid>
                     </StackLayout>
-                </Frame>
+                </Border>
 
                 <!-- OCR Progress -->
-                <Frame 
+                <Border 
                     Style="{StaticResource CardStyle}" 
                     Padding="20"
                     IsVisible="{Binding IsOcrInProgress}">
@@ -116,10 +116,10 @@
                             Style="{StaticResource CaptionLabelStyle}" 
                             HorizontalOptions="Center" />
                     </StackLayout>
-                </Frame>
+                </Border>
 
                 <!-- Scanned Text Results -->
-                <Frame 
+                <Border 
                     Style="{StaticResource CardStyle}" 
                     Padding="20"
                     IsVisible="{Binding HasScannedText}">
@@ -136,17 +136,17 @@
                                 TextColor="{DynamicResource PrimaryColor}" />
                         </Grid>
                         
-                        <Frame 
+                        <Border 
                             BackgroundColor="{DynamicResource SurfaceVariantColor}" 
                             Padding="15" 
-                            CornerRadius="8">
+                            StrokeShape="RoundRectangle 8">
                             <ScrollView MaximumHeightRequest="200">
                                 <Label 
                                     Text="{Binding ScannedText}" 
                                     Style="{StaticResource BodyLabelStyle}" 
                                     LineBreakMode="WordWrap" />
                             </ScrollView>
-                        </Frame>
+                        </Border>
                         
                         <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
                             <Button 
@@ -166,10 +166,10 @@
                                 Command="{Binding ClearScanCommand}" />
                         </Grid>
                     </StackLayout>
-                </Frame>
+                </Border>
 
                 <!-- Recent Scans -->
-                <Frame 
+                <Border 
                     Style="{StaticResource CardStyle}" 
                     Padding="20"
                     IsVisible="{Binding RecentScans.Count, Converter={StaticResource CountToBoolConverter}}">
@@ -185,24 +185,24 @@
                             <CollectionView.ItemTemplate>
                                 <DataTemplate x:DataType="{x:Type x:String}">
                                     <Grid Padding="10,5">
-                                        <Frame 
+                                        <Border 
                                             BackgroundColor="{DynamicResource SurfaceVariantColor}" 
                                             Padding="10" 
-                                            CornerRadius="6">
+                                            StrokeShape="RoundRectangle 6">
                                             <Label 
                                                 Text="{Binding .}" 
                                                 Style="{StaticResource BodyLabelStyle}" 
                                                 LineBreakMode="TailTruncation" />
-                                        </Frame>
+                                        </Border>
                                     </Grid>
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
                         </CollectionView>
                     </StackLayout>
-                </Frame>
+                </Border>
 
                 <!-- Tips Section -->
-                <Frame Style="{StaticResource CardStyle}" Padding="20">
+                <Border Style="{StaticResource CardStyle}" Padding="20">
                     <StackLayout Spacing="10">
                         <Label Text="Tips for Better OCR Results" Style="{StaticResource SubtitleLabelStyle}" />
                         <StackLayout Spacing="5">
@@ -213,7 +213,7 @@
                             <Label Text="• Hold camera steady" Style="{StaticResource CaptionLabelStyle}" />
                         </StackLayout>
                     </StackLayout>
-                </Frame>
+                </Border>
 
             </StackLayout>
         </ScrollView>
@@ -240,11 +240,11 @@
         </Grid>
 
         <!-- Error Message -->
-        <Frame 
+        <Border 
             IsVisible="{Binding HasError}"
             BackgroundColor="{DynamicResource ErrorColor}"
             Padding="15"
-            CornerRadius="8"
+            StrokeShape="RoundRectangle 8"
             Margin="20"
             VerticalOptions="End">
             <Grid ColumnDefinitions="*,Auto">
@@ -261,7 +261,7 @@
                     Command="{Binding ClearErrorCommand}" 
                     Padding="5" />
             </Grid>
-        </Frame>
+        </Border>
     </Grid>
 
 </ContentPage>

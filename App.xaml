@@ -9,21 +9,15 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
                 <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+                <ResourceDictionary Source="Resources/Styles/BreathingAnimations.xaml" />
+                <ResourceDictionary Source="Resources/Styles/ColorShiftingGradients.xaml" />
+                <ResourceDictionary Source="Resources/Styles/LiveBackgrounds.xaml" />
             </ResourceDictionary.MergedDictionaries>
             
-            <!-- Value Converters -->
+            <!-- Essential Value Converters -->
             <converters:BoolToFavoriteIconConverter x:Key="BoolToFavoriteIconConverter" />
             <converters:BoolToFavoriteColorConverter x:Key="BoolToFavoriteColorConverter" />
-            <converters:BoolToButtonStyleConverter x:Key="BoolToButtonStyleConverter" />
-            <converters:BoolToEditorMarginConverter x:Key="BoolToEditorMarginConverter" />
-            <converters:BoolToSortIconConverter x:Key="BoolToSortIconConverter" />
             <converters:InvertedBoolConverter x:Key="InvertedBoolConverter" />
-            <converters:StringToBoolConverter x:Key="StringToBoolConverter" />
-            <converters:ObjectToBoolConverter x:Key="ObjectToBoolConverter" />
-            <converters:IntToBoolConverter x:Key="IntToBoolConverter" />
-            <converters:StringToColorConverter x:Key="StringToColorConverter" />
-            <converters:StringToViewButtonStyleConverter x:Key="StringToViewButtonStyleConverter" />
-            <converters:StringToEmptyMessageConverter x:Key="StringToEmptyMessageConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

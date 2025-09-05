@@ -9,10 +9,10 @@
         <StackLayout Padding="20" Spacing="20">
             
             <!-- Theme Settings -->
-            <Frame BackgroundColor="{DynamicResource CardBackgroundColor}"
-                   BorderColor="{DynamicResource BorderColor}"
-                   CornerRadius="8"
-                   Padding="16">
+            <Border BackgroundColor="{DynamicResource CardBackgroundColor}"
+                    Stroke="{DynamicResource BorderColor}"
+                    StrokeShape="RoundRectangle 8"
+                    Padding="16">
                 <StackLayout Spacing="12">
                     <Label Text="Theme" 
                            FontSize="18" 
@@ -44,13 +44,13 @@
                                 Clicked="OnGreenThemeClicked" />
                     </Grid>
                 </StackLayout>
-            </Frame>
+            </Border>
             
             <!-- OCR Settings -->
-            <Frame BackgroundColor="{DynamicResource CardBackgroundColor}"
-                   BorderColor="{DynamicResource BorderColor}"
-                   CornerRadius="8"
-                   Padding="16">
+            <Border BackgroundColor="{DynamicResource CardBackgroundColor}"
+                    Stroke="{DynamicResource BorderColor}"
+                    StrokeShape="RoundRectangle 8"
+                    Padding="16">
                 <StackLayout Spacing="12">
                     <Label Text="OCR Settings" 
                            FontSize="18" 
@@ -72,13 +72,13 @@
                             Title="Select Language"
                             SelectedIndexChanged="OnLanguageChanged" />
                 </StackLayout>
-            </Frame>
+            </Border>
             
             <!-- Export Settings -->
-            <Frame BackgroundColor="{DynamicResource CardBackgroundColor}"
-                   BorderColor="{DynamicResource BorderColor}"
-                   CornerRadius="8"
-                   Padding="16">
+            <Border BackgroundColor="{DynamicResource CardBackgroundColor}"
+                    Stroke="{DynamicResource BorderColor}"
+                    StrokeShape="RoundRectangle 8"
+                    Padding="16">
                 <StackLayout Spacing="12">
                     <Label Text="Export Settings" 
                            FontSize="18" 
@@ -108,13 +108,13 @@
                                 Toggled="OnIncludeMetadataToggled" />
                     </Grid>
                 </StackLayout>
-            </Frame>
+            </Border>
             
             <!-- Backup Settings -->
-            <Frame BackgroundColor="{DynamicResource CardBackgroundColor}"
-                   BorderColor="{DynamicResource BorderColor}"
-                   CornerRadius="8"
-                   Padding="16">
+            <Border BackgroundColor="{DynamicResource CardBackgroundColor}"
+                    Stroke="{DynamicResource BorderColor}"
+                    StrokeShape="RoundRectangle 8"
+                    Padding="16">
                 <StackLayout Spacing="12">
                     <Label Text="Backup and Data" 
                            FontSize="18" 
@@ -135,13 +135,33 @@
                             Style="{DynamicResource DangerButtonStyle}"
                             Clicked="OnResetSettingsClicked" />
                 </StackLayout>
-            </Frame>
+            </Border>
             
+            <!-- Animation Demos -->
+            <Border BackgroundColor="{DynamicResource CardBackgroundColor}"
+                    Stroke="{DynamicResource BorderColor}"
+                    StrokeShape="RoundRectangle 8"
+                    Padding="16">
+                <StackLayout Spacing="12">
+                    <Label Text="Animation Demos" 
+                           FontSize="18" 
+                           FontAttributes="Bold"
+                           TextColor="{DynamicResource PrimaryTextColor}" />
+                    
+                    <Label Text="Explore the breathing animations and UI effects" 
+                           TextColor="{DynamicResource SecondaryTextColor}" />
+                    
+                    <Button Text="View Breathing Animations"
+                            Style="{DynamicResource OutlineButtonStyle}"
+                            Clicked="OnBreathingAnimationsClicked" />
+                </StackLayout>
+            </Border>
+
             <!-- About Section -->
-            <Frame BackgroundColor="{DynamicResource CardBackgroundColor}"
-                   BorderColor="{DynamicResource BorderColor}"
-                   CornerRadius="8"
-                   Padding="16">
+            <Border BackgroundColor="{DynamicResource CardBackgroundColor}"
+                    Stroke="{DynamicResource BorderColor}"
+                    StrokeShape="RoundRectangle 8"
+                    Padding="16">
                 <StackLayout Spacing="12">
                     <Label Text="About" 
                            FontSize="18" 
@@ -157,7 +177,7 @@
                             Style="{DynamicResource OutlineButtonStyle}"
                             Clicked="OnAboutClicked" />
                 </StackLayout>
-            </Frame>
+            </Border>
             
         </StackLayout>
     </ScrollView>

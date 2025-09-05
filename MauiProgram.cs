@@ -43,6 +43,7 @@ public static class MauiProgram
         builder.Services.AddTransient<CollectionsPage>();
         builder.Services.AddTransient<CollectionDetailPage>();
         builder.Services.AddTransient<StatisticsPage>();
+        builder.Services.AddTransient<BreathingAnimationsDemo>();
         builder.Services.AddTransient<SettingsPage>();
         builder.Services.AddTransient<AboutPage>();
 

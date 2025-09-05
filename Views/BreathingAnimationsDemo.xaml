@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="COGLyricsScanner.Views.BreathingAnimationsDemo"
+             Title="Breathing Animations Demo"
+             BackgroundColor="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource OffBlack}}">
+
+    <ScrollView>
+        <StackLayout Padding="20" Spacing="30">
+            
+            <!-- Animation Control -->
+            <Border Style="{StaticResource BreathingCardStyle}">
+                <StackLayout Spacing="10">
+                    <Label Text="Breathing Animations Control" 
+                           FontSize="18" 
+                           FontAttributes="Bold" 
+                           TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
+                    <Switch x:Name="BreathingToggle" 
+                            IsToggled="False" 
+                            HorizontalOptions="Start"/>
+                    <Label Text="Toggle to enable/disable breathing animations" 
+                           FontSize="12" 
+                           TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray300}}"/>
+                </StackLayout>
+            </Border>
+
+            <!-- Breathing Cards Section -->
+            <Label Text="Breathing Cards" 
+                   FontSize="20" 
+                   FontAttributes="Bold" 
+                   TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
+            
+            <Grid ColumnDefinitions="*,*" 
+                  RowDefinitions="Auto,Auto" 
+                  ColumnSpacing="15" 
+                  RowSpacing="15">
+                
+                <Border Grid.Row="0" Grid.Column="0" 
+                        Style="{StaticResource BreathingCardStyle}">
+                    <StackLayout Spacing="8">
+                        <Label Text="Card 1" 
+                               FontSize="16" 
+                               FontAttributes="Bold" 
+                               TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
+                        <Label Text="This card breathes with subtle scaling and glow effects" 
+                               FontSize="12" 
+                               TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray300}}"/>
+                        <Ellipse Style="{StaticResource PulsingAccentStyle}" 
+                                HorizontalOptions="Start"/>
+                    </StackLayout>
+                </Border>
+                
+                <Border Grid.Row="0" Grid.Column="1" 
+                        Style="{StaticResource BreathingCardStyle}">
+                    <StackLayout Spacing="8">
+                        <Label Text="Card 2" 
+                               FontSize="16" 
+                               FontAttributes="Bold" 
+                               TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
+                        <Label Text="Another breathing card with pulsing accent" 
+                               FontSize="12" 
+                               TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray300}}"/>
+                        <Ellipse Style="{StaticResource PulsingAccentStyle}" 
+                                HorizontalOptions="End"/>
+                    </StackLayout>
+                </Border>
+                
+                <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" 
+                        Style="{StaticResource BreathingCardStyle}">
+                    <StackLayout Spacing="10">
+                        <Label Text="Wide Breathing Card" 
+                               FontSize="16" 
+                               FontAttributes="Bold" 
+                               TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
+                        <Label Text="This card spans two columns and demonstrates the breathing effect on larger elements" 
+                               FontSize="12" 
+                               TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray300}}"/>
+                        <StackLayout Orientation="Horizontal" Spacing="10">
+                            <Ellipse Style="{StaticResource PulsingAccentStyle}"/>
+                            <Ellipse Style="{StaticResource PulsingAccentStyle}"/>
+                            <Ellipse Style="{StaticResource PulsingAccentStyle}"/>
+                        </StackLayout>
+                    </StackLayout>
+                </Border>
+            </Grid>
+
+            <!-- Breathing Buttons Section -->
+            <Label Text="Breathing Buttons" 
+                   FontSize="20" 
+                   FontAttributes="Bold" 
+                   TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
+            
+            <StackLayout Orientation="Horizontal" 
+                         Spacing="15" 
+                         HorizontalOptions="Center">
+                <Button Text="Primary Action" 
+                        Style="{StaticResource BreathingButtonStyle}"/>
+                <Button Text="Secondary" 
+                        Style="{StaticResource BreathingButtonStyle}" 
+                        BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Secondary}}"/>
+            </StackLayout>
+
+            <!-- Heartbeat Icon Section -->
+            <Label Text="Heartbeat Icons" 
+                   FontSize="20" 
+                   FontAttributes="Bold" 
+                   TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
+            
+            <StackLayout Orientation="Horizontal" 
+                         Spacing="30" 
+                         HorizontalOptions="Center">
+                <Label Text="♥" 
+                       Style="{StaticResource HeartbeatIconStyle}" 
+                       FontSize="32"/>
+                <Label Text="★" 
+                       Style="{StaticResource HeartbeatIconStyle}" 
+                       FontSize="28"/>
+                <Label Text="●" 
+                       Style="{StaticResource HeartbeatIconStyle}" 
+                       FontSize="24"/>
+            </StackLayout>
+
+            <!-- Breathing List Items Section -->
+            <Label Text="Breathing List Items" 
+                   FontSize="20" 
+                   FontAttributes="Bold" 
+                   TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
+            
+            <StackLayout Spacing="8">
+                <Border Style="{StaticResource BreathingListItemStyle}">
+                    <StackLayout Orientation="Horizontal" Spacing="15">
+                        <Ellipse Style="{StaticResource PulsingAccentStyle}"/>
+                        <StackLayout>
+                            <Label Text="List Item 1" 
+                                   FontSize="14" 
+                                   FontAttributes="Bold" 
+                                   TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
+                            <Label Text="This item breathes gently" 
+                                   FontSize="12" 
+                                   TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray300}}"/>
+                        </StackLayout>
+                    </StackLayout>
+                </Border>
+                
+                <Border Style="{StaticResource BreathingListItemStyle}">
+                    <StackLayout Orientation="Horizontal" Spacing="15">
+                        <Ellipse Style="{StaticResource PulsingAccentStyle}"/>
+                        <StackLayout>
+                            <Label Text="List Item 2" 
+                                   FontSize="14" 
+                                   FontAttributes="Bold" 
+                                   TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
+                            <Label Text="Another breathing list item" 
+                                   FontSize="12" 
+                                   TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray300}}"/>
+                        </StackLayout>
+                    </StackLayout>
+                </Border>
+                
+                <Border Style="{StaticResource BreathingListItemStyle}">
+                    <StackLayout Orientation="Horizontal" Spacing="15">
+                        <Ellipse Style="{StaticResource PulsingAccentStyle}"/>
+                        <StackLayout>
+                            <Label Text="List Item 3" 
+                                   FontSize="14" 
+                                   FontAttributes="Bold" 
+                                   TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
+                            <Label Text="Third breathing item with pulsing accent" 
+                                   FontSize="12" 
+                                   TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray300}}"/>
+                        </StackLayout>
+                    </StackLayout>
+                </Border>
+            </StackLayout>
+
+            <!-- Animation Info -->
+            <Border Style="{StaticResource BreathingCardStyle}">
+                <StackLayout Spacing="10">
+                    <Label Text="Animation Details" 
+                           FontSize="16" 
+                           FontAttributes="Bold" 
+                           TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
+                    <Label Text="• Subtle scale animations (1.0 to 1.02)" 
+                           FontSize="12" 
+                           TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray300}}"/>
+                    <Label Text="• Opacity breathing (0.9 to 1.0)" 
+                           FontSize="12" 
+                           TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray300}}"/>
+                    <Label Text="• Pulsing glow effects with shadow" 
+                           FontSize="12" 
+                           TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray300}}"/>
+                    <Label Text="• Heartbeat rhythm animations" 
+                           FontSize="12" 
+                           TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray300}}"/>
+                    <Label Text="• Smooth sine easing functions" 
+                           FontSize="12" 
+                           TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray300}}"/>
+                </StackLayout>
+            </Border>
+            
+        </StackLayout>
+    </ScrollView>
+    
+</ContentPage>

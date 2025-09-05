@@ -7,6 +7,45 @@
     Title="COG Lyrics Scanner"
     FlyoutBehavior="Flyout">
 
+    <!-- Flyout Items for Additional Navigation -->
+    <FlyoutItem Title="Settings" Icon="settings_icon.png">
+        <ShellContent Route="settings" ContentTemplate="{DataTemplate views:SettingsPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Collections" Icon="collection_icon.png">
+        <ShellContent Route="collections" ContentTemplate="{DataTemplate views:CollectionsPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="Statistics" Icon="stats_icon.png">
+        <ShellContent Route="statistics" ContentTemplate="{DataTemplate views:StatisticsPage}" />
+    </FlyoutItem>
+
+    <FlyoutItem Title="About" Icon="info_icon.png">
+        <ShellContent Route="about" ContentTemplate="{DataTemplate views:AboutPage}" />
+    </FlyoutItem>
+    <!-- Main Tab Bar -->
+    <TabBar>
+        <!-- Scan Tab -->
+        <ShellContent
+          Title="Scan"
+          Icon="camera_icon.png"
+          Route="scan"
+          ContentTemplate="{DataTemplate views:ScanPage}" />
+
+        <!-- Edit Tab -->
+        <ShellContent
+          Title="Edit"
+          Icon="edit_icon.png"
+          Route="edit"
+          ContentTemplate="{DataTemplate views:EditPage}" />
+
+        <!-- Home Tab -->
+        <ShellContent
+          Title="Home"
+          Icon="home_icon.png"
+          Route="home"
+          ContentTemplate="{DataTemplate views:HomePage}" />
+    </TabBar>
     <Shell.Resources>
         <ResourceDictionary>
             <Style x:Key="BaseStyle" TargetType="Element">
@@ -20,74 +59,100 @@
                 <Setter Property="Shell.TabBarUnselectedColor" Value="{DynamicResource OnSurfaceVariantColor}" />
                 <Setter Property="Shell.TabBarTitleColor" Value="{DynamicResource OnSurfaceColor}" />
             </Style>
+            
+            <!-- Animated Tab Item Style -->
+            <Style x:Key="AnimatedTabStyle" TargetType="ShellContent">
+                <Setter Property="Shell.ItemTemplate">
+                    <DataTemplate>
+                        <Frame Style="{StaticResource MagneticButtonStyle}"
+                               BackgroundColor="Transparent"
+                               HasShadow="False"
+                               Padding="8">
+                            <StackLayout Orientation="Vertical" 
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center"
+                                       Spacing="4">
+                                <Frame Style="{StaticResource PulsingIconStyle}"
+                                       BackgroundColor="Transparent"
+                                       HasShadow="False"
+                                       Padding="0">
+                                    <Image Source="{Binding Icon}"
+                                           HeightRequest="24"
+                                           WidthRequest="24" />
+                                </Frame>
+                                <Label Text="{Binding Title}"
+                                       Style="{StaticResource FloatingLabelStyle}"
+                                       FontSize="12"
+                                       HorizontalOptions="Center" />
+                            </StackLayout>
+                        </Frame>
+                    </DataTemplate>
+                </Setter>
+            </Style>
         </ResourceDictionary>
     </Shell.Resources>
 
-    <!-- Main Tab Bar -->
-    <TabBar>
-        <!-- Scan Tab -->
-        <ShellContent
-            Title="Scan"
-            Icon="camera_icon.png"
-            Route="scan"
-            ContentTemplate="{DataTemplate views:ScanPage}" />
-
-        <!-- Edit Tab -->
-        <ShellContent
-            Title="Edit"
-            Icon="edit_icon.png"
-            Route="edit"
-            ContentTemplate="{DataTemplate views:EditPage}" />
-
-        <!-- Home Tab -->
-        <ShellContent
-            Title="Home"
-            Icon="home_icon.png"
-            Route="home"
-            ContentTemplate="{DataTemplate views:HomePage}" />
-    </TabBar>
+  
 
     <!-- Additional Routes for Navigation -->
     <Shell.FlyoutHeader>
-        <Grid BackgroundColor="{DynamicResource PrimaryColor}" HeightRequest="200">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
+        <Grid HeightRequest="220">
+            <!-- Animated Gradient Background -->
+            <Border Style="{StaticResource DynamicSunsetGradient}" />
             
-            <Image 
-                Grid.Row="0"
-                Source="app_logo.png"
-                Aspect="AspectFit"
-                HeightRequest="80"
-                Margin="20" />
+            <!-- Floating Particles -->
+            <Grid>
+                <Border Style="{StaticResource FloatingParticleStyle}" 
+                        HorizontalOptions="Start" VerticalOptions="Start" 
+                        Margin="30,40" />
+                <Border Style="{StaticResource FloatingParticleStyle}" 
+                        HorizontalOptions="End" VerticalOptions="Center" 
+                        Margin="40,0" />
+                <Border Style="{StaticResource FloatingParticleStyle}" 
+                        HorizontalOptions="Center" VerticalOptions="End" 
+                        Margin="0,30" />
+            </Grid>
             
-            <Label 
-                Grid.Row="1"
-                Text="COG Lyrics Scanner"
-                FontSize="18"
-                FontAttributes="Bold"
-                TextColor="{DynamicResource OnPrimaryColor}"
-                HorizontalOptions="Center"
-                Margin="0,0,0,20" />
+            <!-- Content with Breathing Animation -->
+            <Border Style="{StaticResource BreathingCardFrameStyle}"
+                    BackgroundColor="Transparent"
+                    Padding="20">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    
+                    <!-- Floating Logo -->
+                    <Border Grid.Row="0"
+                            Style="{StaticResource FloatingAnimation}"
+                            BackgroundColor="Transparent"
+                            Padding="0">
+                        <Image 
+                            Source="app_logo.png"
+                            Aspect="AspectFit"
+                            HeightRequest="80"
+                            Margin="20" />
+                    </Border>
+                    
+                    <!-- Pulsing Title -->
+                    <Border Grid.Row="1"
+                            Style="{StaticResource PulsingIconStyle}"
+                            BackgroundColor="Transparent"
+                            Padding="0">
+                        <Label 
+                            Text="COG Lyrics Scanner"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            TextColor="{DynamicResource OnPrimaryColor}"
+                            HorizontalOptions="Center"
+                            Margin="0,0,0,20" />
+                    </Border>
+                </Grid>
+            </Border>
         </Grid>
     </Shell.FlyoutHeader>
 
-    <!-- Flyout Items for Additional Navigation -->
-    <FlyoutItem Title="Settings" Icon="settings_icon.png">
-        <ShellContent Route="settings" ContentTemplate="{DataTemplate views:SettingsPage}" />
-    </FlyoutItem>
-    
-    <FlyoutItem Title="Collections" Icon="collection_icon.png">
-        <ShellContent Route="collections" ContentTemplate="{DataTemplate views:CollectionsPage}" />
-    </FlyoutItem>
-    
-    <FlyoutItem Title="Statistics" Icon="stats_icon.png">
-        <ShellContent Route="statistics" ContentTemplate="{DataTemplate views:StatisticsPage}" />
-    </FlyoutItem>
-    
-    <FlyoutItem Title="About" Icon="info_icon.png">
-        <ShellContent Route="about" ContentTemplate="{DataTemplate views:AboutPage}" />
-    </FlyoutItem>
+   
 
 </Shell>

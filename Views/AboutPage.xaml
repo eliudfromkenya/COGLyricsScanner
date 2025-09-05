@@ -9,11 +9,11 @@
         <StackLayout Padding="20" Spacing="30">
             
             <!-- App Logo/Icon -->
-            <Frame BackgroundColor="{DynamicResource CardBackgroundColor}"
-                   BorderColor="{DynamicResource BorderColor}"
-                   CornerRadius="8"
-                   Padding="20"
-                   HorizontalOptions="Center">
+            <Border BackgroundColor="{DynamicResource CardBackgroundColor}"
+                    Stroke="{DynamicResource BorderColor}"
+                    StrokeShape="RoundRectangle 8"
+                    Padding="20"
+                    HorizontalOptions="Center">
                 <StackLayout Spacing="10" HorizontalOptions="Center">
                     <Label Text="🎵" 
                            FontSize="48"
@@ -28,13 +28,13 @@
                            HorizontalOptions="Center"
                            TextColor="{DynamicResource SecondaryTextColor}" />
                 </StackLayout>
-            </Frame>
+            </Border>
             
             <!-- Description -->
-            <Frame BackgroundColor="{DynamicResource CardBackgroundColor}"
-                   BorderColor="{DynamicResource BorderColor}"
-                   CornerRadius="8"
-                   Padding="16">
+            <Border BackgroundColor="{DynamicResource CardBackgroundColor}"
+                    Stroke="{DynamicResource BorderColor}"
+                    StrokeShape="RoundRectangle 8"
+                    Padding="16">
                 <StackLayout Spacing="12">
                     <Label Text="About This App" 
                            FontSize="18" 
@@ -52,13 +52,13 @@
                         </Label.Text>
                     </Label>
                 </StackLayout>
-            </Frame>
+            </Border>
             
             <!-- Features -->
-            <Frame BackgroundColor="{DynamicResource CardBackgroundColor}"
-                   BorderColor="{DynamicResource BorderColor}"
-                   CornerRadius="8"
-                   Padding="16">
+            <Border BackgroundColor="{DynamicResource CardBackgroundColor}"
+                    Stroke="{DynamicResource BorderColor}"
+                    StrokeShape="RoundRectangle 8"
+                    Padding="16">
                 <StackLayout Spacing="12">
                     <Label Text="Key Features" 
                            FontSize="18" 
@@ -84,13 +84,13 @@
                                TextColor="{DynamicResource SecondaryTextColor}" />
                     </StackLayout>
                 </StackLayout>
-            </Frame>
+            </Border>
             
             <!-- Technical Information -->
-            <Frame BackgroundColor="{DynamicResource CardBackgroundColor}"
-                   BorderColor="{DynamicResource BorderColor}"
-                   CornerRadius="8"
-                   Padding="16">
+            <Border BackgroundColor="{DynamicResource CardBackgroundColor}"
+                    Stroke="{DynamicResource BorderColor}"
+                    StrokeShape="RoundRectangle 8"
+                    Padding="16">
                 <StackLayout Spacing="12">
                     <Label Text="Technical Information" 
                            FontSize="18" 
@@ -146,13 +146,13 @@
                                TextColor="{DynamicResource SecondaryTextColor}" />
                     </Grid>
                 </StackLayout>
-            </Frame>
+            </Border>
             
             <!-- Support & Contact -->
-            <Frame BackgroundColor="{DynamicResource CardBackgroundColor}"
-                   BorderColor="{DynamicResource BorderColor}"
-                   CornerRadius="8"
-                   Padding="16">
+            <Border BackgroundColor="{DynamicResource CardBackgroundColor}"
+                    Stroke="{DynamicResource BorderColor}"
+                    StrokeShape="RoundRectangle 8"
+                    Padding="16">
                 <StackLayout Spacing="12">
                     <Label Text="Support and Contact" 
                            FontSize="18" 
@@ -167,7 +167,7 @@
                             Style="{DynamicResource OutlineButtonStyle}"
                             Clicked="OnSendFeedbackClicked" />
                 </StackLayout>
-            </Frame>
+            </Border>
             
             <!-- Copyright -->
             <Label Text="© 2024 COG Lyrics Scanner. All rights reserved."

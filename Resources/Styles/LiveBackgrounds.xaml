@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <Style x:Key="LiveBackgroundStyle" TargetType="ContentView">
+        <Setter Property="BackgroundColor" Value="{StaticResource AdaptiveBackgroundBrush}"/>
+    </Style>
+
+    <!-- Floating Particle Style -->
+    <Style x:Key="FloatingParticleStyle" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"/>
+        <Setter Property="WidthRequest" Value="8"/>
+        <Setter Property="HeightRequest" Value="8"/>
+        <Setter Property="StrokeShape" Value="RoundRectangle 4"/>
+        <Setter Property="Stroke" Value="Transparent"/>
+        <Setter Property="Opacity" Value="0.6"/>
+    </Style>
+
+    <!-- Floating Animation Style -->
+    <Style x:Key="FloatingAnimation" TargetType="Border">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray900}}"/>
+        <Setter Property="Stroke" Value="{StaticResource Primary}"/>
+        <Setter Property="StrokeThickness" Value="1"/>
+        <Setter Property="StrokeShape" Value="RoundRectangle 12"/>
+        <Setter Property="Padding" Value="16"/>
+        <Setter Property="Shadow">
+            <Setter.Value>
+                <Shadow Brush="{StaticResource Primary}"
+                       Offset="0,4"
+                       Radius="15"
+                       Opacity="0.3"/>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>

@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- Animated Icon Button Styles -->
+    <Style x:Key="AnimatedIconButtonStyle" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="Transparent" />
+        <Setter Property="BorderWidth" Value="0" />
+        <Setter Property="Padding" Value="12" />
+        <Setter Property="CornerRadius" Value="20" />
+        <Setter Property="WidthRequest" Value="40" />
+        <Setter Property="HeightRequest" Value="40" />
+        <Setter Property="Scale" Value="1" />
+        <Setter Property="Opacity" Value="1" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <Setter.Value>
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal">
+                            <VisualState.Setters>
+                                <Setter Property="Scale" Value="1" />
+                                <Setter Property="Opacity" Value="1" />
+                                <Setter Property="BackgroundColor" Value="Transparent" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Pressed">
+                            <VisualState.Setters>
+                                <Setter Property="Scale" Value="0.9" />
+                                <Setter Property="Opacity" Value="0.8" />
+                                <Setter Property="BackgroundColor" Value="{StaticResource GlassLight}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="PointerOver">
+                            <VisualState.Setters>
+                                <Setter Property="Scale" Value="1.05" />
+                                <Setter Property="Opacity" Value="0.9" />
+                                <Setter Property="BackgroundColor" Value="{StaticResource GlassWhite}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Morphing Favorite Icon Style -->
+    <Style x:Key="MorphingFavoriteButtonStyle" TargetType="Button" BasedOn="{StaticResource AnimatedIconButtonStyle}">
+        <Setter Property="TextColor" Value="{DynamicResource AdaptiveOnSurfaceVariant}" />
+        <Setter Property="FontFamily" Value="MaterialIcons" />
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <Setter.Value>
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal">
+                            <VisualState.Setters>
+                                <Setter Property="Scale" Value="1" />
+                                <Setter Property="Rotation" Value="0" />
+                                <Setter Property="TextColor" Value="{DynamicResource AdaptiveOnSurfaceVariant}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Pressed">
+                            <VisualState.Setters>
+                                <Setter Property="Scale" Value="1.2" />
+                                <Setter Property="Rotation" Value="15" />
+                                <Setter Property="TextColor" Value="{DynamicResource AdaptivePrimary}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                    <VisualStateGroup x:Name="FavoriteStates">
+                        <VisualState x:Name="Unfavorited">
+                            <VisualState.Setters>
+                                <Setter Property="Text" Value="♡" />
+                                <Setter Property="TextColor" Value="{DynamicResource AdaptiveOnSurfaceVariant}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Favorited">
+                            <VisualState.Setters>
+                                <Setter Property="Text" Value="❤️" />
+                                <Setter Property="TextColor" Value="{DynamicResource AdaptivePrimary}" />
+                                <Setter Property="Scale" Value="1.1" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Rotating Menu Icon Style -->
+    <Style x:Key="RotatingMenuButtonStyle" TargetType="Button" BasedOn="{StaticResource AnimatedIconButtonStyle}">
+        <Setter Property="Text" Value="⋮" />
+        <Setter Property="TextColor" Value="{DynamicResource AdaptiveOnSurface}" />
+        <Setter Property="FontSize" Value="18" />
+        <Setter Property="Rotation" Value="0" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <Setter.Value>
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal">
+                            <VisualState.Setters>
+                                <Setter Property="Rotation" Value="0" />
+                                <Setter Property="Scale" Value="1" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Pressed">
+                            <VisualState.Setters>
+                                <Setter Property="Rotation" Value="90" />
+                                <Setter Property="Scale" Value="0.9" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="PointerOver">
+                            <VisualState.Setters>
+                                <Setter Property="Rotation" Value="45" />
+                                <Setter Property="Scale" Value="1.05" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Pulsing Search Icon Style -->
+    <Style x:Key="PulsingSearchButtonStyle" TargetType="Button" BasedOn="{StaticResource AnimatedIconButtonStyle}">
+        <Setter Property="Text" Value="🔍" />
+        <Setter Property="TextColor" Value="{DynamicResource AdaptivePrimary}" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <Setter.Value>
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal">
+                            <VisualState.Setters>
+                                <Setter Property="Scale" Value="1" />
+                                <Setter Property="Opacity" Value="0.8" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Focused">
+                            <VisualState.Setters>
+                                <Setter Property="Scale" Value="1.1" />
+                                <Setter Property="Opacity" Value="1" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Pressed">
+                            <VisualState.Setters>
+                                <Setter Property="Scale" Value="1.2" />
+                                <Setter Property="Opacity" Value="1" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Bouncing Add Icon Style -->
+    <Style x:Key="BouncingAddButtonStyle" TargetType="Button" BasedOn="{StaticResource AnimatedIconButtonStyle}">
+        <Setter Property="Text" Value="+" />
+        <Setter Property="TextColor" Value="{DynamicResource AdaptiveOnPrimary}" />
+        <Setter Property="BackgroundColor" Value="{DynamicResource AdaptivePrimary}" />
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="CornerRadius" Value="25" />
+        <Setter Property="WidthRequest" Value="50" />
+        <Setter Property="HeightRequest" Value="50" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <Setter.Value>
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal">
+                            <VisualState.Setters>
+                                <Setter Property="Scale" Value="1" />
+                                <Setter Property="TranslationY" Value="0" />
+                                <Setter Property="Rotation" Value="0" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Pressed">
+                            <VisualState.Setters>
+                                <Setter Property="Scale" Value="0.95" />
+                                <Setter Property="TranslationY" Value="2" />
+                                <Setter Property="Rotation" Value="45" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="PointerOver">
+                            <VisualState.Setters>
+                                <Setter Property="Scale" Value="1.05" />
+                                <Setter Property="TranslationY" Value="-2" />
+                                <Setter Property="Rotation" Value="0" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Morphing Sort Icon Style -->
+    <Style x:Key="MorphingSortButtonStyle" TargetType="Button" BasedOn="{StaticResource AnimatedIconButtonStyle}">
+        <Setter Property="TextColor" Value="{DynamicResource AdaptivePrimary}" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <Setter.Value>
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal">
+                            <VisualState.Setters>
+                                <Setter Property="Scale" Value="1" />
+                                <Setter Property="Rotation" Value="0" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Pressed">
+                            <VisualState.Setters>
+                                <Setter Property="Scale" Value="1.1" />
+                                <Setter Property="Rotation" Value="180" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                    <VisualStateGroup x:Name="SortStates">
+                        <VisualState x:Name="Ascending">
+                            <VisualState.Setters>
+                                <Setter Property="Text" Value="↑" />
+                                <Setter Property="Rotation" Value="0" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Descending">
+                            <VisualState.Setters>
+                                <Setter Property="Text" Value="↓" />
+                                <Setter Property="Rotation" Value="180" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Animated Loading Icon Style -->
+    <Style x:Key="AnimatedLoadingIconStyle" TargetType="Label">
+        <Setter Property="Text" Value="⟳" />
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="TextColor" Value="{DynamicResource AdaptivePrimary}" />
+        <Setter Property="HorizontalOptions" Value="Center" />
+        <Setter Property="VerticalOptions" Value="Center" />
+        <Setter Property="Rotation" Value="0" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <Setter.Value>
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="LoadingStates">
+                        <VisualState x:Name="Loading">
+                            <VisualState.Setters>
+                                <Setter Property="Rotation" Value="360" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Idle">
+                            <VisualState.Setters>
+                                <Setter Property="Rotation" Value="0" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Morphing Play/Pause Icon Style -->
+    <Style x:Key="MorphingPlayPauseButtonStyle" TargetType="Button" BasedOn="{StaticResource AnimatedIconButtonStyle}">
+        <Setter Property="TextColor" Value="{DynamicResource AdaptiveOnPrimary}" />
+        <Setter Property="BackgroundColor" Value="{DynamicResource AdaptivePrimary}" />
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="CornerRadius" Value="20" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <Setter.Value>
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="PlayStates">
+                        <VisualState x:Name="Playing">
+                            <VisualState.Setters>
+                                <Setter Property="Text" Value="⏸️" />
+                                <Setter Property="Scale" Value="1" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Paused">
+                            <VisualState.Setters>
+                                <Setter Property="Text" Value="▶️" />
+                                <Setter Property="Scale" Value="1" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Pressed">
+                            <VisualState.Setters>
+                                <Setter Property="Scale" Value="0.9" />
+                                <Setter Property="Rotation" Value="5" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Animated Notification Icon Style -->
+    <Style x:Key="AnimatedNotificationIconStyle" TargetType="Label">
+        <Setter Property="Text" Value="🔔" />
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="TextColor" Value="{DynamicResource AdaptiveOnSurface}" />
+        <Setter Property="Scale" Value="1" />
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <Setter.Value>
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="NotificationStates">
+                        <VisualState x:Name="HasNotifications">
+                            <VisualState.Setters>
+                                <Setter Property="Scale" Value="1.1" />
+                                <Setter Property="TextColor" Value="{DynamicResource AdaptivePrimary}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="NoNotifications">
+                            <VisualState.Setters>
+                                <Setter Property="Scale" Value="1" />
+                                <Setter Property="TextColor" Value="{DynamicResource AdaptiveOnSurfaceVariant}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+</ResourceDictionary>
+

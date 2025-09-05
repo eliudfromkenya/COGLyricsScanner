@@ -255,6 +255,18 @@ public partial class SettingsPage : ContentPage
         }
     }
 
+    private async void OnBreathingAnimationsClicked(object sender, EventArgs e)
+    {
+        try
+        {
+            await Shell.Current.GoToAsync("breathing-animations");
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Error", $"Failed to navigate to breathing animations demo: {ex.Message}", "OK");
+        }
+    }
+
     private async void OnAboutClicked(object sender, EventArgs e)
     {
         try

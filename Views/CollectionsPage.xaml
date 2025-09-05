@@ -65,11 +65,10 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Grid Padding="16,8">
-                            <Frame BackgroundColor="{DynamicResource CardBackgroundColor}"
-                                   BorderColor="{DynamicResource BorderColor}"
-                                   CornerRadius="8"
-                                   Padding="16"
-                                   HasShadow="True">
+                            <Border BackgroundColor="{DynamicResource CardBackgroundColor}"
+                                    Stroke="{DynamicResource BorderColor}"
+                                    StrokeShape="RoundRectangle 8"
+                                    Padding="16">
                                 
                                 <Grid RowDefinitions="Auto,Auto,Auto" 
                                       ColumnDefinitions="*,Auto"
@@ -129,11 +128,11 @@
                                 </Grid>
                                 
                                 <!-- Tap Gesture -->
-                                <Frame.GestureRecognizers>
+                                <Border.GestureRecognizers>
                                     <TapGestureRecognizer Tapped="OnCollectionTapped"
                                                           CommandParameter="{Binding}" />
-                                </Frame.GestureRecognizers>
-                            </Frame>
+                                </Border.GestureRecognizers>
+                            </Border>
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

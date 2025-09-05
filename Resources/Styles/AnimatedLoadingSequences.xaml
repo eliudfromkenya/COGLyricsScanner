@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- Animated Loading Sequences with Morphing Shapes -->
+    
+    <!-- Morphing Dots Loader -->
+    <Style x:Key="MorphingDotsLoaderStyle" TargetType="StackLayout">
+        <Setter Property="Orientation" Value="Horizontal"/>
+        <Setter Property="Spacing" Value="8"/>
+        <Setter Property="HorizontalOptions" Value="Center"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
+    </Style>
+
+    <!-- Individual Morphing Dot -->
+    <Style x:Key="MorphingDotStyle" TargetType="Ellipse">
+        <Setter Property="Fill" Value="{StaticResource AdaptivePrimaryBrush}"/>
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="Opacity" Value="0.3"/>
+    </Style>
+
+
+
+    <!-- Liquid Progress Bar Style -->
+    <Style x:Key="LiquidProgressBarStyle" TargetType="ProgressBar">
+        <Setter Property="ProgressColor" Value="{StaticResource AdaptivePrimaryBrush}"/>
+        <Setter Property="BackgroundColor" Value="{StaticResource AdaptiveGlassLightBrush}"/>
+        <Setter Property="HeightRequest" Value="8"/>
+    </Style>
+
+    <!-- Spinning Ring Loader -->
+    <Style x:Key="SpinningRingLoaderStyle" TargetType="Ellipse">
+        <Setter Property="Stroke" Value="{StaticResource AdaptivePrimaryBrush}"/>
+        <Setter Property="StrokeThickness" Value="4"/>
+        <Setter Property="Fill" Value="Transparent"/>
+        <Setter Property="Width" Value="40"/>
+        <Setter Property="Height" Value="40"/>
+    </Style>
+
+    <!-- Morphing Shape Loader -->
+    <Style x:Key="MorphingShapeLoaderStyle" TargetType="Rectangle">
+        <Setter Property="Fill" Value="{StaticResource AdaptivePrimaryBrush}"/>
+        <Setter Property="Width" Value="30"/>
+        <Setter Property="Height" Value="30"/>
+    </Style>
+
+    <!-- Bouncing Balls Loader -->
+    <Style x:Key="BouncingBallStyle" TargetType="Ellipse">
+        <Setter Property="Fill" Value="{StaticResource AdaptivePrimaryBrush}"/>
+        <Setter Property="Width" Value="10"/>
+        <Setter Property="Height" Value="10"/>
+    </Style>
+
+
+
+    <!-- Pulse Loading Style -->
+    <Style x:Key="PulseLoadingStyle" TargetType="Ellipse">
+        <Setter Property="Fill" Value="{StaticResource AdaptivePrimaryBrush}"/>
+        <Setter Property="Width" Value="60"/>
+        <Setter Property="Height" Value="60"/>
+    </Style>
+
+</ResourceDictionary>
+

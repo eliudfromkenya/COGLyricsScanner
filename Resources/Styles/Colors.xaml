@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <?xaml-comp compile="true" ?>
 <ResourceDictionary 
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
@@ -42,4 +42,12 @@
     <SolidColorBrush x:Key="Gray600Brush" Color="{StaticResource Gray600}"/>
     <SolidColorBrush x:Key="Gray900Brush" Color="{StaticResource Gray900}"/>
     <SolidColorBrush x:Key="Gray950Brush" Color="{StaticResource Gray950}"/>
+
+    <!-- Adaptive Brushes for Theme Support -->
+    <SolidColorBrush x:Key="AdaptiveBackgroundBrush" Color="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource Gray900}}"/>
+    <SolidColorBrush x:Key="AdaptiveTextBrush" Color="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"/>
+    <SolidColorBrush x:Key="AdaptiveTextSecondaryBrush" Color="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray300}}"/>
+    <SolidColorBrush x:Key="AdaptivePrimaryBrush" Color="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}"/>
+    <SolidColorBrush x:Key="AdaptiveGlassLightBrush" Color="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray600}}"/>
 </ResourceDictionary>
+

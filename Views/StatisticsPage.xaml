@@ -12,10 +12,10 @@
             <Grid ColumnDefinitions="*,*" ColumnSpacing="12" RowSpacing="12">
                 
                 <!-- Total Hymns -->
-                <Frame Grid.Column="0"
+                <Border Grid.Column="0"
                        BackgroundColor="{DynamicResource Primary}"
-                       BorderColor="Transparent"
-                       CornerRadius="12"
+                       Stroke="Transparent"
+                       StrokeShape="RoundRectangle 12"
                        Padding="16">
                     <StackLayout Spacing="8">
                         <Label Text="📖" 
@@ -31,13 +31,13 @@
                                TextColor="White"
                                HorizontalOptions="Center" />
                     </StackLayout>
-                </Frame>
+                </Border>
                 
                 <!-- Total Collections -->
-                <Frame Grid.Column="1"
+                <Border Grid.Column="1"
                        BackgroundColor="{DynamicResource Secondary}"
-                       BorderColor="Transparent"
-                       CornerRadius="12"
+                       Stroke="Transparent"
+                       StrokeShape="RoundRectangle 12"
                        Padding="16">
                     <StackLayout Spacing="8">
                         <Label Text="📚" 
@@ -53,13 +53,13 @@
                                TextColor="White"
                                HorizontalOptions="Center" />
                     </StackLayout>
-                </Frame>
+                </Border>
                 
                 <!-- Favorites -->
-                <Frame Grid.Row="1" Grid.Column="0"
+                <Border Grid.Row="1" Grid.Column="0"
                        BackgroundColor="#FF9800"
-                       BorderColor="Transparent"
-                       CornerRadius="12"
+                       Stroke="Transparent"
+                       StrokeShape="RoundRectangle 12"
                        Padding="16">
                     <StackLayout Spacing="8">
                         <Label Text="⭐" 
@@ -75,13 +75,13 @@
                                TextColor="White"
                                HorizontalOptions="Center" />
                     </StackLayout>
-                </Frame>
+                </Border>
                 
                 <!-- Hymn Books -->
-                <Frame Grid.Row="1" Grid.Column="1"
+                <Border Grid.Row="1" Grid.Column="1"
                        BackgroundColor="#9C27B0"
-                       BorderColor="Transparent"
-                       CornerRadius="12"
+                       Stroke="Transparent"
+                       StrokeShape="RoundRectangle 12"
                        Padding="16">
                     <StackLayout Spacing="8">
                         <Label Text="📕" 
@@ -97,13 +97,13 @@
                                TextColor="White"
                                HorizontalOptions="Center" />
                     </StackLayout>
-                </Frame>
+                </Border>
             </Grid>
             
             <!-- Recent Activity -->
-            <Frame BackgroundColor="{DynamicResource CardBackgroundColor}"
-                   BorderColor="{DynamicResource BorderColor}"
-                   CornerRadius="8"
+            <Border BackgroundColor="{DynamicResource CardBackgroundColor}"
+                   Stroke="{DynamicResource BorderColor}"
+                   StrokeShape="RoundRectangle 8"
                    Padding="16">
                 <StackLayout Spacing="12">
                     <Label Text="Recent Activity" 
@@ -151,12 +151,12 @@
                                TextColor="{DynamicResource SecondaryTextColor}" />
                     </Grid>
                 </StackLayout>
-            </Frame>
+            </Border>
             
             <!-- Language Distribution -->
-            <Frame BackgroundColor="{DynamicResource CardBackgroundColor}"
-                   BorderColor="{DynamicResource BorderColor}"
-                   CornerRadius="8"
+            <Border BackgroundColor="{DynamicResource CardBackgroundColor}"
+                   Stroke="{DynamicResource BorderColor}"
+                   StrokeShape="RoundRectangle 8"
                    Padding="16">
                 <StackLayout Spacing="12">
                     <Label Text="Language Distribution" 
@@ -192,12 +192,12 @@
                         </CollectionView.ItemTemplate>
                     </CollectionView>
                 </StackLayout>
-            </Frame>
+            </Border>
             
             <!-- Hymn Books Statistics -->
-            <Frame BackgroundColor="{DynamicResource CardBackgroundColor}"
-                   BorderColor="{DynamicResource BorderColor}"
-                   CornerRadius="8"
+            <Border BackgroundColor="{DynamicResource CardBackgroundColor}"
+                   Stroke="{DynamicResource BorderColor}"
+                   StrokeShape="RoundRectangle 8"
                    Padding="16">
                 <StackLayout Spacing="12">
                     <Label Text="Hymn Books" 
@@ -238,12 +238,12 @@
                         </CollectionView.ItemTemplate>
                     </CollectionView>
                 </StackLayout>
-            </Frame>
+            </Border>
             
             <!-- Export Statistics -->
-            <Frame BackgroundColor="{DynamicResource CardBackgroundColor}"
-                   BorderColor="{DynamicResource BorderColor}"
-                   CornerRadius="8"
+            <Border BackgroundColor="{DynamicResource CardBackgroundColor}"
+                   Stroke="{DynamicResource BorderColor}"
+                   StrokeShape="RoundRectangle 8"
                    Padding="16">
                 <StackLayout Spacing="12">
                     <Label Text="Export and Backup" 
@@ -291,7 +291,7 @@
                             Style="{DynamicResource OutlineButtonStyle}"
                             Command="{Binding RefreshCommand}" />
                 </StackLayout>
-            </Frame>
+            </Border>
 
 
             <!-- Loading Overlay -->

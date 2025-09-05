@@ -68,7 +68,6 @@
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.91" />
 		<PackageReference Include="CommunityToolkit.Maui" Version="9.0.3" />
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
-		<PackageReference Include="Plugin.Maui.OCR" Version="1.0.12" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
 		<PackageReference Include="SQLitePCLRaw.bundle_green" Version="2.1.8" />
 		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="8.0.91" />
@@ -76,10 +75,8 @@
 		<PackageReference Include="itext7" Version="8.0.2" />
 	</ItemGroup>
 
-	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0-windows10.0.19041.0'">
-		<PackageReference Include="Plugin.Maui.OCR">
-			<Version>1.0.15</Version>
-		</PackageReference>
+	<ItemGroup>
+		<PackageReference Include="Plugin.Maui.OCR" Version="1.0.15" />
 	</ItemGroup>
 
 	<ItemGroup>

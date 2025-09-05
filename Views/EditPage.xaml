@@ -19,7 +19,7 @@
             <StackLayout Padding="16" Spacing="16">
                 
                 <!-- Header Section -->
-                <Frame Style="{DynamicResource CardStyle}">
+                <Border Style="{DynamicResource CardStyle}">
                     <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto" RowSpacing="12">
                         
                         <!-- Title Row -->
@@ -77,10 +77,10 @@
                                    Style="{DynamicResource CaptionLabelStyle}" />
                         </Grid>
                     </Grid>
-                </Frame>
+                </Border>
                 
                 <!-- Editor Controls -->
-                <Frame Style="{DynamicResource CardStyle}">
+                <Border Style="{DynamicResource CardStyle}">
                     <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto" ColumnSpacing="8">
                         <Label Grid.Column="0" Text="Editor" Style="{DynamicResource SubtitleLabelStyle}" VerticalOptions="Center" />
                         
@@ -111,10 +111,10 @@
                                 WidthRequest="40"
                                 HeightRequest="40" />
                     </Grid>
-                </Frame>
+                </Border>
                 
                 <!-- Lyrics Editor -->
-                <Frame Style="{DynamicResource CardStyle}" Padding="0">
+                <Border Style="{DynamicResource CardStyle}" Padding="0">
                     <Grid>
                         <!-- Line Numbers (if enabled) -->
                         <ScrollView x:Name="LineNumbersScrollView"
@@ -140,10 +140,10 @@
                                 TextChanged="OnLyricsTextChanged"
                             />
                     </Grid>
-                </Frame>
+                </Border>
                 
                 <!-- Tags and Notes -->
-                <Frame Style="{DynamicResource CardStyle}">
+                <Border Style="{DynamicResource CardStyle}">
                     <StackLayout Spacing="12">
                         <Label Text="Tags and Notes" Style="{DynamicResource SubtitleLabelStyle}" />
                         
@@ -156,10 +156,10 @@
                                 Style="{DynamicResource EditorStyle}"
                                 HeightRequest="80" />
                     </StackLayout>
-                </Frame>
+                </Border>
                 
                 <!-- Collections -->
-                <Frame Style="{DynamicResource CardStyle}" IsVisible="{Binding HymnCollections.Count, Converter={StaticResource IntToBoolConverter}}">
+                <Border Style="{DynamicResource CardStyle}" IsVisible="{Binding HymnCollections.Count, Converter={StaticResource IntToBoolConverter}}">
                     <StackLayout Spacing="12">
                         <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
                             <Label Grid.Column="0" Text="Collections" Style="{DynamicResource SubtitleLabelStyle}" />
@@ -204,7 +204,7 @@
                             </CollectionView.ItemTemplate>
                         </CollectionView>
                     </StackLayout>
-                </Frame>
+                </Border>
                 
                 <!-- Action Buttons -->
                 <Grid ColumnDefinitions="*,*,*" ColumnSpacing="12">
@@ -229,10 +229,10 @@
                 </Grid>
                 
                 <!-- Unsaved Changes Indicator -->
-                <Frame IsVisible="{Binding HasUnsavedChanges}"
-                       BackgroundColor="{DynamicResource WarningContainer}"
-                       BorderColor="{DynamicResource Warning}"
-                       Padding="12,8">
+                <Border IsVisible="{Binding HasUnsavedChanges}"
+                        BackgroundColor="{DynamicResource WarningContainer}"
+                        Stroke="{DynamicResource Warning}"
+                        Padding="12,8">
                     <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
                         <Label Grid.Column="0"
                                Text="⚠️"
@@ -243,17 +243,16 @@
                                TextColor="{DynamicResource OnWarningContainer}"
                                VerticalOptions="Center" />
                     </Grid>
-                </Frame>
+                </Border>
                 
             </StackLayout>
         </ScrollView>
         
         <!-- Loading Overlay -->
-        <Frame IsVisible="{Binding IsBusy}"
-               BackgroundColor="{DynamicResource SurfaceVariant}"
-               Opacity="0.9"
-               HasShadow="False"
-               BorderColor="Transparent">
+        <Border IsVisible="{Binding IsBusy}"
+                BackgroundColor="{DynamicResource SurfaceVariant}"
+                Opacity="0.9"
+                Stroke="Transparent">
             <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="16">
                 <ActivityIndicator IsRunning="{Binding IsBusy}"
                                    Style="{DynamicResource ActivityIndicatorStyle}" />
@@ -261,15 +260,15 @@
                        Style="{DynamicResource BodyLabelStyle}"
                        HorizontalOptions="Center" />
             </StackLayout>
-        </Frame>
+        </Border>
         
         <!-- Error Message -->
-        <Frame IsVisible="{Binding HasError}"
-               BackgroundColor="{DynamicResource ErrorContainer}"
-               BorderColor="{DynamicResource Error}"
-               VerticalOptions="End"
-               Margin="16"
-               Padding="16,12">
+        <Border IsVisible="{Binding HasError}"
+                BackgroundColor="{DynamicResource ErrorContainer}"
+                Stroke="{DynamicResource Error}"
+                VerticalOptions="End"
+                Margin="16"
+                Padding="16,12">
             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
                 <Label Grid.Column="0"
                        Text="{Binding ErrorMessage}"
@@ -285,6 +284,6 @@
                         WidthRequest="32"
                         HeightRequest="32" />
             </Grid>
-        </Frame>
+        </Border>
     </Grid>
 </ContentPage>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="COGLyricsScanner.Views.SplashPage"
+             Title=""
+             NavigationPage.HasNavigationBar="False"
+             Shell.NavBarIsVisible="False"
+             Shell.TabBarIsVisible="False">
+
+    <Grid Background="{StaticResource PrimaryGradientBrush}">
+        
+        <!-- Animated Background Elements -->
+        <Ellipse Fill="{StaticResource PrimaryLight}" 
+                 Opacity="0.1" 
+                 WidthRequest="300" 
+                 HeightRequest="300" 
+                 HorizontalOptions="Start" 
+                 VerticalOptions="Start" 
+                 Margin="-100,-100,0,0">
+
+        </Ellipse>
+        
+        <Ellipse Fill="{StaticResource Secondary}" 
+                 Opacity="0.08" 
+                 WidthRequest="200" 
+                 HeightRequest="200" 
+                 HorizontalOptions="End" 
+                 VerticalOptions="End" 
+                 Margin="0,0,-50,-50">
+
+        </Ellipse>
+        
+        <!-- Main Content -->
+        <StackLayout VerticalOptions="Center" 
+                     HorizontalOptions="Center" 
+                     Spacing="30" 
+                     x:Name="MainContent">
+            
+            <!-- Animated Logo -->
+            <Border BackgroundColor="White" 
+                    StrokeShape="RoundRectangle 40" 
+                    WidthRequest="120" 
+                    HeightRequest="120" 
+                    x:Name="LogoFrame">
+                <Border.Shadow>
+                    <Shadow Brush="Black" Offset="0,8" Radius="20" Opacity="0.3" />
+                </Border.Shadow>
+
+                
+                <Label Text="🎵" 
+                       FontSize="60" 
+                       HorizontalOptions="Center" 
+                       VerticalOptions="Center" />
+            </Border>
+            
+            <!-- Animated App Title -->
+            <StackLayout Spacing="8" x:Name="TitleSection">
+
+                
+                <Label Text="COG Lyrics Scanner" 
+                       FontSize="28" 
+                       FontAttributes="Bold" 
+                       TextColor="White" 
+                       HorizontalOptions="Center" 
+                       HorizontalTextAlignment="Center">
+                    <Label.Shadow>
+                        <Shadow Brush="Black" Offset="0,2" Radius="4" Opacity="0.5" />
+                    </Label.Shadow>
+                </Label>
+                
+                <Label Text="Digitize hymns with AI precision" 
+                       FontSize="16" 
+                       TextColor="White" 
+                       Opacity="0.9" 
+                       HorizontalOptions="Center" 
+                       HorizontalTextAlignment="Center" />
+            </StackLayout>
+            
+            <!-- Animated Loading Indicator -->
+            <StackLayout Spacing="16" x:Name="LoadingSection">
+
+                
+                <!-- Custom Loading Animation -->
+                <Grid WidthRequest="200" HeightRequest="4" HorizontalOptions="Center">
+                    <Rectangle Fill="White" 
+                               Opacity="0.3" 
+                               RadiusX="2" 
+                               RadiusY="2" />
+                    <Rectangle Fill="White" 
+                               RadiusX="2" 
+                               RadiusY="2" 
+                               HorizontalOptions="Start" 
+                               WidthRequest="60" 
+                               x:Name="LoadingBar">
+
+                    </Rectangle>
+                </Grid>
+                
+                <Label Text="Loading..." 
+                       FontSize="14" 
+                       TextColor="White" 
+                       Opacity="0.8" 
+                       HorizontalOptions="Center" />
+            </StackLayout>
+            
+        </StackLayout>
+        
+        <!-- Version Info -->
+        <Label Text="Version 1.0.0" 
+               FontSize="12" 
+               TextColor="White" 
+               Opacity="0.7" 
+               HorizontalOptions="Center" 
+               VerticalOptions="End" 
+               Margin="0,0,0,30" 
+               x:Name="VersionLabel">
+
+        </Label>
+        
+    </Grid>
+</ContentPage>

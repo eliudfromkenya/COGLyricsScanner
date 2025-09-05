@@ -14,10 +14,10 @@
             <StackLayout Padding="16" Spacing="16">
                 
                 <!-- Collection Info -->
-                <Frame BackgroundColor="{DynamicResource CardBackground}"
-                       BorderColor="{DynamicResource BorderColor}"
-                       CornerRadius="12"
-                       Padding="16">
+                <Border BackgroundColor="{DynamicResource CardBackground}"
+                        Stroke="{DynamicResource BorderColor}"
+                        StrokeShape="RoundRectangle 12"
+                        Padding="16">
                     <StackLayout Spacing="8">
                         <Label Text="{Binding CollectionName}"
                                FontSize="24"
@@ -49,7 +49,7 @@
                             </StackLayout>
                         </Grid>
                     </StackLayout>
-                </Frame>
+                </Border>
 
                 <!-- Search and Actions -->
                 <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
@@ -102,16 +102,15 @@
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="viewmodels:HymnItemViewModel">
                                 <Grid Padding="0,4">
-                                    <Frame BackgroundColor="{DynamicResource CardBackground}"
-                                           BorderColor="{DynamicResource BorderColor}"
-                                           CornerRadius="8"
-                                           Padding="16"
-                                           HasShadow="False">
+                                    <Border BackgroundColor="{DynamicResource CardBackground}"
+                                            Stroke="{DynamicResource BorderColor}"
+                                            StrokeShape="RoundRectangle 8"
+                                            Padding="16">
                                         
-                                        <Frame.GestureRecognizers>
+                                        <Border.GestureRecognizers>
                                             <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CollectionDetailPageViewModel}}, Path=ViewHymnCommand}"
                                                                   CommandParameter="{Binding .}" />
-                                        </Frame.GestureRecognizers>
+                                        </Border.GestureRecognizers>
 
                                         <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="12">
                                             <!-- Hymn Info -->
@@ -163,7 +162,7 @@
                                                     Style="{DynamicResource IconButtonStyle}"
                                                     FontSize="16" />
                                         </Grid>
-                                    </Frame>
+                                    </Border>
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
