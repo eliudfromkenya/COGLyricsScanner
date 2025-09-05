@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="456" height="456" viewBox="0 0 456 456" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="456" height="456" fill="#512BD4"/>
+    
+    <!-- Music note icon -->
+    <g transform="translate(128, 128)">
+        <path d="M120 40C120 35.58 116.42 32 112 32H80C75.58 32 72 35.58 72 40V120C72 124.42 75.58 128 80 128H112C116.42 128 120 124.42 120 120V40Z" fill="white"/>
+        <circle cx="64" cy="144" r="16" fill="white"/>
+        <circle cx="128" cy="144" r="16" fill="white"/>
+        <path d="M72 128V144M120 128V144" stroke="white" stroke-width="4" stroke-linecap="round"/>
+    </g>
+    
+    <!-- App title -->
+    <text x="228" y="280" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="24" font-weight="bold">COG Lyrics</text>
+    <text x="228" y="310" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="24" font-weight="bold">Scanner</text>
+</svg>

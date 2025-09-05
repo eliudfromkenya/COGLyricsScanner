@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="COGLyricsScanner.Views.EditPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:COGLyricsScanner.ViewModels"
+             xmlns:models="clr-namespace:COGLyricsScanner.Models"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:DataType="viewmodels:EditPageViewModel"
+             Title="{Binding Title}"
+             Style="{DynamicResource PageStyle}">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="{DynamicResource Primary}" StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
+    <Grid>
+        <!-- Main Content -->
+        <ScrollView>
+            <StackLayout Padding="16" Spacing="16">
+                
+                <!-- Header Section -->
+                <Frame Style="{DynamicResource CardStyle}">
+                    <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto" RowSpacing="12">
+                        
+                        <!-- Title Row -->
+                        <Entry x:Name="TitleEntry"
+                               Grid.Row="0" Grid.Column="0"
+                               Text="{Binding HymnTitle}"
+                               Placeholder="Enter hymn title..."
+                               Style="{DynamicResource EntryStyle}"
+                               FontSize="18"
+                               FontAttributes="Bold" />
+                        
+                        <Button Grid.Row="0" Grid.Column="1"
+                                Command="{Binding ToggleFavoriteCommand}"
+                                Style="{DynamicResource BaseButtonStyle}"
+                                BackgroundColor="Transparent"
+                                WidthRequest="44"
+                                HeightRequest="44">
+                            <Button.ImageSource>
+                                <FontImageSource FontFamily="MaterialIcons"
+                                               Glyph="{Binding IsFavorite, Converter={StaticResource BoolToFavoriteIconConverter}}"
+                                               Color="{Binding IsFavorite, Converter={StaticResource BoolToFavoriteColorConverter}}" />
+                            </Button.ImageSource>
+                        </Button>
+                        
+                        <!-- Metadata Row -->
+                        <Grid Grid.Row="1" Grid.ColumnSpan="2" ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                            <Entry Grid.Column="0"
+                                   Text="{Binding HymnNumber}"
+                                   Placeholder="Number"
+                                   Keyboard="Numeric"
+                                   Style="{DynamicResource EntryStyle}" />
+                            
+                            <Picker Grid.Column="1"
+                                    ItemsSource="{Binding AvailableHymnBooks}"
+                                    ItemDisplayBinding="{Binding Name}"
+                                    SelectedItem="{Binding SelectedHymnBook}"
+                                    Title="Hymn Book"
+                                    Style="{DynamicResource PickerStyle}" />
+                            
+                            <Entry Grid.Column="2"
+                                   Text="{Binding HymnLanguage}"
+                                   Placeholder="Language"
+                                   Style="{DynamicResource EntryStyle}" />
+                        </Grid>
+                        
+                        <!-- Statistics Row -->
+                        <Grid Grid.Row="2" Grid.ColumnSpan="2" ColumnDefinitions="*,*,*,*" ColumnSpacing="8">
+                            <Label Grid.Column="0" Text="{Binding WordCount, StringFormat='Words: {0}'}"
+                                   Style="{DynamicResource CaptionLabelStyle}" />
+                            <Label Grid.Column="1" Text="{Binding LineCount, StringFormat='Lines: {0}'}"
+                                   Style="{DynamicResource CaptionLabelStyle}" />
+                            <Label Grid.Column="2" Text="{Binding ViewCount, StringFormat='Views: {0}'}"
+                                   Style="{DynamicResource CaptionLabelStyle}" />
+                            <Label Grid.Column="3" Text="{Binding ModifiedDate, StringFormat='Modified: {0:MM/dd}'}"
+                                   Style="{DynamicResource CaptionLabelStyle}" />
+                        </Grid>
+                    </Grid>
+                </Frame>
+                
+                <!-- Editor Controls -->
+                <Frame Style="{DynamicResource CardStyle}">
+                    <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto" ColumnSpacing="8">
+                        <Label Grid.Column="0" Text="Editor" Style="{DynamicResource SubtitleLabelStyle}" VerticalOptions="Center" />
+                        
+                        <Button Grid.Column="1"
+                                Command="{Binding DecreaseFontSizeCommand}"
+                                Style="{DynamicResource OutlineButtonStyle}"
+                                Text="A-"
+                                WidthRequest="40"
+                                HeightRequest="40" />
+                        
+                        <Label Grid.Column="2" Text="{Binding FontSize, StringFormat='{0:F0}'}"
+                               Style="{DynamicResource BodyLabelStyle}"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center"
+                               WidthRequest="30" />
+                        
+                        <Button Grid.Column="3"
+                                Command="{Binding IncreaseFontSizeCommand}"
+                                Style="{DynamicResource OutlineButtonStyle}"
+                                Text="A+"
+                                WidthRequest="40"
+                                HeightRequest="40" />
+                        
+                        <Button Grid.Column="4"
+                                Command="{Binding ToggleLineNumbersCommand}"
+                                Style="{Binding ShowLineNumbers, Converter={StaticResource BoolToButtonStyleConverter}}"
+                                Text="#"
+                                WidthRequest="40"
+                                HeightRequest="40" />
+                    </Grid>
+                </Frame>
+                
+                <!-- Lyrics Editor -->
+                <Frame Style="{DynamicResource CardStyle}" Padding="0">
+                    <Grid>
+                        <!-- Line Numbers (if enabled) -->
+                        <ScrollView x:Name="LineNumbersScrollView"
+                                    IsVisible="{Binding ShowLineNumbers}"
+                                    HorizontalOptions="Start"
+                                    VerticalOptions="Fill"
+                                    Orientation="Vertical"
+                                    BackgroundColor="{DynamicResource SurfaceVariant}"
+                                    WidthRequest="40"
+                                    Padding="4,8">
+                            <StackLayout x:Name="LineNumbersStack" Spacing="0" />
+                        </ScrollView>
+                        
+                        <!-- Main Editor -->
+                        <Editor x:Name="LyricsEditor"
+                                Text="{Binding HymnLyrics}"
+                                Placeholder="Enter hymn lyrics here..."
+                                Style="{DynamicResource EditorStyle}"
+                                FontSize="{Binding FontSize}"
+                                MinimumHeightRequest="300"
+                                AutoSize="TextChanges"
+                                Margin="{Binding ShowLineNumbers, Converter={StaticResource BoolToEditorMarginConverter}}"
+                                TextChanged="OnLyricsTextChanged"
+                                Scrolled="OnLyricsScrolled" />
+                    </Grid>
+                </Frame>
+                
+                <!-- Tags and Notes -->
+                <Frame Style="{DynamicResource CardStyle}">
+                    <StackLayout Spacing="12">
+                        <Label Text="Tags & Notes" Style="{DynamicResource SubtitleLabelStyle}" />
+                        
+                        <Entry Text="{Binding HymnTags}"
+                               Placeholder="Tags (comma-separated)"
+                               Style="{DynamicResource EntryStyle}" />
+                        
+                        <Editor Text="{Binding HymnNotes}"
+                                Placeholder="Additional notes..."
+                                Style="{DynamicResource EditorStyle}"
+                                HeightRequest="80" />
+                    </StackLayout>
+                </Frame>
+                
+                <!-- Collections -->
+                <Frame Style="{DynamicResource CardStyle}" IsVisible="{Binding HymnCollections.Count, Converter={StaticResource IntToBoolConverter}}">
+                    <StackLayout Spacing="12">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                            <Label Grid.Column="0" Text="Collections" Style="{DynamicResource SubtitleLabelStyle}" />
+                            <Button Grid.Column="1"
+                                    Command="{Binding AddToCollectionCommand}"
+                                    Style="{DynamicResource OutlineButtonStyle}"
+                                    Text="Add"
+                                    WidthRequest="60"
+                                    HeightRequest="32" />
+                        </Grid>
+                        
+                        <CollectionView ItemsSource="{Binding HymnCollections}"
+                                        Style="{DynamicResource CollectionViewStyle}"
+                                        HeightRequest="120">
+                            <CollectionView.ItemsLayout>
+                                <LinearItemsLayout Orientation="Vertical" ItemSpacing="4" />
+                            </CollectionView.ItemsLayout>
+                            
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="models:Collection">
+                                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12" Padding="12,8">
+                                        <Ellipse Grid.Column="0"
+                                                 Fill="{Binding Color, Converter={StaticResource StringToColorConverter}}"
+                                                 WidthRequest="12"
+                                                 HeightRequest="12" />
+                                        
+                                        <Label Grid.Column="1"
+                                               Text="{Binding Name}"
+                                               Style="{DynamicResource BodyLabelStyle}"
+                                               VerticalOptions="Center" />
+                                        
+                                        <Button Grid.Column="2"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:EditPageViewModel}}, Path=RemoveFromCollectionCommand}"
+                                                CommandParameter="{Binding .}"
+                                                Style="{DynamicResource OutlineButtonStyle}"
+                                                Text="Remove"
+                                                WidthRequest="70"
+                                                HeightRequest="28"
+                                                FontSize="12" />
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </StackLayout>
+                </Frame>
+                
+                <!-- Action Buttons -->
+                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="12">
+                    <Button Grid.Column="0"
+                            Command="{Binding SaveHymnCommand}"
+                            Style="{DynamicResource BaseButtonStyle}"
+                            Text="Save"
+                            IsEnabled="{Binding HasUnsavedChanges}" />
+                    
+                    <Button Grid.Column="1"
+                            Command="{Binding ExportHymnCommand}"
+                            Style="{DynamicResource SecondaryButtonStyle}"
+                            Text="Export"
+                            IsEnabled="{Binding CurrentHymn, Converter={StaticResource ObjectToBoolConverter}}" />
+                    
+                    <Button Grid.Column="2"
+                            Command="{Binding DeleteHymnCommand}"
+                            Style="{DynamicResource OutlineButtonStyle}"
+                            Text="Delete"
+                            TextColor="{DynamicResource Error}"
+                            IsEnabled="{Binding CurrentHymn, Converter={StaticResource ObjectToBoolConverter}}" />
+                </Grid>
+                
+                <!-- Unsaved Changes Indicator -->
+                <Frame IsVisible="{Binding HasUnsavedChanges}"
+                       BackgroundColor="{DynamicResource WarningContainer}"
+                       BorderColor="{DynamicResource Warning}"
+                       Padding="12,8">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                        <Label Grid.Column="0"
+                               Text="⚠️"
+                               VerticalOptions="Center" />
+                        <Label Grid.Column="1"
+                               Text="You have unsaved changes"
+                               Style="{DynamicResource CaptionLabelStyle}"
+                               TextColor="{DynamicResource OnWarningContainer}"
+                               VerticalOptions="Center" />
+                    </Grid>
+                </Frame>
+                
+            </StackLayout>
+        </ScrollView>
+        
+        <!-- Loading Overlay -->
+        <Frame IsVisible="{Binding IsBusy}"
+               BackgroundColor="{DynamicResource SurfaceVariant}"
+               Opacity="0.9"
+               HasShadow="False"
+               BorderColor="Transparent">
+            <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="16">
+                <ActivityIndicator IsRunning="{Binding IsBusy}"
+                                   Style="{DynamicResource ActivityIndicatorStyle}" />
+                <Label Text="{Binding LoadingMessage}"
+                       Style="{DynamicResource BodyLabelStyle}"
+                       HorizontalOptions="Center" />
+            </StackLayout>
+        </Frame>
+        
+        <!-- Error Message -->
+        <Frame IsVisible="{Binding HasError}"
+               BackgroundColor="{DynamicResource ErrorContainer}"
+               BorderColor="{DynamicResource Error}"
+               VerticalOptions="End"
+               Margin="16"
+               Padding="16,12">
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                <Label Grid.Column="0"
+                       Text="{Binding ErrorMessage}"
+                       Style="{DynamicResource BodyLabelStyle}"
+                       TextColor="{DynamicResource OnErrorContainer}"
+                       VerticalOptions="Center" />
+                <Button Grid.Column="1"
+                        Command="{Binding ClearErrorCommand}"
+                        Style="{DynamicResource BaseButtonStyle}"
+                        Text="✕"
+                        BackgroundColor="Transparent"
+                        TextColor="{DynamicResource OnErrorContainer}"
+                        WidthRequest="32"
+                        HeightRequest="32" />
+            </Grid>
+        </Frame>
+    </Grid>
+</ContentPage>

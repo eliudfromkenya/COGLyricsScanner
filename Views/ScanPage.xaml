@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage 
+    x:Class="COGLyricsScanner.Views.ScanPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:vm="clr-namespace:COGLyricsScanner.ViewModels"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    Title="{Binding Title}"
+    x:DataType="vm:ScanPageViewModel">
+
+    <ContentPage.Behaviors>
+        <toolkit:EventToCommandBehavior 
+            EventName="Appearing" 
+            Command="{Binding OnAppearingCommand}" />
+    </ContentPage.Behaviors>
+
+    <Grid>
+        <ScrollView>
+            <StackLayout Padding="20" Spacing="20">
+                
+                <!-- Header Section -->
+                <Frame Style="{StaticResource CardStyle}" Padding="20">
+                    <StackLayout Spacing="10">
+                        <Label 
+                            Text="Scan Hymn Lyrics" 
+                            Style="{StaticResource LargeLabelStyle}" 
+                            HorizontalOptions="Center" />
+                        <Label 
+                            Text="Take a photo or select an image to extract lyrics using OCR" 
+                            Style="{StaticResource BodyLabelStyle}" 
+                            HorizontalOptions="Center" 
+                            HorizontalTextAlignment="Center" />
+                    </StackLayout>
+                </Frame>
+
+                <!-- Camera Controls -->
+                <Frame Style="{StaticResource CardStyle}" Padding="20">
+                    <StackLayout Spacing="15">
+                        <Label Text="Capture Options" Style="{StaticResource SubtitleLabelStyle}" />
+                        
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                            <Button 
+                                Grid.Column="0"
+                                Text="Take Photo" 
+                                Style="{StaticResource PrimaryButtonStyle}"
+                                Command="{Binding TakePhotoCommand}"
+                                IsEnabled="{Binding CanScan}">
+                                <Button.ImageSource>
+                                    <FontImageSource 
+                                        FontFamily="MaterialIcons" 
+                                        Glyph="📷" 
+                                        Color="{DynamicResource OnPrimaryColor}" />
+                                </Button.ImageSource>
+                            </Button>
+                            
+                            <Button 
+                                Grid.Column="1"
+                                Text="Pick Image" 
+                                Style="{StaticResource SecondaryButtonStyle}"
+                                Command="{Binding PickImageCommand}"
+                                IsEnabled="{Binding CanScan}">
+                                <Button.ImageSource>
+                                    <FontImageSource 
+                                        FontFamily="MaterialIcons" 
+                                        Glyph="🖼️" 
+                                        Color="{DynamicResource OnSecondaryColor}" />
+                                </Button.ImageSource>
+                            </Button>
+                        </Grid>
+                    </StackLayout>
+                </Frame>
+
+                <!-- OCR Settings -->
+                <Frame Style="{StaticResource CardStyle}" Padding="20">
+                    <StackLayout Spacing="15">
+                        <Label Text="OCR Settings" Style="{StaticResource SubtitleLabelStyle}" />
+                        
+                        <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto" RowSpacing="10">
+                            <Label 
+                                Grid.Row="0" Grid.Column="0"
+                                Text="Language:" 
+                                Style="{StaticResource BodyLabelStyle}" 
+                                VerticalOptions="Center" />
+                            <Button 
+                                Grid.Row="0" Grid.Column="1"
+                                Text="{Binding SelectedLanguage}" 
+                                Style="{StaticResource OutlineButtonStyle}"
+                                Command="{Binding ChangeLanguageCommand}" />
+                            
+                            <Label 
+                                Grid.Row="1" Grid.Column="0"
+                                Text="Auto-save after scan:" 
+                                Style="{StaticResource BodyLabelStyle}" 
+                                VerticalOptions="Center" />
+                            <Switch 
+                                Grid.Row="1" Grid.Column="1"
+                                IsToggled="{Binding AutoSaveEnabled}" 
+                                ThumbColor="{DynamicResource PrimaryColor}"
+                                OnColor="{DynamicResource PrimaryColor}" />
+                        </Grid>
+                    </StackLayout>
+                </Frame>
+
+                <!-- OCR Progress -->
+                <Frame 
+                    Style="{StaticResource CardStyle}" 
+                    Padding="20"
+                    IsVisible="{Binding IsOcrInProgress}">
+                    <StackLayout Spacing="10">
+                        <Label Text="Processing..." Style="{StaticResource SubtitleLabelStyle}" />
+                        <ProgressBar 
+                            Progress="{Binding OcrProgress, Converter={StaticResource PercentageConverter}}" 
+                            ProgressColor="{DynamicResource PrimaryColor}" />
+                        <Label 
+                            Text="{Binding OcrStatus}" 
+                            Style="{StaticResource CaptionLabelStyle}" 
+                            HorizontalOptions="Center" />
+                    </StackLayout>
+                </Frame>
+
+                <!-- Scanned Text Results -->
+                <Frame 
+                    Style="{StaticResource CardStyle}" 
+                    Padding="20"
+                    IsVisible="{Binding HasScannedText}">
+                    <StackLayout Spacing="15">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                            <Label 
+                                Grid.Column="0"
+                                Text="Scanned Text" 
+                                Style="{StaticResource SubtitleLabelStyle}" />
+                            <Label 
+                                Grid.Column="1"
+                                Text="{Binding ConfidenceScore, StringFormat='Confidence: {0:F0}%'}" 
+                                Style="{StaticResource CaptionLabelStyle}" 
+                                TextColor="{DynamicResource PrimaryColor}" />
+                        </Grid>
+                        
+                        <Frame 
+                            BackgroundColor="{DynamicResource SurfaceVariantColor}" 
+                            Padding="15" 
+                            CornerRadius="8">
+                            <ScrollView MaximumHeightRequest="200">
+                                <Label 
+                                    Text="{Binding ScannedText}" 
+                                    Style="{StaticResource BodyLabelStyle}" 
+                                    LineBreakMode="WordWrap" />
+                            </ScrollView>
+                        </Frame>
+                        
+                        <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
+                            <Button 
+                                Grid.Column="0"
+                                Text="Save" 
+                                Style="{StaticResource PrimaryButtonStyle}"
+                                Command="{Binding SaveScannedTextCommand}" />
+                            <Button 
+                                Grid.Column="1"
+                                Text="Edit" 
+                                Style="{StaticResource SecondaryButtonStyle}"
+                                Command="{Binding EditScannedTextCommand}" />
+                            <Button 
+                                Grid.Column="2"
+                                Text="Clear" 
+                                Style="{StaticResource OutlineButtonStyle}"
+                                Command="{Binding ClearScanCommand}" />
+                        </Grid>
+                    </StackLayout>
+                </Frame>
+
+                <!-- Recent Scans -->
+                <Frame 
+                    Style="{StaticResource CardStyle}" 
+                    Padding="20"
+                    IsVisible="{Binding RecentScans.Count, Converter={StaticResource CountToBoolConverter}}">
+                    <StackLayout Spacing="15">
+                        <Label Text="Recent Scans" Style="{StaticResource SubtitleLabelStyle}" />
+                        
+                        <CollectionView 
+                            ItemsSource="{Binding RecentScans}"
+                            HeightRequest="120">
+                            <CollectionView.ItemsLayout>
+                                <LinearItemsLayout Orientation="Vertical" ItemSpacing="5" />
+                            </CollectionView.ItemsLayout>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="{x:Type x:String}">
+                                    <Grid Padding="10,5">
+                                        <Frame 
+                                            BackgroundColor="{DynamicResource SurfaceVariantColor}" 
+                                            Padding="10" 
+                                            CornerRadius="6">
+                                            <Label 
+                                                Text="{Binding .}" 
+                                                Style="{StaticResource BodyLabelStyle}" 
+                                                LineBreakMode="TailTruncation" />
+                                        </Frame>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </StackLayout>
+                </Frame>
+
+                <!-- Tips Section -->
+                <Frame Style="{StaticResource CardStyle}" Padding="20">
+                    <StackLayout Spacing="10">
+                        <Label Text="Tips for Better OCR Results" Style="{StaticResource SubtitleLabelStyle}" />
+                        <StackLayout Spacing="5">
+                            <Label Text="• Ensure good lighting" Style="{StaticResource CaptionLabelStyle}" />
+                            <Label Text="• Keep text straight and clear" Style="{StaticResource CaptionLabelStyle}" />
+                            <Label Text="• Avoid shadows and glare" Style="{StaticResource CaptionLabelStyle}" />
+                            <Label Text="• Use high contrast images" Style="{StaticResource CaptionLabelStyle}" />
+                            <Label Text="• Hold camera steady" Style="{StaticResource CaptionLabelStyle}" />
+                        </StackLayout>
+                    </StackLayout>
+                </Frame>
+
+            </StackLayout>
+        </ScrollView>
+
+        <!-- Loading Overlay -->
+        <Grid 
+            IsVisible="{Binding IsLoading}"
+            BackgroundColor="{DynamicResource SurfaceColor}"
+            Opacity="0.8">
+            <StackLayout 
+                HorizontalOptions="Center" 
+                VerticalOptions="Center" 
+                Spacing="20">
+                <ActivityIndicator 
+                    IsRunning="{Binding IsLoading}" 
+                    Color="{DynamicResource PrimaryColor}" 
+                    HeightRequest="50" 
+                    WidthRequest="50" />
+                <Label 
+                    Text="{Binding LoadingMessage}" 
+                    Style="{StaticResource BodyLabelStyle}" 
+                    HorizontalOptions="Center" />
+            </StackLayout>
+        </Grid>
+
+        <!-- Error Message -->
+        <Frame 
+            IsVisible="{Binding HasError}"
+            BackgroundColor="{DynamicResource ErrorColor}"
+            Padding="15"
+            CornerRadius="8"
+            Margin="20"
+            VerticalOptions="End">
+            <Grid ColumnDefinitions="*,Auto">
+                <Label 
+                    Grid.Column="0"
+                    Text="{Binding ErrorMessage}" 
+                    TextColor="{DynamicResource OnErrorColor}" 
+                    Style="{StaticResource BodyLabelStyle}" />
+                <Button 
+                    Grid.Column="1"
+                    Text="✕" 
+                    BackgroundColor="Transparent" 
+                    TextColor="{DynamicResource OnErrorColor}" 
+                    Command="{Binding ClearErrorCommand}" 
+                    Padding="5" />
+            </Grid>
+        </Frame>
+    </Grid>
+
+</ContentPage>

@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?xaml-comp compile="true" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- Base Styles -->
+    <Style TargetType="Page" ApplyToDerivedTypes="True">
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}"/>
+    </Style>
+
+    <Style TargetType="Shell" ApplyToDerivedTypes="True">
+        <Setter Property="Shell.BackgroundColor" Value="{DynamicResource Primary}"/>
+        <Setter Property="Shell.ForegroundColor" Value="{DynamicResource OnPrimaryColor}"/>
+        <Setter Property="Shell.TitleColor" Value="{DynamicResource OnPrimaryColor}"/>
+        <Setter Property="Shell.DisabledColor" Value="{DynamicResource Gray200}"/>
+        <Setter Property="Shell.UnselectedColor" Value="{DynamicResource Gray200}"/>
+        <Setter Property="Shell.TabBarBackgroundColor" Value="{DynamicResource SurfaceColor}"/>
+        <Setter Property="Shell.TabBarForegroundColor" Value="{DynamicResource Primary}"/>
+        <Setter Property="Shell.TabBarUnselectedColor" Value="{DynamicResource Gray400}"/>
+        <Setter Property="Shell.TabBarTitleColor" Value="{DynamicResource Primary}"/>
+    </Style>
+
+    <!-- Button Styles -->
+    <Style x:Key="BaseButtonStyle" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{DynamicResource Primary}"/>
+        <Setter Property="TextColor" Value="{DynamicResource OnPrimaryColor}"/>
+        <Setter Property="BorderWidth" Value="0"/>
+        <Setter Property="HeightRequest" Value="48"/>
+        <Setter Property="CornerRadius" Value="24"/>
+        <Setter Property="Padding" Value="16,0"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+        <Setter Property="Shadow">
+            <Shadow Brush="{DynamicResource ShadowColor}" Offset="0,2" Radius="4" Opacity="0.3"/>
+        </Setter>
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal">
+                        <VisualState.Setters>
+                            <Setter Property="Scale" Value="1"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="Scale" Value="0.96"/>
+                            <Setter Property="BackgroundColor" Value="{DynamicResource PrimaryDark}"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{DynamicResource Gray300}"/>
+                            <Setter Property="TextColor" Value="{DynamicResource Gray500}"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <Style x:Key="SecondaryButtonStyle" TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+        <Setter Property="BackgroundColor" Value="{DynamicResource Secondary}"/>
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Pressed">
+                        <VisualState.Setters>
+                            <Setter Property="Scale" Value="0.96"/>
+                            <Setter Property="BackgroundColor" Value="{DynamicResource SecondaryDark}"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <Style x:Key="OutlineButtonStyle" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="Transparent"/>
+        <Setter Property="TextColor" Value="{DynamicResource Primary}"/>
+        <Setter Property="BorderColor" Value="{DynamicResource Primary}"/>
+        <Setter Property="BorderWidth" Value="2"/>
+        <Setter Property="HeightRequest" Value="48"/>
+        <Setter Property="CornerRadius" Value="24"/>
+        <Setter Property="Padding" Value="16,0"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+    </Style>
+
+    <!-- Entry Styles -->
+    <Style x:Key="BaseEntryStyle" TargetType="Entry">
+        <Setter Property="TextColor" Value="{DynamicResource OnSurfaceColor}"/>
+        <Setter Property="BackgroundColor" Value="{DynamicResource SurfaceColor}"/>
+        <Setter Property="PlaceholderColor" Value="{DynamicResource Gray500}"/>
+        <Setter Property="HeightRequest" Value="48"/>
+        <Setter Property="Padding" Value="16,0"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="VisualStateManager.VisualStateGroups">
+            <VisualStateGroupList>
+                <VisualStateGroup x:Name="CommonStates">
+                    <VisualState x:Name="Normal">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{DynamicResource SurfaceColor}"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                    <VisualState x:Name="Focused">
+                        <VisualState.Setters>
+                            <Setter Property="BackgroundColor" Value="{DynamicResource SurfaceVariantColor}"/>
+                        </VisualState.Setters>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateGroupList>
+        </Setter>
+    </Style>
+
+    <!-- Editor Style -->
+    <Style x:Key="BaseEditorStyle" TargetType="Editor">
+        <Setter Property="TextColor" Value="{DynamicResource OnSurfaceColor}"/>
+        <Setter Property="BackgroundColor" Value="{DynamicResource SurfaceColor}"/>
+        <Setter Property="PlaceholderColor" Value="{DynamicResource Gray500}"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Padding" Value="16"/>
+    </Style>
+
+    <!-- Label Styles -->
+    <Style x:Key="LargeTitleStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource OnBackgroundColor}"/>
+        <Setter Property="FontSize" Value="32"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+    </Style>
+
+    <Style x:Key="TitleStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource OnBackgroundColor}"/>
+        <Setter Property="FontSize" Value="24"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+    </Style>
+
+    <Style x:Key="SubtitleStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource OnSurfaceColor}"/>
+        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+    </Style>
+
+    <Style x:Key="BodyStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource OnSurfaceColor}"/>
+        <Setter Property="FontSize" Value="16"/>
+    </Style>
+
+    <Style x:Key="CaptionStyle" TargetType="Label">
+        <Setter Property="TextColor" Value="{DynamicResource Gray600}"/>
+        <Setter Property="FontSize" Value="14"/>
+    </Style>
+
+    <!-- Card Style -->
+    <Style x:Key="CardStyle" TargetType="Frame">
+        <Setter Property="BackgroundColor" Value="{DynamicResource SurfaceColor}"/>
+        <Setter Property="BorderColor" Value="{DynamicResource OutlineColor}"/>
+        <Setter Property="CornerRadius" Value="12"/>
+        <Setter Property="Padding" Value="16"/>
+        <Setter Property="Margin" Value="8"/>
+        <Setter Property="HasShadow" Value="True"/>
+        <Setter Property="Shadow">
+            <Shadow Brush="{DynamicResource ShadowColor}" Offset="0,2" Radius="8" Opacity="0.1"/>
+        </Setter>
+    </Style>
+
+    <!-- SearchBar Style -->
+    <Style x:Key="BaseSearchBarStyle" TargetType="SearchBar">
+        <Setter Property="TextColor" Value="{DynamicResource OnSurfaceColor}"/>
+        <Setter Property="BackgroundColor" Value="{DynamicResource SurfaceColor}"/>
+        <Setter Property="PlaceholderColor" Value="{DynamicResource Gray500}"/>
+        <Setter Property="CancelButtonColor" Value="{DynamicResource Primary}"/>
+        <Setter Property="FontSize" Value="16"/>
+    </Style>
+
+    <!-- CollectionView Style -->
+    <Style x:Key="BaseCollectionViewStyle" TargetType="CollectionView">
+        <Setter Property="BackgroundColor" Value="Transparent"/>
+        <Setter Property="SelectionMode" Value="Single"/>
+    </Style>
+
+    <!-- Switch Style -->
+    <Style x:Key="BaseSwitchStyle" TargetType="Switch">
+        <Setter Property="OnColor" Value="{DynamicResource Primary}"/>
+        <Setter Property="ThumbColor" Value="{DynamicResource OnPrimaryColor}"/>
+    </Style>
+
+    <!-- Picker Style -->
+    <Style x:Key="BasePickerStyle" TargetType="Picker">
+        <Setter Property="TextColor" Value="{DynamicResource OnSurfaceColor}"/>
+        <Setter Property="BackgroundColor" Value="{DynamicResource SurfaceColor}"/>
+        <Setter Property="FontSize" Value="16"/>
+    </Style>
+
+    <!-- ActivityIndicator Style -->
+    <Style x:Key="BaseActivityIndicatorStyle" TargetType="ActivityIndicator">
+        <Setter Property="Color" Value="{DynamicResource Primary}"/>
+    </Style>
+
+    <!-- ProgressBar Style -->
+    <Style x:Key="BaseProgressBarStyle" TargetType="ProgressBar">
+        <Setter Property="ProgressColor" Value="{DynamicResource Primary}"/>
+        <Setter Property="BackgroundColor" Value="{DynamicResource Gray200}"/>
+    </Style>
+
+    <!-- Slider Style -->
+    <Style x:Key="BaseSliderStyle" TargetType="Slider">
+        <Setter Property="MinimumTrackColor" Value="{DynamicResource Primary}"/>
+        <Setter Property="MaximumTrackColor" Value="{DynamicResource Gray300}"/>
+        <Setter Property="ThumbColor" Value="{DynamicResource Primary}"/>
+    </Style>
+
+    <!-- Stepper Style -->
+    <Style x:Key="BaseStepperStyle" TargetType="Stepper">
+        <Setter Property="BackgroundColor" Value="{DynamicResource SurfaceColor}"/>
+    </Style>
+
+    <!-- Default Styles -->
+    <Style TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}"/>
+    <Style TargetType="Entry" BasedOn="{StaticResource BaseEntryStyle}"/>
+    <Style TargetType="Editor" BasedOn="{StaticResource BaseEditorStyle}"/>
+    <Style TargetType="Label" BasedOn="{StaticResource BodyStyle}"/>
+    <Style TargetType="SearchBar" BasedOn="{StaticResource BaseSearchBarStyle}"/>
+    <Style TargetType="CollectionView" BasedOn="{StaticResource BaseCollectionViewStyle}"/>
+    <Style TargetType="Switch" BasedOn="{StaticResource BaseSwitchStyle}"/>
+    <Style TargetType="Picker" BasedOn="{StaticResource BasePickerStyle}"/>
+    <Style TargetType="ActivityIndicator" BasedOn="{StaticResource BaseActivityIndicatorStyle}"/>
+    <Style TargetType="ProgressBar" BasedOn="{StaticResource BaseProgressBarStyle}"/>
+    <Style TargetType="Slider" BasedOn="{StaticResource BaseSliderStyle}"/>
+    <Style TargetType="Stepper" BasedOn="{StaticResource BaseStepperStyle}"/>
+
+</ResourceDictionary>

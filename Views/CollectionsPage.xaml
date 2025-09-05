@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="COGLyricsScanner.Views.CollectionsPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Collections"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
+    
+    <Grid RowDefinitions="Auto,*">
+        
+        <!-- Header with Search and Add Button -->
+        <Grid Grid.Row="0" 
+              Padding="16" 
+              ColumnDefinitions="*,Auto" 
+              ColumnSpacing="12">
+            
+            <SearchBar x:Name="SearchBar"
+                       Placeholder="Search collections..."
+                       TextChanged="OnSearchTextChanged"
+                       BackgroundColor="{DynamicResource CardBackgroundColor}"
+                       TextColor="{DynamicResource PrimaryTextColor}"
+                       PlaceholderColor="{DynamicResource SecondaryTextColor}" />
+            
+            <Button Grid.Column="1"
+                    Text="+"
+                    FontSize="24"
+                    WidthRequest="50"
+                    HeightRequest="50"
+                    CornerRadius="25"
+                    Style="{DynamicResource BaseButtonStyle}"
+                    Clicked="OnAddCollectionClicked" />
+        </Grid>
+        
+        <!-- Collections List -->
+        <RefreshView Grid.Row="1"
+                     x:Name="RefreshView"
+                     IsRefreshing="{Binding IsRefreshing}"
+                     Command="{Binding RefreshCommand}">
+            
+            <CollectionView x:Name="CollectionsCollectionView"
+                            ItemsSource="{Binding Collections}"
+                            SelectionMode="None"
+                            BackgroundColor="Transparent">
+                
+                <CollectionView.EmptyView>
+                    <StackLayout Padding="40" 
+                                 VerticalOptions="Center" 
+                                 HorizontalOptions="Center">
+                        <Label Text="📚" 
+                               FontSize="48" 
+                               HorizontalOptions="Center" 
+                               Margin="0,0,0,16" />
+                        <Label Text="No Collections Found" 
+                               FontSize="18" 
+                               FontAttributes="Bold" 
+                               HorizontalOptions="Center"
+                               TextColor="{DynamicResource PrimaryTextColor}" />
+                        <Label Text="Create your first collection to organize your hymns" 
+                               FontSize="14" 
+                               HorizontalOptions="Center" 
+                               TextColor="{DynamicResource SecondaryTextColor}" 
+                               Margin="0,8,0,0" />
+                    </StackLayout>
+                </CollectionView.EmptyView>
+                
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Padding="16,8">
+                            <Frame BackgroundColor="{DynamicResource CardBackgroundColor}"
+                                   BorderColor="{DynamicResource BorderColor}"
+                                   CornerRadius="8"
+                                   Padding="16"
+                                   HasShadow="True">
+                                
+                                <Grid RowDefinitions="Auto,Auto,Auto" 
+                                      ColumnDefinitions="*,Auto"
+                                      RowSpacing="8">
+                                    
+                                    <!-- Collection Name -->
+                                    <Label Grid.Row="0" 
+                                           Grid.Column="0"
+                                           Text="{Binding Name}" 
+                                           FontSize="18" 
+                                           FontAttributes="Bold"
+                                           TextColor="{DynamicResource PrimaryTextColor}" />
+                                    
+                                    <!-- Actions Menu -->
+                                    <Button Grid.Row="0" 
+                                            Grid.Column="1"
+                                            Text="⋮"
+                                            FontSize="18"
+                                            WidthRequest="40"
+                                            HeightRequest="40"
+                                            CornerRadius="20"
+                                            BackgroundColor="Transparent"
+                                            TextColor="{DynamicResource SecondaryTextColor}"
+                                            Clicked="OnCollectionMenuClicked"
+                                            CommandParameter="{Binding}" />
+                                    
+                                    <!-- Description -->
+                                    <Label Grid.Row="1" 
+                                           Grid.ColumnSpan="2"
+                                           Text="{Binding Description}" 
+                                           FontSize="14"
+                                           TextColor="{DynamicResource SecondaryTextColor}"
+                                           LineBreakMode="WordWrap"
+                                           IsVisible="{Binding Description, Converter={StaticResource StringToBoolConverter}}" />
+                                    
+                                    <!-- Stats and Date -->
+                                    <Grid Grid.Row="2" 
+                                          Grid.ColumnSpan="2"
+                                          ColumnDefinitions="Auto,*,Auto"
+                                          ColumnSpacing="16">
+                                        
+                                        <Label Grid.Column="0"
+                                               FontSize="12"
+                                               TextColor="{DynamicResource SecondaryTextColor}">
+                                            <Label.Text>
+                                                <MultiBinding StringFormat="{0} hymns">
+                                                    <Binding Path="HymnCount" />
+                                                </MultiBinding>
+                                            </Label.Text>
+                                        </Label>
+                                        
+                                        <Label Grid.Column="2"
+                                               Text="{Binding CreatedAt, StringFormat='{0:MMM dd, yyyy}'}"
+                                               FontSize="12"
+                                               TextColor="{DynamicResource SecondaryTextColor}" />
+                                    </Grid>
+                                </Grid>
+                                
+                                <!-- Tap Gesture -->
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnCollectionTapped"
+                                                          CommandParameter="{Binding}" />
+                                </Frame.GestureRecognizers>
+                            </Frame>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+        
+        <!-- Loading Overlay -->
+        <Grid Grid.RowSpan="2"
+              IsVisible="{Binding IsLoading}"
+              BackgroundColor="#80000000">
+            <ActivityIndicator IsRunning="{Binding IsLoading}"
+                               Color="{DynamicResource Primary}"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center" />
+        </Grid>
+        
+    </Grid>
+    
+</ContentPage>

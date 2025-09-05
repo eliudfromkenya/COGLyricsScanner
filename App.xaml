@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Application x:Class="COGLyricsScanner.App"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:COGLyricsScanner"
+             xmlns:converters="clr-namespace:COGLyricsScanner.Converters">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            
+            <!-- Value Converters -->
+            <converters:BoolToFavoriteIconConverter x:Key="BoolToFavoriteIconConverter" />
+            <converters:BoolToFavoriteColorConverter x:Key="BoolToFavoriteColorConverter" />
+            <converters:BoolToButtonStyleConverter x:Key="BoolToButtonStyleConverter" />
+            <converters:BoolToEditorMarginConverter x:Key="BoolToEditorMarginConverter" />
+            <converters:BoolToSortIconConverter x:Key="BoolToSortIconConverter" />
+            <converters:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+            <converters:StringToBoolConverter x:Key="StringToBoolConverter" />
+            <converters:ObjectToBoolConverter x:Key="ObjectToBoolConverter" />
+            <converters:IntToBoolConverter x:Key="IntToBoolConverter" />
+            <converters:StringToColorConverter x:Key="StringToColorConverter" />
+            <converters:StringToViewButtonStyleConverter x:Key="StringToViewButtonStyleConverter" />
+            <converters:StringToEmptyMessageConverter x:Key="StringToEmptyMessageConverter" />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="COGLyricsScanner.Views.HomePage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:COGLyricsScanner.ViewModels"
+             xmlns:models="clr-namespace:COGLyricsScanner.Models"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:DataType="viewmodels:HomePageViewModel"
+             Title="{Binding Title}"
+             Style="{DynamicResource PageStyle}">
+
+    <ContentPage.Behaviors>
+        <toolkit:StatusBarBehavior StatusBarColor="{DynamicResource Primary}" StatusBarStyle="LightContent" />
+    </ContentPage.Behaviors>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="New"
+                     Command="{Binding CreateNewHymnCommand}"
+                     IconImageSource="add.png" />
+        <ToolbarItem Text="Export"
+                     Command="{Binding ExportHymnsCommand}"
+                     IconImageSource="export.png" />
+        <ToolbarItem Text="Settings"
+                     Command="{Binding ShowSettingsCommand}"
+                     IconImageSource="settings.png" />
+    </ContentPage.ToolbarItems>
+
+    <Grid>
+        <!-- Main Content -->
+        <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                     Command="{Binding RefreshCommand}">
+            <ScrollView>
+                <StackLayout Padding="16" Spacing="16">
+                    
+                    <!-- Statistics Cards -->
+                    <Grid ColumnDefinitions="*,*,*" ColumnSpacing="12">
+                        <Frame Grid.Column="0" Style="{DynamicResource CardStyle}" Padding="12">
+                            <StackLayout Spacing="4">
+                                <Label Text="{Binding TotalHymns}"
+                                       Style="{DynamicResource HeadlineLabelStyle}"
+                                       HorizontalOptions="Center" />
+                                <Label Text="Hymns"
+                                       Style="{DynamicResource CaptionLabelStyle}"
+                                       HorizontalOptions="Center" />
+                            </StackLayout>
+                        </Frame>
+                        
+                        <Frame Grid.Column="1" Style="{DynamicResource CardStyle}" Padding="12">
+                            <StackLayout Spacing="4">
+                                <Label Text="{Binding TotalCollections}"
+                                       Style="{DynamicResource HeadlineLabelStyle}"
+                                       HorizontalOptions="Center" />
+                                <Label Text="Collections"
+                                       Style="{DynamicResource CaptionLabelStyle}"
+                                       HorizontalOptions="Center" />
+                            </StackLayout>
+                        </Frame>
+                        
+                        <Frame Grid.Column="2" Style="{DynamicResource CardStyle}" Padding="12">
+                            <StackLayout Spacing="4">
+                                <Label Text="{Binding TotalFavorites}"
+                                       Style="{DynamicResource HeadlineLabelStyle}"
+                                       HorizontalOptions="Center" />
+                                <Label Text="Favorites"
+                                       Style="{DynamicResource CaptionLabelStyle}"
+                                       HorizontalOptions="Center" />
+                            </StackLayout>
+                        </Frame>
+                    </Grid>
+                    
+                    <!-- Search Bar -->
+                    <Frame Style="{DynamicResource CardStyle}" Padding="0">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="0">
+                            <SearchBar Grid.Column="0"
+                                       Text="{Binding SearchText}"
+                                       Placeholder="Search hymns..."
+                                       Style="{DynamicResource SearchBarStyle}"
+                                       SearchCommand="{Binding SearchHymnsCommand}" />
+                            
+                            <Button Grid.Column="1"
+                                    Command="{Binding ClearSearchCommand}"
+                                    Style="{DynamicResource BaseButtonStyle}"
+                                    BackgroundColor="Transparent"
+                                    Text="✕"
+                                    WidthRequest="44"
+                                    HeightRequest="44"
+                                    IsVisible="{Binding SearchText, Converter={StaticResource StringToBoolConverter}}" />
+                        </Grid>
+                    </Frame>
+                    
+                    <!-- View Selector -->
+                    <Frame Style="{DynamicResource CardStyle}" Padding="8">
+                        <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="4">
+                            <Button Grid.Column="0"
+                                    Command="{Binding SetViewCommand}"
+                                    CommandParameter="All"
+                                    Style="{Binding CurrentView, Converter={StaticResource StringToViewButtonStyleConverter}, ConverterParameter=All}"
+                                    Text="All"
+                                    HeightRequest="36" />
+                            
+                            <Button Grid.Column="1"
+                                    Command="{Binding SetViewCommand}"
+                                    CommandParameter="Recent"
+                                    Style="{Binding CurrentView, Converter={StaticResource StringToViewButtonStyleConverter}, ConverterParameter=Recent}"
+                                    Text="Recent"
+                                    HeightRequest="36" />
+                            
+                            <Button Grid.Column="2"
+                                    Command="{Binding SetViewCommand}"
+                                    CommandParameter="Favorites"
+                                    Style="{Binding CurrentView, Converter={StaticResource StringToViewButtonStyleConverter}, ConverterParameter=Favorites}"
+                                    Text="Favorites"
+                                    HeightRequest="36" />
+                            
+                            <Button Grid.Column="3"
+                                    Command="{Binding ShowCollectionsCommand}"
+                                    Style="{DynamicResource OutlineButtonStyle}"
+                                    Text="Collections"
+                                    HeightRequest="36" />
+                        </Grid>
+                    </Frame>
+                    
+                    <!-- Filters -->
+                    <Frame Style="{DynamicResource CardStyle}">
+                        <StackLayout Spacing="12">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <Label Grid.Column="0" Text="Filters" Style="{DynamicResource SubtitleLabelStyle}" />
+                                <Button Grid.Column="1"
+                                        Command="{Binding ToggleSortOrderCommand}"
+                                        Style="{DynamicResource OutlineButtonStyle}"
+                                        Text="{Binding SortAscending, Converter={StaticResource BoolToSortIconConverter}}"
+                                        WidthRequest="40"
+                                        HeightRequest="32" />
+                            </Grid>
+                            
+                            <Grid ColumnDefinitions="*,*" ColumnSpacing="8" RowDefinitions="Auto,Auto" RowSpacing="8">
+                                <Picker Grid.Row="0" Grid.Column="0"
+                                        ItemsSource="{Binding HymnBooks}"
+                                        ItemDisplayBinding="{Binding Name}"
+                                        SelectedItem="{Binding SelectedHymnBook}"
+                                        Title="Hymn Book"
+                                        Style="{DynamicResource PickerStyle}" />
+                                
+                                <Picker Grid.Row="0" Grid.Column="1"
+                                        ItemsSource="{Binding AvailableLanguages}"
+                                        SelectedItem="{Binding SelectedLanguage}"
+                                        Title="Language"
+                                        Style="{DynamicResource PickerStyle}" />
+                                
+                                <Picker Grid.Row="1" Grid.Column="0"
+                                        ItemsSource="{Binding SortOptions}"
+                                        SelectedItem="{Binding SortBy}"
+                                        Title="Sort By"
+                                        Style="{DynamicResource PickerStyle}" />
+                                
+                                <Grid Grid.Row="1" Grid.Column="1" ColumnDefinitions="Auto,*" ColumnSpacing="8">
+                                    <Switch Grid.Column="0"
+                                            IsToggled="{Binding ShowFavoritesOnly}"
+                                            Style="{DynamicResource SwitchStyle}" />
+                                    <Label Grid.Column="1"
+                                           Text="Favorites Only"
+                                           Style="{DynamicResource BodyLabelStyle}"
+                                           VerticalOptions="Center" />
+                                </Grid>
+                            </Grid>
+                        </StackLayout>
+                    </Frame>
+                    
+                    <!-- Hymns List -->
+                    <Frame Style="{DynamicResource CardStyle}" Padding="0">
+                        <StackLayout Spacing="0">
+                            <!-- List Header -->
+                            <Grid Padding="16,12" BackgroundColor="{DynamicResource SurfaceVariant}">
+                                <Label Text="{Binding FilteredHymns.Count, StringFormat='{0} hymns'}"
+                                       Style="{DynamicResource SubtitleLabelStyle}" />
+                            </Grid>
+                            
+                            <!-- Loading Indicator -->
+                            <StackLayout IsVisible="{Binding IsSearching}" Padding="16" Spacing="8">
+                                <ActivityIndicator IsRunning="{Binding IsSearching}"
+                                                   Style="{DynamicResource ActivityIndicatorStyle}" />
+                                <Label Text="Searching..."
+                                       Style="{DynamicResource BodyLabelStyle}"
+                                       HorizontalOptions="Center" />
+                            </StackLayout>
+                            
+                            <!-- Empty State -->
+                            <StackLayout IsVisible="{Binding HasSearchResults, Converter={StaticResource InvertedBoolConverter}}"
+                                         Padding="32" Spacing="16">
+                                <Label Text="📚"
+                                       FontSize="48"
+                                       HorizontalOptions="Center" />
+                                <Label Text="{Binding SearchText, Converter={StaticResource StringToEmptyMessageConverter}}"
+                                       Style="{DynamicResource BodyLabelStyle}"
+                                       HorizontalOptions="Center"
+                                       HorizontalTextAlignment="Center" />
+                                <Button Command="{Binding CreateNewHymnCommand}"
+                                        Style="{DynamicResource BaseButtonStyle}"
+                                        Text="Create New Hymn"
+                                        HorizontalOptions="Center"
+                                        WidthRequest="150" />
+                            </StackLayout>
+                            
+                            <!-- Hymns Collection -->
+                            <CollectionView ItemsSource="{Binding FilteredHymns}"
+                                            IsVisible="{Binding HasSearchResults}"
+                                            Style="{DynamicResource CollectionViewStyle}"
+                                            HeightRequest="400">
+                                <CollectionView.ItemsLayout>
+                                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="1" />
+                                </CollectionView.ItemsLayout>
+                                
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="models:Hymn">
+                                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="12" Padding="16,12"
+                                              BackgroundColor="{DynamicResource Surface}">
+                                            <Grid.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:HomePageViewModel}}, Path=OpenHymnCommand}"
+                                                                      CommandParameter="{Binding .}" />
+                                            </Grid.GestureRecognizers>
+                                            
+                                            <!-- Hymn Info -->
+                                            <StackLayout Grid.Column="0" Spacing="4">
+                                                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                                    <Label Grid.Column="0"
+                                                           Text="{Binding DisplayTitle}"
+                                                           Style="{DynamicResource BodyLabelStyle}"
+                                                           FontAttributes="Bold"
+                                                           LineBreakMode="TailTruncation" />
+                                                    <Label Grid.Column="1"
+                                                           Text="{Binding Number, StringFormat='#{0}'}"
+                                                           Style="{DynamicResource CaptionLabelStyle}"
+                                                           IsVisible="{Binding Number, Converter={StaticResource ObjectToBoolConverter}}" />
+                                                </Grid>
+                                                
+                                                <Label Text="{Binding PreviewText}"
+                                                       Style="{DynamicResource CaptionLabelStyle}"
+                                                       LineBreakMode="TailTruncation"
+                                                       MaxLines="2" />
+                                                
+                                                <Grid ColumnDefinitions="Auto,Auto,Auto,*" ColumnSpacing="12">
+                                                    <Label Grid.Column="0"
+                                                           Text="{Binding Language}"
+                                                           Style="{DynamicResource CaptionLabelStyle}"
+                                                           BackgroundColor="{DynamicResource SecondaryContainer}"
+                                                           TextColor="{DynamicResource OnSecondaryContainer}"
+                                                           Padding="6,2"
+                                                           FontSize="10" />
+                                                    
+                                                    <Label Grid.Column="1"
+                                                           Text="{Binding WordCount, StringFormat='{0} words'}"
+                                                           Style="{DynamicResource CaptionLabelStyle}" />
+                                                    
+                                                    <Label Grid.Column="2"
+                                                           Text="{Binding ViewCount, StringFormat='{0} views'}"
+                                                           Style="{DynamicResource CaptionLabelStyle}" />
+                                                    
+                                                    <Label Grid.Column="3"
+                                                           Text="{Binding ModifiedDate, StringFormat='Modified {0:MM/dd/yyyy}'}"
+                                                           Style="{DynamicResource CaptionLabelStyle}"
+                                                           HorizontalOptions="End" />
+                                                </Grid>
+                                            </StackLayout>
+                                            
+                                            <!-- Favorite Button -->
+                                            <Button Grid.Column="1"
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:HomePageViewModel}}, Path=ToggleFavoriteCommand}"
+                                                    CommandParameter="{Binding .}"
+                                                    Style="{DynamicResource BaseButtonStyle}"
+                                                    BackgroundColor="Transparent"
+                                                    WidthRequest="44"
+                                                    HeightRequest="44">
+                                                <Button.ImageSource>
+                                                    <FontImageSource FontFamily="MaterialIcons"
+                                                                   Glyph="{Binding IsFavorite, Converter={StaticResource BoolToFavoriteIconConverter}}"
+                                                                   Color="{Binding IsFavorite, Converter={StaticResource BoolToFavoriteColorConverter}}" />
+                                                </Button.ImageSource>
+                                            </Button>
+                                            
+                                            <!-- More Options -->
+                                            <Button Grid.Column="2"
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:HomePageViewModel}}, Path=DeleteHymnCommand}"
+                                                    CommandParameter="{Binding .}"
+                                                    Style="{DynamicResource BaseButtonStyle}"
+                                                    BackgroundColor="Transparent"
+                                                    Text="⋮"
+                                                    WidthRequest="44"
+                                                    HeightRequest="44" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </StackLayout>
+                    </Frame>
+                    
+                </StackLayout>
+            </ScrollView>
+        </RefreshView>
+        
+        <!-- Loading Overlay -->
+        <Frame IsVisible="{Binding IsBusy}"
+               BackgroundColor="{DynamicResource SurfaceVariant}"
+               Opacity="0.9"
+               HasShadow="False"
+               BorderColor="Transparent">
+            <StackLayout HorizontalOptions="Center" VerticalOptions="Center" Spacing="16">
+                <ActivityIndicator IsRunning="{Binding IsBusy}"
+                                   Style="{DynamicResource ActivityIndicatorStyle}" />
+                <Label Text="{Binding LoadingMessage}"
+                       Style="{DynamicResource BodyLabelStyle}"
+                       HorizontalOptions="Center" />
+            </StackLayout>
+        </Frame>
+        
+        <!-- Error Message -->
+        <Frame IsVisible="{Binding HasError}"
+               BackgroundColor="{DynamicResource ErrorContainer}"
+               BorderColor="{DynamicResource Error}"
+               VerticalOptions="End"
+               Margin="16"
+               Padding="16,12">
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+                <Label Grid.Column="0"
+                       Text="{Binding ErrorMessage}"
+                       Style="{DynamicResource BodyLabelStyle}"
+                       TextColor="{DynamicResource OnErrorContainer}"
+                       VerticalOptions="Center" />
+                <Button Grid.Column="1"
+                        Command="{Binding ClearErrorCommand}"
+                        Style="{DynamicResource BaseButtonStyle}"
+                        Text="✕"
+                        BackgroundColor="Transparent"
+                        TextColor="{DynamicResource OnErrorContainer}"
+                        WidthRequest="32"
+                        HeightRequest="32" />
+            </Grid>
+        </Frame>
+        
+        <!-- Floating Action Button -->
+        <Button Command="{Binding CreateNewHymnCommand}"
+                Style="{DynamicResource BaseButtonStyle}"
+                Text="+"
+                FontSize="24"
+                WidthRequest="56"
+                HeightRequest="56"
+                CornerRadius="28"
+                HorizontalOptions="End"
+                VerticalOptions="End"
+                Margin="16"
+                HasShadow="True" />
+    </Grid>
+</ContentPage>

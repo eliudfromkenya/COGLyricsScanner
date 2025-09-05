@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="COGLyricsScanner.Views.StatisticsPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Statistics"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
+    
+    <ScrollView>
+        <StackLayout Padding="20" Spacing="20">
+            
+            <!-- Overview Cards -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="12" RowSpacing="12">
+                
+                <!-- Total Hymns -->
+                <Frame Grid.Column="0"
+                       BackgroundColor="{DynamicResource Primary}"
+                       BorderColor="Transparent"
+                       CornerRadius="12"
+                       Padding="16">
+                    <StackLayout Spacing="8">
+                        <Label Text="📖" 
+                               FontSize="24" 
+                               HorizontalOptions="Center" />
+                        <Label Text="{Binding TotalHymns}" 
+                               FontSize="28" 
+                               FontAttributes="Bold" 
+                               TextColor="White"
+                               HorizontalOptions="Center" />
+                        <Label Text="Total Hymns" 
+                               FontSize="12" 
+                               TextColor="White"
+                               HorizontalOptions="Center" />
+                    </StackLayout>
+                </Frame>
+                
+                <!-- Total Collections -->
+                <Frame Grid.Column="1"
+                       BackgroundColor="{DynamicResource Secondary}"
+                       BorderColor="Transparent"
+                       CornerRadius="12"
+                       Padding="16">
+                    <StackLayout Spacing="8">
+                        <Label Text="📚" 
+                               FontSize="24" 
+                               HorizontalOptions="Center" />
+                        <Label Text="{Binding TotalCollections}" 
+                               FontSize="28" 
+                               FontAttributes="Bold" 
+                               TextColor="White"
+                               HorizontalOptions="Center" />
+                        <Label Text="Collections" 
+                               FontSize="12" 
+                               TextColor="White"
+                               HorizontalOptions="Center" />
+                    </StackLayout>
+                </Frame>
+                
+                <!-- Favorites -->
+                <Frame Grid.Row="1" Grid.Column="0"
+                       BackgroundColor="#FF9800"
+                       BorderColor="Transparent"
+                       CornerRadius="12"
+                       Padding="16">
+                    <StackLayout Spacing="8">
+                        <Label Text="⭐" 
+                               FontSize="24" 
+                               HorizontalOptions="Center" />
+                        <Label Text="{Binding TotalFavorites}" 
+                               FontSize="28" 
+                               FontAttributes="Bold" 
+                               TextColor="White"
+                               HorizontalOptions="Center" />
+                        <Label Text="Favorites" 
+                               FontSize="12" 
+                               TextColor="White"
+                               HorizontalOptions="Center" />
+                    </StackLayout>
+                </Frame>
+                
+                <!-- Hymn Books -->
+                <Frame Grid.Row="1" Grid.Column="1"
+                       BackgroundColor="#9C27B0"
+                       BorderColor="Transparent"
+                       CornerRadius="12"
+                       Padding="16">
+                    <StackLayout Spacing="8">
+                        <Label Text="📕" 
+                               FontSize="24" 
+                               HorizontalOptions="Center" />
+                        <Label Text="{Binding TotalHymnBooks}" 
+                               FontSize="28" 
+                               FontAttributes="Bold" 
+                               TextColor="White"
+                               HorizontalOptions="Center" />
+                        <Label Text="Hymn Books" 
+                               FontSize="12" 
+                               TextColor="White"
+                               HorizontalOptions="Center" />
+                    </StackLayout>
+                </Frame>
+            </Grid>
+            
+            <!-- Recent Activity -->
+            <Frame BackgroundColor="{DynamicResource CardBackgroundColor}"
+                   BorderColor="{DynamicResource BorderColor}"
+                   CornerRadius="8"
+                   Padding="16">
+                <StackLayout Spacing="12">
+                    <Label Text="Recent Activity" 
+                           FontSize="18" 
+                           FontAttributes="Bold"
+                           TextColor="{DynamicResource PrimaryTextColor}" />
+                    
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto" 
+                          ColumnDefinitions="Auto,*" 
+                          RowSpacing="8" 
+                          ColumnSpacing="16">
+                        
+                        <Label Text="Recently Added:" 
+                               FontAttributes="Bold"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                        <Label Text="{Binding RecentlyAddedCount}" 
+                               Grid.Column="1"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                        
+                        <Label Text="Recently Modified:" 
+                               Grid.Row="1"
+                               FontAttributes="Bold"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                        <Label Text="{Binding RecentlyModifiedCount}" 
+                               Grid.Row="1" 
+                               Grid.Column="1"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                        
+                        <Label Text="Most Viewed:" 
+                               Grid.Row="2"
+                               FontAttributes="Bold"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                        <Label Text="{Binding MostViewedHymn}" 
+                               Grid.Row="2" 
+                               Grid.Column="1"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                        
+                        <Label Text="Total Views:" 
+                               Grid.Row="3"
+                               FontAttributes="Bold"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                        <Label Text="{Binding TotalViews}" 
+                               Grid.Row="3" 
+                               Grid.Column="1"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                    </Grid>
+                </StackLayout>
+            </Frame>
+            
+            <!-- Language Distribution -->
+            <Frame BackgroundColor="{DynamicResource CardBackgroundColor}"
+                   BorderColor="{DynamicResource BorderColor}"
+                   CornerRadius="8"
+                   Padding="16">
+                <StackLayout Spacing="12">
+                    <Label Text="Language Distribution" 
+                           FontSize="18" 
+                           FontAttributes="Bold"
+                           TextColor="{DynamicResource PrimaryTextColor}" />
+                    
+                    <CollectionView ItemsSource="{Binding LanguageStats}"
+                                    SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="0,4" 
+                                      ColumnDefinitions="*,Auto,60" 
+                                      ColumnSpacing="12">
+                                    
+                                    <Label Text="{Binding Language}" 
+                                           VerticalOptions="Center"
+                                           TextColor="{DynamicResource SecondaryTextColor}" />
+                                    
+                                    <ProgressBar Grid.Column="1" 
+                                                 Progress="{Binding Percentage}" 
+                                                 ProgressColor="{DynamicResource Primary}"
+                                                 VerticalOptions="Center"
+                                                 WidthRequest="100" />
+                                    
+                                    <Label Grid.Column="2" 
+                                           Text="{Binding Count}" 
+                                           VerticalOptions="Center"
+                                           HorizontalOptions="End"
+                                           TextColor="{DynamicResource SecondaryTextColor}" />
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+            </Frame>
+            
+            <!-- Hymn Books Statistics -->
+            <Frame BackgroundColor="{DynamicResource CardBackgroundColor}"
+                   BorderColor="{DynamicResource BorderColor}"
+                   CornerRadius="8"
+                   Padding="16">
+                <StackLayout Spacing="12">
+                    <Label Text="Hymn Books" 
+                           FontSize="18" 
+                           FontAttributes="Bold"
+                           TextColor="{DynamicResource PrimaryTextColor}" />
+                    
+                    <CollectionView ItemsSource="{Binding HymnBookStats}"
+                                    SelectionMode="None">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="0,8" 
+                                      ColumnDefinitions="*,Auto" 
+                                      ColumnSpacing="12">
+                                    
+                                    <StackLayout Grid.Column="0">
+                                        <Label Text="{Binding Name}" 
+                                               FontAttributes="Bold"
+                                               TextColor="{DynamicResource PrimaryTextColor}" />
+                                        <Label Text="{Binding Description}" 
+                                               FontSize="12"
+                                               TextColor="{DynamicResource SecondaryTextColor}"
+                                               IsVisible="{Binding Description, Converter={StaticResource StringToBoolConverter}}" />
+                                    </StackLayout>
+                                    
+                                    <Label Grid.Column="1" 
+                                           VerticalOptions="Center"
+                                           HorizontalOptions="End"
+                                           TextColor="{DynamicResource SecondaryTextColor}">
+                                        <Label.Text>
+                                            <MultiBinding StringFormat="{0} hymns">
+                                                <Binding Path="HymnCount" />
+                                            </MultiBinding>
+                                        </Label.Text>
+                                    </Label>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+            </Frame>
+            
+            <!-- Export Statistics -->
+            <Frame BackgroundColor="{DynamicResource CardBackgroundColor}"
+                   BorderColor="{DynamicResource BorderColor}"
+                   CornerRadius="8"
+                   Padding="16">
+                <StackLayout Spacing="12">
+                    <Label Text="Export & Backup" 
+                           FontSize="18" 
+                           FontAttributes="Bold"
+                           TextColor="{DynamicResource PrimaryTextColor}" />
+                    
+                    <Grid RowDefinitions="Auto,Auto,Auto" 
+                          ColumnDefinitions="Auto,*" 
+                          RowSpacing="8" 
+                          ColumnSpacing="16">
+                        
+                        <Label Text="Last Backup:" 
+                               FontAttributes="Bold"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                        <Label Grid.Column="1"
+                               TextColor="{DynamicResource SecondaryTextColor}">
+                            <Label.Text>
+                                <MultiBinding StringFormat="{0:MMM dd, yyyy HH:mm}">
+                                    <Binding Path="LastBackupDate" FallbackValue="Never" />
+                                </MultiBinding>
+                            </Label.Text>
+                        </Label>
+                        
+                        <Label Text="Database Size:" 
+                               Grid.Row="1"
+                               FontAttributes="Bold"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                        <Label Text="{Binding DatabaseSize}" 
+                               Grid.Row="1" 
+                               Grid.Column="1"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                        
+                        <Label Text="Total Exports:" 
+                               Grid.Row="2"
+                               FontAttributes="Bold"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                        <Label Text="{Binding TotalExports}" 
+                               Grid.Row="2" 
+                               Grid.Column="1"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                    </Grid>
+                    
+                    <Button Text="Refresh Statistics"
+                            Style="{DynamicResource OutlineButtonStyle}"
+                            Command="{Binding RefreshCommand}" />
+                </StackLayout>
+            </Frame>
+            
+        </StackLayout>
+    </ScrollView>
+    
+    <!-- Loading Overlay -->
+    <Grid IsVisible="{Binding IsLoading}"
+          BackgroundColor="#80000000">
+        <ActivityIndicator IsRunning="{Binding IsLoading}"
+                           Color="{DynamicResource Primary}"
+                           VerticalOptions="Center"
+                           HorizontalOptions="Center" />
+    </Grid>
+    
+</ContentPage>

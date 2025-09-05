@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="COGLyricsScanner.Views.AboutPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="About"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
+    
+    <ScrollView>
+        <StackLayout Padding="20" Spacing="30">
+            
+            <!-- App Logo/Icon -->
+            <Frame BackgroundColor="{DynamicResource CardBackgroundColor}"
+                   BorderColor="{DynamicResource BorderColor}"
+                   CornerRadius="8"
+                   Padding="20"
+                   HorizontalOptions="Center">
+                <StackLayout Spacing="10" HorizontalOptions="Center">
+                    <Label Text="🎵" 
+                           FontSize="48"
+                           HorizontalOptions="Center" />
+                    <Label Text="COG Lyrics Scanner" 
+                           FontSize="24" 
+                           FontAttributes="Bold"
+                           HorizontalOptions="Center"
+                           TextColor="{DynamicResource PrimaryTextColor}" />
+                    <Label Text="Version 1.0.0" 
+                           FontSize="16"
+                           HorizontalOptions="Center"
+                           TextColor="{DynamicResource SecondaryTextColor}" />
+                </StackLayout>
+            </Frame>
+            
+            <!-- Description -->
+            <Frame BackgroundColor="{DynamicResource CardBackgroundColor}"
+                   BorderColor="{DynamicResource BorderColor}"
+                   CornerRadius="8"
+                   Padding="16">
+                <StackLayout Spacing="12">
+                    <Label Text="About This App" 
+                           FontSize="18" 
+                           FontAttributes="Bold"
+                           TextColor="{DynamicResource PrimaryTextColor}" />
+                    
+                    <Label TextColor="{DynamicResource SecondaryTextColor}"
+                           LineBreakMode="WordWrap">
+                        <Label.Text>
+                            COG Lyrics Scanner is a comprehensive tool designed for the Church of God community to digitize, organize, and manage hymn lyrics. 
+                            
+                            The app features advanced OCR (Optical Character Recognition) technology to scan physical hymn books and convert them into searchable digital text. 
+                            
+                            With powerful editing capabilities, theme customization, and export options, it serves as a complete solution for preserving and sharing sacred music lyrics.
+                        </Label.Text>
+                    </Label>
+                </StackLayout>
+            </Frame>
+            
+            <!-- Features -->
+            <Frame BackgroundColor="{DynamicResource CardBackgroundColor}"
+                   BorderColor="{DynamicResource BorderColor}"
+                   CornerRadius="8"
+                   Padding="16">
+                <StackLayout Spacing="12">
+                    <Label Text="Key Features" 
+                           FontSize="18" 
+                           FontAttributes="Bold"
+                           TextColor="{DynamicResource PrimaryTextColor}" />
+                    
+                    <StackLayout Spacing="8">
+                        <Label Text="• OCR text recognition from camera or images"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                        <Label Text="• Rich text editor with metadata management"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                        <Label Text="• Organize hymns into collections and books"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                        <Label Text="• Advanced search and filtering capabilities"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                        <Label Text="• Export to multiple formats (TXT, DOCX, PDF, JSON, CSV)"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                        <Label Text="• Dark/Light theme with color variants"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                        <Label Text="• Backup and restore functionality"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                        <Label Text="• Cross-platform compatibility"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                    </StackLayout>
+                </StackLayout>
+            </Frame>
+            
+            <!-- Technical Information -->
+            <Frame BackgroundColor="{DynamicResource CardBackgroundColor}"
+                   BorderColor="{DynamicResource BorderColor}"
+                   CornerRadius="8"
+                   Padding="16">
+                <StackLayout Spacing="12">
+                    <Label Text="Technical Information" 
+                           FontSize="18" 
+                           FontAttributes="Bold"
+                           TextColor="{DynamicResource PrimaryTextColor}" />
+                    
+                    <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto" 
+                          ColumnDefinitions="Auto,*" 
+                          RowSpacing="8" 
+                          ColumnSpacing="16">
+                        
+                        <Label Text="Framework:" 
+                               FontAttributes="Bold"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                        <Label Text=".NET MAUI" 
+                               Grid.Column="1"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                        
+                        <Label Text="Database:" 
+                               Grid.Row="1"
+                               FontAttributes="Bold"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                        <Label Text="SQLite" 
+                               Grid.Row="1" 
+                               Grid.Column="1"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                        
+                        <Label Text="OCR Engine:" 
+                               Grid.Row="2"
+                               FontAttributes="Bold"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                        <Label Text="Plugin.Maui.OCR" 
+                               Grid.Row="2" 
+                               Grid.Column="1"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                        
+                        <Label Text="UI Toolkit:" 
+                               Grid.Row="3"
+                               FontAttributes="Bold"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                        <Label Text="CommunityToolkit.Maui" 
+                               Grid.Row="3" 
+                               Grid.Column="1"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                        
+                        <Label Text="Platforms:" 
+                               Grid.Row="4"
+                               FontAttributes="Bold"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                        <Label Text="Windows, Android, iOS, macOS" 
+                               Grid.Row="4" 
+                               Grid.Column="1"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                    </Grid>
+                </StackLayout>
+            </Frame>
+            
+            <!-- Support & Contact -->
+            <Frame BackgroundColor="{DynamicResource CardBackgroundColor}"
+                   BorderColor="{DynamicResource BorderColor}"
+                   CornerRadius="8"
+                   Padding="16">
+                <StackLayout Spacing="12">
+                    <Label Text="Support & Contact" 
+                           FontSize="18" 
+                           FontAttributes="Bold"
+                           TextColor="{DynamicResource PrimaryTextColor}" />
+                    
+                    <Label Text="For support, feedback, or feature requests, please contact the development team."
+                           TextColor="{DynamicResource SecondaryTextColor}"
+                           LineBreakMode="WordWrap" />
+                    
+                    <Button Text="Send Feedback"
+                            Style="{DynamicResource OutlineButtonStyle}"
+                            Clicked="OnSendFeedbackClicked" />
+                </StackLayout>
+            </Frame>
+            
+            <!-- Copyright -->
+            <Label Text="© 2024 COG Lyrics Scanner. All rights reserved."
+                   FontSize="12"
+                   HorizontalOptions="Center"
+                   TextColor="{DynamicResource SecondaryTextColor}" />
+            
+        </StackLayout>
+    </ScrollView>
+    
+</ContentPage>

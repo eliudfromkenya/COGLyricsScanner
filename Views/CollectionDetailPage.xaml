@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="COGLyricsScanner.Views.CollectionDetailPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:viewmodels="clr-namespace:COGLyricsScanner.ViewModels"
+             x:DataType="viewmodels:CollectionDetailPageViewModel"
+             Title="{Binding CollectionName}"
+             Shell.BackgroundColor="{DynamicResource Primary}">
+
+    <Grid>
+        <!-- Main Content -->
+        <ScrollView>
+            <StackLayout Padding="16" Spacing="16">
+                
+                <!-- Collection Info -->
+                <Frame BackgroundColor="{DynamicResource CardBackground}"
+                       BorderColor="{DynamicResource BorderColor}"
+                       CornerRadius="12"
+                       Padding="16">
+                    <StackLayout Spacing="8">
+                        <Label Text="{Binding CollectionName}"
+                               FontSize="24"
+                               FontAttributes="Bold"
+                               TextColor="{DynamicResource OnSurface}" />
+                        
+                        <Label Text="{Binding CollectionDescription}"
+                               FontSize="14"
+                               TextColor="{DynamicResource OnSurfaceVariant}"
+                               IsVisible="{Binding CollectionDescription, Converter={StaticResource StringToBoolConverter}}" />
+                        
+                        <Grid ColumnDefinitions="*,*,*" ColumnSpacing="16">
+                            <StackLayout Grid.Column="0" Orientation="Horizontal" Spacing="4">
+                                <Label Text="📚" FontSize="16" />
+                                <Label Text="{Binding HymnCount}" FontAttributes="Bold" TextColor="{DynamicResource Primary}" />
+                                <Label Text="hymns" TextColor="{DynamicResource OnSurfaceVariant}" />
+                            </StackLayout>
+                            
+                            <StackLayout Grid.Column="1" Orientation="Horizontal" Spacing="4">
+                                <Label Text="📅" FontSize="16" />
+                                <Label Text="{Binding CreatedDate, StringFormat='{0:MMM dd, yyyy}'}" 
+                                       TextColor="{DynamicResource OnSurfaceVariant}" />
+                            </StackLayout>
+                            
+                            <StackLayout Grid.Column="2" Orientation="Horizontal" Spacing="4">
+                                <Label Text="✏️" FontSize="16" />
+                                <Label Text="{Binding UpdatedDate, StringFormat='{0:MMM dd}'}" 
+                                       TextColor="{DynamicResource OnSurfaceVariant}" />
+                            </StackLayout>
+                        </Grid>
+                    </StackLayout>
+                </Frame>
+
+                <!-- Search and Actions -->
+                <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+                    <SearchBar Grid.Column="0"
+                               Text="{Binding SearchText}"
+                               Placeholder="Search hymns in collection..."
+                               BackgroundColor="{DynamicResource SurfaceVariant}"
+                               TextColor="{DynamicResource OnSurface}"
+                               PlaceholderColor="{DynamicResource OnSurfaceVariant}" />
+                    
+                    <Button Grid.Column="1"
+                            Text="Add Hymns"
+                            Command="{Binding AddHymnsCommand}"
+                            Style="{DynamicResource SecondaryButtonStyle}"
+                            FontSize="12" />
+                    
+                    <Button Grid.Column="2"
+                            Text="⋮"
+                            Command="{Binding ShowOptionsCommand}"
+                            Style="{DynamicResource IconButtonStyle}"
+                            FontSize="18" />
+                </Grid>
+
+                <!-- Hymns List -->
+                <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                             Command="{Binding RefreshCommand}">
+                    <CollectionView ItemsSource="{Binding FilteredHymns}"
+                                    SelectionMode="None"
+                                    BackgroundColor="Transparent">
+                        
+                        <CollectionView.EmptyView>
+                            <StackLayout Padding="32" Spacing="16">
+                                <Label Text="📚"
+                                       FontSize="48"
+                                       HorizontalOptions="Center"
+                                       TextColor="{DynamicResource OnSurfaceVariant}" />
+                                <Label Text="{Binding SearchText, Converter={StaticResource StringToEmptyMessageConverter}}"
+                                       FontSize="16"
+                                       HorizontalOptions="Center"
+                                       HorizontalTextAlignment="Center"
+                                       TextColor="{DynamicResource OnSurfaceVariant}" />
+                                <Button Text="Add First Hymn"
+                                        Command="{Binding AddHymnsCommand}"
+                                        Style="{DynamicResource PrimaryButtonStyle}"
+                                        HorizontalOptions="Center"
+                                        IsVisible="{Binding SearchText, Converter={StaticResource InvertedBoolConverter}}" />
+                            </StackLayout>
+                        </CollectionView.EmptyView>
+
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="viewmodels:HymnItemViewModel">
+                                <Grid Padding="0,4">
+                                    <Frame BackgroundColor="{DynamicResource CardBackground}"
+                                           BorderColor="{DynamicResource BorderColor}"
+                                           CornerRadius="8"
+                                           Padding="16"
+                                           HasShadow="False">
+                                        
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CollectionDetailPageViewModel}}, Path=ViewHymnCommand}"
+                                                                  CommandParameter="{Binding .}" />
+                                        </Frame.GestureRecognizers>
+
+                                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="12">
+                                            <!-- Hymn Info -->
+                                            <StackLayout Grid.Column="0" Spacing="4">
+                                                <Label Text="{Binding Title}"
+                                                       FontSize="16"
+                                                       FontAttributes="Bold"
+                                                       TextColor="{DynamicResource OnSurface}"
+                                                       LineBreakMode="TailTruncation" />
+                                                
+                                                <StackLayout Orientation="Horizontal" Spacing="8">
+                                                    <Label Text="{Binding HymnNumber, StringFormat='#{0}'}"
+                                                           FontSize="12"
+                                                           TextColor="{DynamicResource Primary}"
+                                                           IsVisible="{Binding HymnNumber, Converter={StaticResource IntToBoolConverter}}" />
+                                                    
+                                                    <Label Text="{Binding HymnBookName}"
+                                                           FontSize="12"
+                                                           TextColor="{DynamicResource OnSurfaceVariant}"
+                                                           IsVisible="{Binding HymnBookName, Converter={StaticResource StringToBoolConverter}}" />
+                                                    
+                                                    <Label Text="{Binding Language}"
+                                                           FontSize="12"
+                                                           TextColor="{DynamicResource OnSurfaceVariant}"
+                                                           IsVisible="{Binding Language, Converter={StaticResource StringToBoolConverter}}" />
+                                                </StackLayout>
+                                                
+                                                <Label Text="{Binding PreviewText}"
+                                                       FontSize="12"
+                                                       TextColor="{DynamicResource OnSurfaceVariant}"
+                                                       LineBreakMode="TailTruncation"
+                                                       MaxLines="2" />
+                                            </StackLayout>
+
+                                            <!-- Favorite Button -->
+                                            <Button Grid.Column="1"
+                                                    Text="{Binding IsFavorite, Converter={StaticResource BoolToFavoriteIconConverter}}"
+                                                    TextColor="{Binding IsFavorite, Converter={StaticResource BoolToFavoriteColorConverter}}"
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CollectionDetailPageViewModel}}, Path=ToggleFavoriteCommand}"
+                                                    CommandParameter="{Binding .}"
+                                                    Style="{DynamicResource IconButtonStyle}"
+                                                    FontSize="18" />
+
+                                            <!-- More Options -->
+                                            <Button Grid.Column="2"
+                                                    Text="⋮"
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CollectionDetailPageViewModel}}, Path=ShowHymnOptionsCommand}"
+                                                    CommandParameter="{Binding .}"
+                                                    Style="{DynamicResource IconButtonStyle}"
+                                                    FontSize="16" />
+                                        </Grid>
+                                    </Frame>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </RefreshView>
+            </StackLayout>
+        </ScrollView>
+
+        <!-- Loading Overlay -->
+        <Grid IsVisible="{Binding IsBusy}"
+              BackgroundColor="#80000000">
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               Color="{DynamicResource Primary}"
+                               VerticalOptions="Center"
+                               HorizontalOptions="Center" />
+        </Grid>
+    </Grid>
+</ContentPage>

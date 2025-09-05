@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="COGLyricsScanner.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:views="clr-namespace:COGLyricsScanner.Views"
+    Title="COG Lyrics Scanner"
+    FlyoutBehavior="Flyout">
+
+    <Shell.Resources>
+        <ResourceDictionary>
+            <Style x:Key="BaseStyle" TargetType="Element">
+                <Setter Property="Shell.BackgroundColor" Value="{DynamicResource SurfaceColor}" />
+                <Setter Property="Shell.ForegroundColor" Value="{DynamicResource OnSurfaceColor}" />
+                <Setter Property="Shell.TitleColor" Value="{DynamicResource OnSurfaceColor}" />
+                <Setter Property="Shell.DisabledColor" Value="{DynamicResource OnSurfaceVariantColor}" />
+                <Setter Property="Shell.UnselectedColor" Value="{DynamicResource OnSurfaceVariantColor}" />
+                <Setter Property="Shell.TabBarBackgroundColor" Value="{DynamicResource SurfaceColor}" />
+                <Setter Property="Shell.TabBarForegroundColor" Value="{DynamicResource PrimaryColor}" />
+                <Setter Property="Shell.TabBarUnselectedColor" Value="{DynamicResource OnSurfaceVariantColor}" />
+                <Setter Property="Shell.TabBarTitleColor" Value="{DynamicResource OnSurfaceColor}" />
+            </Style>
+        </ResourceDictionary>
+    </Shell.Resources>
+
+    <!-- Main Tab Bar -->
+    <TabBar>
+        <!-- Scan Tab -->
+        <ShellContent
+            Title="Scan"
+            Icon="camera_icon.png"
+            Route="scan"
+            ContentTemplate="{DataTemplate views:ScanPage}" />
+
+        <!-- Edit Tab -->
+        <ShellContent
+            Title="Edit"
+            Icon="edit_icon.png"
+            Route="edit"
+            ContentTemplate="{DataTemplate views:EditPage}" />
+
+        <!-- Home Tab -->
+        <ShellContent
+            Title="Home"
+            Icon="home_icon.png"
+            Route="home"
+            ContentTemplate="{DataTemplate views:HomePage}" />
+    </TabBar>
+
+    <!-- Additional Routes for Navigation -->
+    <Shell.FlyoutHeader>
+        <Grid BackgroundColor="{DynamicResource PrimaryColor}" HeightRequest="200">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            
+            <Image 
+                Grid.Row="0"
+                Source="app_logo.png"
+                Aspect="AspectFit"
+                HeightRequest="80"
+                Margin="20" />
+            
+            <Label 
+                Grid.Row="1"
+                Text="COG Lyrics Scanner"
+                FontSize="18"
+                FontAttributes="Bold"
+                TextColor="{DynamicResource OnPrimaryColor}"
+                HorizontalOptions="Center"
+                Margin="0,0,0,20" />
+        </Grid>
+    </Shell.FlyoutHeader>
+
+    <!-- Flyout Items for Additional Navigation -->
+    <FlyoutItem Title="Settings" Icon="settings_icon.png">
+        <ShellContent Route="settings" ContentTemplate="{DataTemplate views:SettingsPage}" />
+    </FlyoutItem>
+    
+    <FlyoutItem Title="Collections" Icon="collection_icon.png">
+        <ShellContent Route="collections" ContentTemplate="{DataTemplate views:CollectionsPage}" />
+    </FlyoutItem>
+    
+    <FlyoutItem Title="Statistics" Icon="stats_icon.png">
+        <ShellContent Route="statistics" ContentTemplate="{DataTemplate views:StatisticsPage}" />
+    </FlyoutItem>
+    
+    <FlyoutItem Title="About" Icon="info_icon.png">
+        <ShellContent Route="about" ContentTemplate="{DataTemplate views:AboutPage}" />
+    </FlyoutItem>
+
+</Shell>

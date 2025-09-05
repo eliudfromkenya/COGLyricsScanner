@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="COGLyricsScanner.Views.SettingsPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             Title="Settings"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
+    
+    <ScrollView>
+        <StackLayout Padding="20" Spacing="20">
+            
+            <!-- Theme Settings -->
+            <Frame BackgroundColor="{DynamicResource CardBackgroundColor}"
+                   BorderColor="{DynamicResource BorderColor}"
+                   CornerRadius="8"
+                   Padding="16">
+                <StackLayout Spacing="12">
+                    <Label Text="Theme" 
+                           FontSize="18" 
+                           FontAttributes="Bold"
+                           TextColor="{DynamicResource PrimaryTextColor}" />
+                    
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="Dark Mode" 
+                               VerticalOptions="Center"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                        <Switch x:Name="DarkModeSwitch" 
+                                Grid.Column="1"
+                                Toggled="OnDarkModeToggled" />
+                    </Grid>
+                    
+                    <Label Text="Theme Color" 
+                           TextColor="{DynamicResource SecondaryTextColor}" />
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Button x:Name="BlueThemeButton"
+                                Text="Blue"
+                                BackgroundColor="#2196F3"
+                                TextColor="White"
+                                Clicked="OnBlueThemeClicked" />
+                        <Button x:Name="GreenThemeButton"
+                                Grid.Column="1"
+                                Text="Green"
+                                BackgroundColor="#4CAF50"
+                                TextColor="White"
+                                Clicked="OnGreenThemeClicked" />
+                    </Grid>
+                </StackLayout>
+            </Frame>
+            
+            <!-- OCR Settings -->
+            <Frame BackgroundColor="{DynamicResource CardBackgroundColor}"
+                   BorderColor="{DynamicResource BorderColor}"
+                   CornerRadius="8"
+                   Padding="16">
+                <StackLayout Spacing="12">
+                    <Label Text="OCR Settings" 
+                           FontSize="18" 
+                           FontAttributes="Bold"
+                           TextColor="{DynamicResource PrimaryTextColor}" />
+                    
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="Auto-save Scanned Text" 
+                               VerticalOptions="Center"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                        <Switch x:Name="AutoSaveSwitch" 
+                                Grid.Column="1"
+                                Toggled="OnAutoSaveToggled" />
+                    </Grid>
+                    
+                    <Label Text="Default OCR Language" 
+                           TextColor="{DynamicResource SecondaryTextColor}" />
+                    <Picker x:Name="LanguagePicker"
+                            Title="Select Language"
+                            SelectedIndexChanged="OnLanguageChanged" />
+                </StackLayout>
+            </Frame>
+            
+            <!-- Export Settings -->
+            <Frame BackgroundColor="{DynamicResource CardBackgroundColor}"
+                   BorderColor="{DynamicResource BorderColor}"
+                   CornerRadius="8"
+                   Padding="16">
+                <StackLayout Spacing="12">
+                    <Label Text="Export Settings" 
+                           FontSize="18" 
+                           FontAttributes="Bold"
+                           TextColor="{DynamicResource PrimaryTextColor}" />
+                    
+                    <Label Text="Default Export Format" 
+                           TextColor="{DynamicResource SecondaryTextColor}" />
+                    <Picker x:Name="ExportFormatPicker"
+                            Title="Select Format"
+                            SelectedIndexChanged="OnExportFormatChanged">
+                        <Picker.Items>
+                            <x:String>TXT</x:String>
+                            <x:String>DOCX</x:String>
+                            <x:String>PDF</x:String>
+                            <x:String>JSON</x:String>
+                            <x:String>CSV</x:String>
+                        </Picker.Items>
+                    </Picker>
+                    
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="Include Metadata in Export" 
+                               VerticalOptions="Center"
+                               TextColor="{DynamicResource SecondaryTextColor}" />
+                        <Switch x:Name="IncludeMetadataSwitch" 
+                                Grid.Column="1"
+                                Toggled="OnIncludeMetadataToggled" />
+                    </Grid>
+                </StackLayout>
+            </Frame>
+            
+            <!-- Backup Settings -->
+            <Frame BackgroundColor="{DynamicResource CardBackgroundColor}"
+                   BorderColor="{DynamicResource BorderColor}"
+                   CornerRadius="8"
+                   Padding="16">
+                <StackLayout Spacing="12">
+                    <Label Text="Backup & Data" 
+                           FontSize="18" 
+                           FontAttributes="Bold"
+                           TextColor="{DynamicResource PrimaryTextColor}" />
+                    
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Button Text="Backup Data"
+                                Style="{DynamicResource BaseButtonStyle}"
+                                Clicked="OnBackupClicked" />
+                        <Button Text="Restore Data"
+                                Grid.Column="1"
+                                Style="{DynamicResource OutlineButtonStyle}"
+                                Clicked="OnRestoreClicked" />
+                    </Grid>
+                    
+                    <Button Text="Reset All Settings"
+                            Style="{DynamicResource DangerButtonStyle}"
+                            Clicked="OnResetSettingsClicked" />
+                </StackLayout>
+            </Frame>
+            
+            <!-- About Section -->
+            <Frame BackgroundColor="{DynamicResource CardBackgroundColor}"
+                   BorderColor="{DynamicResource BorderColor}"
+                   CornerRadius="8"
+                   Padding="16">
+                <StackLayout Spacing="12">
+                    <Label Text="About" 
+                           FontSize="18" 
+                           FontAttributes="Bold"
+                           TextColor="{DynamicResource PrimaryTextColor}" />
+                    
+                    <Label Text="COG Lyrics Scanner v1.0" 
+                           TextColor="{DynamicResource SecondaryTextColor}" />
+                    <Label Text="A tool for scanning and managing Church of God hymn lyrics" 
+                           TextColor="{DynamicResource SecondaryTextColor}" />
+                    
+                    <Button Text="View About Page"
+                            Style="{DynamicResource OutlineButtonStyle}"
+                            Clicked="OnAboutClicked" />
+                </StackLayout>
+            </Frame>
+            
+        </StackLayout>
+    </ScrollView>
+    
+</ContentPage>
