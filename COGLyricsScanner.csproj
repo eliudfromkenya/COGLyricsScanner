@@ -49,31 +49,8 @@
 		<PackageReference Include="itext7" Version="8.0.2" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<MauiXaml Update="Views\ScanPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\EditPage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="Views\HomePage.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-		<MauiXaml Update="AppShell.xaml">
-			<Generator>MSBuild:Compile</Generator>
-		</MauiXaml>
-	</ItemGroup>
 
-	<ItemGroup>
-		<Compile Update="Views\ScanPage.xaml.cs">
-			<DependentUpon>ScanPage.xaml</DependentUpon>
-		</Compile>
-		<Compile Update="Views\EditPage.xaml.cs">
-			<DependentUpon>EditPage.xaml</DependentUpon>
-		</Compile>
-		<Compile Update="Views\HomePage.xaml.cs">
-			<DependentUpon>HomePage.xaml</DependentUpon>
-		</Compile>
-	</ItemGroup>
+
+
 
 </Project>

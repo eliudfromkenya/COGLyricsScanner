@@ -1,7 +1,8 @@
 using COGLyricsScanner.ViewModels;
 using Microsoft.Maui.Controls;
 
-namespace COGLyricsScanner.Views;
+namespace COGLyricsScanner.Views
+{
 
 public partial class EditPage : ContentPage
 {
@@ -80,17 +81,15 @@ public partial class EditPage : ContentPage
     protected override void OnPropertyChanged([System.Runtime.CompilerServices.CallerMemberName] string propertyName = null)
     {
         base.OnPropertyChanged(propertyName);
-
+        
         if (propertyName == nameof(ViewModel.ShowLineNumbers))
         {
-            if (ViewModel.ShowLineNumbers)
-            {
-                UpdateLineNumbers();
-            }
+            UpdateLineNumbers();
         }
         else if (propertyName == nameof(ViewModel.FontSize))
         {
             UpdateLineNumbers();
         }
     }
+}
 }

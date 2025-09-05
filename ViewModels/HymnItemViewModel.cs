@@ -20,8 +20,11 @@ public partial class HymnItemViewModel : ObservableObject
 
     public Hymn Hymn => _hymn;
 
+    public int Id => _hymn.Id;
     public string Title => _hymn.Title;
-    public int? Number => _hymn.Number;
+    public string? Number => _hymn.Number;
+    public string? HymnNumber => _hymn.Number;
+    public string? HymnBookName => _hymn.HymnBook?.Name ?? "Unknown";
     public string Language => _hymn.Language;
     public string Tags => _hymn.Tags ?? string.Empty;
     public bool IsFavorite => _hymn.IsFavorite;
@@ -29,6 +32,7 @@ public partial class HymnItemViewModel : ObservableObject
     public DateTime ModifiedDate => _hymn.ModifiedDate;
     public int ViewCount => _hymn.ViewCount;
     public string Preview => GetPreview();
+    public string PreviewText => GetPreview();
 
     public ICommand SelectCommand => new RelayCommand(() => _onSelected?.Invoke(_hymn));
     public ICommand ToggleFavoriteCommand => new RelayCommand(() => _onFavoriteToggled?.Invoke(_hymn));
@@ -49,6 +53,6 @@ public partial class HymnItemViewModel : ObservableObject
         return preview;
     }
 
-    public string DisplayText => Number.HasValue ? $"{Number}. {Title}" : Title;
+    public string DisplayText => !string.IsNullOrEmpty(Number) ? $"{Number}. {Title}" : Title;
     public string SubtitleText => $"{Language} • {CreatedDate:MMM dd, yyyy}";
 }

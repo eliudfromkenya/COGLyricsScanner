@@ -1,6 +1,7 @@
 using COGLyricsScanner.Models;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Wordprocessing;
 using OpenXmlParagraph = DocumentFormat.OpenXml.Wordprocessing.Paragraph;
 using iText.Kernel.Pdf;
 using iText.Layout;
@@ -10,6 +11,11 @@ using iText.Layout.Properties;
 using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
+using FontSize = DocumentFormat.OpenXml.Wordprocessing.FontSize;
+using System.Linq;
+using Document = DocumentFormat.OpenXml.Wordprocessing.Document;
+using Text = DocumentFormat.OpenXml.Wordprocessing.Text;
+using Paragraph = DocumentFormat.OpenXml.Wordprocessing.Paragraph;
 
 namespace COGLyricsScanner.Services;
 
@@ -193,7 +199,7 @@ public class ExportService : IExportService
                 if (includeMetadata)
                 {
                     await writer.WriteLineAsync($"Title: {hymn.Title}");
-                    if (hymn.Number.HasValue)
+                    if (!string.IsNullOrWhiteSpace(hymn.Number ))
                         await writer.WriteLineAsync($"Number: {hymn.Number}");
                     if (!string.IsNullOrEmpty(hymn.Language))
                         await writer.WriteLineAsync($"Language: {hymn.Language}");
@@ -250,7 +256,7 @@ public class ExportService : IExportService
                 if (includeMetadata)
                 {
                     // Add metadata
-                    if (hymn.Number.HasValue)
+                    if (!string.IsNullOrEmpty(hymn.Number))
                         body.Append(CreateParagraph($"Number: {hymn.Number}"));
                     if (!string.IsNullOrEmpty(hymn.Language))
                         body.Append(CreateParagraph($"Language: {hymn.Language}"));
@@ -296,7 +302,7 @@ public class ExportService : IExportService
         {
             using var writer = new PdfWriter(filePath);
             using var pdf = new PdfDocument(writer);
-            using var document = new Document(pdf);
+            using var document = new iText.Layout.Document(pdf);
 
             for (int i = 0; i < hymns.Count; i++)
             {
@@ -304,7 +310,7 @@ public class ExportService : IExportService
                 OnProgressChanged((i * 100) / hymns.Count, $"Exporting {hymn.DisplayTitle}...", i, hymns.Count);
 
                 // Add title
-                document.Add(new Paragraph(hymn.DisplayTitle)
+                document.Add(new iText.Layout.Element.Paragraph(hymn.DisplayTitle)
                     .SetFontSize(18)
                     .SetBold()
                     .SetMarginBottom(10));
@@ -312,22 +318,22 @@ public class ExportService : IExportService
                 if (includeMetadata)
                 {
                     // Add metadata
-                    if (hymn.Number.HasValue)
-                        document.Add(new Paragraph($"Number: {hymn.Number}").SetFontSize(10));
+                    if (!string.IsNullOrEmpty(hymn.Number))
+                        document.Add(new iText.Layout.Element.Paragraph($"Number: {hymn.Number}").SetFontSize(10));
                     if (!string.IsNullOrEmpty(hymn.Language))
-                        document.Add(new Paragraph($"Language: {hymn.Language}").SetFontSize(10));
+                        document.Add(new iText.Layout.Element.Paragraph($"Language: {hymn.Language}").SetFontSize(10));
                     if (!string.IsNullOrEmpty(hymn.Tags))
-                        document.Add(new Paragraph($"Tags: {hymn.Tags}").SetFontSize(10));
-                    document.Add(new Paragraph($"Created: {hymn.CreatedDate:yyyy-MM-dd HH:mm}").SetFontSize(10));
+                        document.Add(new iText.Layout.Element.Paragraph($"Tags: {hymn.Tags}").SetFontSize(10));
+                    document.Add(new iText.Layout.Element.Paragraph($"Created: {hymn.CreatedDate:yyyy-MM-dd HH:mm}").SetFontSize(10));
                     
-                    document.Add(new Paragraph(new string('-', 50)).SetMarginBottom(10));
+                    document.Add(new iText.Layout.Element.Paragraph(new string('-', 50)).SetMarginBottom(10));
                 }
 
                 // Add lyrics
                 var lyricsLines = hymn.Lyrics.Split('\n');
                 foreach (var line in lyricsLines)
                 {
-                    document.Add(new Paragraph(line).SetFontSize(12));
+                    document.Add(new iText.Layout.Element.Paragraph(line).SetFontSize(12));
                 }
 
                 // Add page break if not last hymn
@@ -400,7 +406,7 @@ public class ExportService : IExportService
 
                 var line = $"{hymn.Id}," +
                           $"\"{EscapeCsv(hymn.Title)}\"," +
-                          $"{hymn.Number ?? 0}," +
+                          $"{hymn.Number ?? ""}," +
                           $"\"{EscapeCsv(hymn.Language)}\"," +
                           $"\"{EscapeCsv(hymn.Tags)}\"," +
                           $"{hymn.CreatedDate:yyyy-MM-dd HH:mm:ss}," +

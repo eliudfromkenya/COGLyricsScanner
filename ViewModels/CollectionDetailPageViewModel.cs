@@ -32,8 +32,8 @@ public class CollectionDetailPageViewModel : BaseViewModel
         _searchText = string.Empty;
         _collectionName = collection.Name;
         _collectionDescription = collection.Description ?? string.Empty;
-        _createdDate = collection.CreatedAt;
-        _updatedDate = collection.UpdatedAt;
+        _createdDate = collection.CreatedDate;
+        _updatedDate = collection.ModifiedDate;
         
         // Initialize search timer
         _searchTimer = new System.Timers.Timer(300);
@@ -146,19 +146,7 @@ public class CollectionDetailPageViewModel : BaseViewModel
                 
                 foreach (var hymn in collectionHymns)
                 {
-                    var hymnBook = hymnBooks.FirstOrDefault(hb => hb.Id == hymn.HymnBookId);
-                    var viewModel = new HymnItemViewModel
-                    {
-                        Id = hymn.Id,
-                        Title = hymn.Title,
-                        HymnNumber = hymn.HymnNumber,
-                        HymnBookName = hymnBook?.Name ?? string.Empty,
-                        Language = hymn.Language ?? string.Empty,
-                        IsFavorite = hymn.IsFavorite,
-                        PreviewText = GetPreviewText(hymn.Content),
-                        CreatedAt = hymn.CreatedAt,
-                        UpdatedAt = hymn.UpdatedAt
-                    };
+                    var viewModel = new HymnItemViewModel(hymn, OnHymnSelected, OnFavoriteToggled);
                     hymnViewModels.Add(viewModel);
                 }
                 
@@ -196,10 +184,10 @@ public class CollectionDetailPageViewModel : BaseViewModel
             var searchLower = SearchText.ToLowerInvariant();
             filtered = filtered.Where(h => 
                 h.Title.ToLowerInvariant().Contains(searchLower) ||
-                h.HymnBookName.ToLowerInvariant().Contains(searchLower) ||
                 h.Language.ToLowerInvariant().Contains(searchLower) ||
-                h.PreviewText.ToLowerInvariant().Contains(searchLower) ||
-                (h.HymnNumber > 0 && h.HymnNumber.ToString().Contains(searchLower))
+                h.Preview.ToLowerInvariant().Contains(searchLower) ||
+                h.Tags.ToLowerInvariant().Contains(searchLower) ||
+                (!string.IsNullOrEmpty(h.Number) && h.Number.ToLowerInvariant().Contains(searchLower))
             );
         }
         
@@ -243,10 +231,15 @@ public class CollectionDetailPageViewModel : BaseViewModel
             if (hymn != null)
             {
                 hymn.IsFavorite = !hymn.IsFavorite;
-                hymn.UpdatedAt = DateTime.Now;
+                hymn.ModifiedDate = DateTime.Now;
                 await _databaseService.UpdateHymnAsync(hymn);
                 
-                hymnViewModel.IsFavorite = hymn.IsFavorite;
+                // Find and replace the hymn view model in the collection
+                var index = Hymns.IndexOf(hymnViewModel);
+                if (index >= 0)
+                {
+                    Hymns[index] = new HymnItemViewModel(hymn, OnHymnSelected, OnFavoriteToggled);
+                }
             }
         }
         catch (Exception ex)
@@ -407,12 +400,34 @@ public class CollectionDetailPageViewModel : BaseViewModel
             
             if (hymn != null)
             {
-                await exportService.ExportHymnAsync(hymn, ExportFormat.Txt);
+                var fileName = $"{hymn.Title.Replace(" ", "_").Replace("/", "_")}.txt";
+                var filePath = Path.Combine(FileSystem.Current.CacheDirectory, fileName);
+                await exportService.ExportHymnAsync(hymn, ExportFormat.TXT, filePath);
             }
         }
         catch (Exception ex)
         {
             HandleError(ex, "Failed to export hymn");
+        }
+    }
+
+    private void OnHymnSelected(Hymn hymn)
+    {
+        if (hymn != null)
+        {
+            Shell.Current.GoToAsync($"//edit?HymnId={hymn.Id}");
+        }
+    }
+
+    private async void OnFavoriteToggled(Hymn hymn)
+    {
+        if (hymn != null)
+        {
+            var hymnViewModel = Hymns.FirstOrDefault(h => h.Id == hymn.Id);
+            if (hymnViewModel != null)
+            {
+                await ToggleFavoriteAsync(hymnViewModel);
+            }
         }
     }
 
@@ -450,7 +465,19 @@ public class CollectionDetailPageViewModel : BaseViewModel
         try
         {
             var exportService = ServiceHelper.GetService<IExportService>();
-            await exportService.ExportCollectionAsync(_collection, ExportFormat.Txt);
+            var databaseService = ServiceHelper.GetService<IDatabaseService>();
+            
+            // Get hymns in the collection
+            var hymns = await databaseService.GetCollectionHymnsAsync(_collection.Id);
+            
+            // Generate file path
+            var fileName = $"{_collection.Name.Replace(" ", "_")}_Export.txt";
+            var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            var filePath = Path.Combine(documentsPath, fileName);
+            
+            await exportService.ExportCollectionAsync(_collection, hymns, ExportFormat.TXT, filePath);
+            
+            await Application.Current.MainPage.DisplayAlert("Export Complete", $"Collection exported to: {filePath}", "OK");
         }
         catch (Exception ex)
         {

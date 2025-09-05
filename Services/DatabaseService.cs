@@ -162,6 +162,19 @@ public class DatabaseService : IDatabaseService
         }
     }
 
+    public async Task<int> AddHymnAsync(Hymn hymn)
+    {
+        return await SaveHymnAsync(hymn);
+    }
+
+    public async Task<bool> UpdateHymnAsync(Hymn hymn)
+    {
+        await InitializeAsync();
+        hymn.ModifiedDate = DateTime.Now;
+        var result = await _database!.UpdateAsync(hymn);
+        return result > 0;
+    }
+
     public async Task<bool> DeleteHymnAsync(int id)
     {
         await InitializeAsync();
@@ -271,6 +284,14 @@ public class DatabaseService : IDatabaseService
         return books;
     }
 
+    public async Task<List<HymnBook>> GetAllHymnBooksAsync()
+    {
+        await InitializeAsync();
+        return await _database!.Table<HymnBook>()
+            .OrderBy(hb => hb.Name)
+            .ToListAsync();
+    }
+
     // Collection operations
     public async Task<List<Collection>> GetCollectionsAsync()
     {
@@ -336,6 +357,46 @@ public class DatabaseService : IDatabaseService
               INNER JOIN HymnCollections hc ON h.Id = hc.HymnId 
               WHERE hc.CollectionId = ? 
               ORDER BY hc.SortOrder, h.Title", collectionId);
+    }
+
+    public async Task<List<Hymn>> GetCollectionHymnsAsync(int collectionId)
+    {
+        return await GetHymnsInCollectionAsync(collectionId);
+    }
+
+    public async Task<List<HymnCollection>> GetHymnCollectionsByCollectionIdAsync(int collectionId)
+    {
+        await InitializeAsync();
+        return await _database!.Table<HymnCollection>()
+            .Where(hc => hc.CollectionId == collectionId)
+            .OrderBy(hc => hc.SortOrder)
+            .ToListAsync();
+    }
+
+    public async Task<bool> DeleteHymnCollectionAsync(int hymnCollectionId)
+    {
+        await InitializeAsync();
+        var rowsAffected = await _database!.DeleteAsync<HymnCollection>(hymnCollectionId);
+        return rowsAffected > 0;
+    }
+
+    public async Task<List<Collection>> GetCollectionsByHymnIdAsync(int hymnId)
+    {
+        await InitializeAsync();
+        var hymnCollections = await _database!.Table<HymnCollection>()
+            .Where(hc => hc.HymnId == hymnId)
+            .ToListAsync();
+        
+        var collections = new List<Collection>();
+        foreach (var hc in hymnCollections)
+        {
+            var collection = await _database.FindAsync<Collection>(hc.CollectionId);
+            if (collection != null)
+            {
+                collections.Add(collection);
+            }
+        }
+        return collections;
     }
 
     public async Task<bool> AddHymnToCollectionAsync(int hymnId, int collectionId)
@@ -405,11 +466,21 @@ public class DatabaseService : IDatabaseService
         return await _database!.Table<Collection>().CountAsync();
     }
 
+    public async Task<int> GetFavoriteHymnsCountAsync()
+    {
+        await InitializeAsync();
+        return await _database!.Table<Hymn>().Where(h => h.IsFavorite).CountAsync();
+    }
+
     public async Task<List<string>> GetAvailableLanguagesAsync()
     {
         await InitializeAsync();
-        var languages = await _database!.QueryAsync<string>("SELECT DISTINCT Language FROM Hymns ORDER BY Language");
-        return languages.Where(l => !string.IsNullOrEmpty(l)).ToList();
+        var hymns = await _database!.Table<Hymn>().ToListAsync();
+        return hymns.Select(h => h.Language)
+                   .Where(l => !string.IsNullOrEmpty(l))
+                   .Distinct()
+                   .OrderBy(l => l)
+                   .ToList();
     }
 
     public async Task<List<string>> GetAvailableTagsAsync()

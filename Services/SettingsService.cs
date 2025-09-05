@@ -4,6 +4,7 @@ public class SettingsService : ISettingsService
 {
     // Keys for preferences
     private const string ThemeKey = "theme";
+    private const string ThemeColorKey = "theme_color";
     private const string DefaultOcrLanguageKey = "default_ocr_language";
     private const string AutoSaveAfterOcrKey = "auto_save_after_ocr";
     private const string FontSizeKey = "font_size";
@@ -21,124 +22,139 @@ public class SettingsService : ISettingsService
     // Theme settings
     public async Task<AppTheme> GetThemeAsync()
     {
-        var themeString = await Preferences.GetAsync(ThemeKey, AppTheme.Unspecified.ToString());
-        return Enum.TryParse<AppTheme>(themeString, out var theme) ? theme : AppTheme.Unspecified;
+        var themeString = Preferences.Get(ThemeKey, AppTheme.System.ToString());
+        return Enum.TryParse<AppTheme>(themeString, out var theme) ? theme : AppTheme.System;
     }
 
     public async Task SetThemeAsync(AppTheme theme)
     {
-        await Preferences.SetAsync(ThemeKey, theme.ToString());
+        Preferences.Set(ThemeKey, theme.ToString());
     }
 
     // OCR settings
     public async Task<string> GetDefaultOcrLanguageAsync()
     {
-        return await Preferences.GetAsync(DefaultOcrLanguageKey, "en");
+        return Preferences.Get(DefaultOcrLanguageKey, "en");
     }
 
     public async Task SetDefaultOcrLanguageAsync(string language)
     {
-        await Preferences.SetAsync(DefaultOcrLanguageKey, language);
+        Preferences.Set(DefaultOcrLanguageKey, language);
     }
 
     public async Task<bool> GetAutoSaveAfterOcrAsync()
     {
-        return await Preferences.GetAsync(AutoSaveAfterOcrKey, true);
+        return await Task.FromResult(Preferences.Get(AutoSaveAfterOcrKey, true));
     }
 
     public async Task SetAutoSaveAfterOcrAsync(bool autoSave)
     {
-        await Preferences.SetAsync(AutoSaveAfterOcrKey, autoSave);
+        Preferences.Set(AutoSaveAfterOcrKey, autoSave);
     }
 
     // UI settings
     public async Task<double> GetFontSizeAsync()
     {
-        return await Preferences.GetAsync(FontSizeKey, 16.0);
+        return await Task.FromResult(Preferences.Get(FontSizeKey, 16.0));
     }
 
     public async Task SetFontSizeAsync(double fontSize)
     {
-        await Preferences.SetAsync(FontSizeKey, fontSize);
+        Preferences.Set(FontSizeKey, fontSize);
     }
 
     public async Task<bool> GetShowLineNumbersAsync()
     {
-        return await Preferences.GetAsync(ShowLineNumbersKey, false);
+        return await Task.FromResult(Preferences.Get(ShowLineNumbersKey, false));
     }
 
     public async Task SetShowLineNumbersAsync(bool showLineNumbers)
     {
-        await Preferences.SetAsync(ShowLineNumbersKey, showLineNumbers);
+        Preferences.Set(ShowLineNumbersKey, showLineNumbers);
     }
 
     // Export settings
     public async Task<string> GetDefaultExportFormatAsync()
     {
-        return await Preferences.GetAsync(DefaultExportFormatKey, "TXT");
+        return await Task.FromResult(Preferences.Get(DefaultExportFormatKey, "TXT"));
     }
 
     public async Task SetDefaultExportFormatAsync(string format)
     {
-        await Preferences.SetAsync(DefaultExportFormatKey, format);
+        Preferences.Set(DefaultExportFormatKey, format);
     }
 
     public async Task<string> GetExportDirectoryAsync()
     {
         var defaultPath = Path.Combine(FileSystem.AppDataDirectory, "Exports");
-        return await Preferences.GetAsync(ExportDirectoryKey, defaultPath);
+        return await Task.FromResult(Preferences.Get(ExportDirectoryKey, defaultPath));
     }
 
     public async Task SetExportDirectoryAsync(string directory)
     {
-        await Preferences.SetAsync(ExportDirectoryKey, directory);
+        Preferences.Set(ExportDirectoryKey, directory);
+    }
+
+    public async Task<bool> GetExportIncludeMetadataAsync()
+    {
+        return await Task.FromResult(Preferences.Get("export_include_metadata", false));
+    }
+
+    public async Task SetExportIncludeMetadataAsync(bool includeMetadata)
+    {
+        Preferences.Set("export_include_metadata", includeMetadata);
+        await Task.CompletedTask;
     }
 
     // Search settings
     public async Task<bool> GetCaseSensitiveSearchAsync()
     {
-        return await Preferences.GetAsync(CaseSensitiveSearchKey, false);
+        return await Task.FromResult(Preferences.Get(CaseSensitiveSearchKey, false));
     }
 
     public async Task SetCaseSensitiveSearchAsync(bool caseSensitive)
     {
-        await Preferences.SetAsync(CaseSensitiveSearchKey, caseSensitive);
+        Preferences.Set(CaseSensitiveSearchKey, caseSensitive);
+        await Task.CompletedTask;
     }
 
     public async Task<int> GetSearchHistoryLimitAsync()
     {
-        return await Preferences.GetAsync(SearchHistoryLimitKey, 20);
+        return await Task.FromResult(Preferences.Get(SearchHistoryLimitKey, 20));
     }
 
     public async Task SetSearchHistoryLimitAsync(int limit)
     {
-        await Preferences.SetAsync(SearchHistoryLimitKey, limit);
+        Preferences.Set(SearchHistoryLimitKey, limit);
+        await Task.CompletedTask;
     }
 
     // Backup settings
     public async Task<bool> GetAutoBackupAsync()
     {
-        return await Preferences.GetAsync(AutoBackupKey, false);
+        return await Task.FromResult(Preferences.Get(AutoBackupKey, false));
     }
 
     public async Task SetAutoBackupAsync(bool autoBackup)
     {
-        await Preferences.SetAsync(AutoBackupKey, autoBackup);
+        Preferences.Set(AutoBackupKey, autoBackup);
+        await Task.CompletedTask;
     }
 
     public async Task<int> GetBackupIntervalDaysAsync()
     {
-        return await Preferences.GetAsync(BackupIntervalDaysKey, 7);
+        return await Task.FromResult(Preferences.Get(BackupIntervalDaysKey, 7));
     }
 
     public async Task SetBackupIntervalDaysAsync(int days)
     {
-        await Preferences.SetAsync(BackupIntervalDaysKey, days);
+        Preferences.Set(BackupIntervalDaysKey, days);
+        await Task.CompletedTask;
     }
 
     public async Task<DateTime?> GetLastBackupDateAsync()
     {
-        var dateString = await Preferences.GetAsync(LastBackupDateKey, string.Empty);
+        var dateString = await Task.FromResult(Preferences.Get(LastBackupDateKey, string.Empty));
         if (DateTime.TryParse(dateString, out var date))
             return date;
         return null;
@@ -146,18 +162,20 @@ public class SettingsService : ISettingsService
 
     public async Task SetLastBackupDateAsync(DateTime date)
     {
-        await Preferences.SetAsync(LastBackupDateKey, date.ToString("O"));
+        Preferences.Set(LastBackupDateKey, date.ToString("O"));
+        await Task.CompletedTask;
     }
 
     // Privacy settings
     public async Task<bool> GetCollectAnalyticsAsync()
     {
-        return await Preferences.GetAsync(CollectAnalyticsKey, false);
+        return await Task.FromResult(Preferences.Get(CollectAnalyticsKey, false));
     }
 
     public async Task SetCollectAnalyticsAsync(bool collect)
     {
-        await Preferences.SetAsync(CollectAnalyticsKey, collect);
+        Preferences.Set(CollectAnalyticsKey, collect);
+        await Task.CompletedTask;
     }
 
     // Reset settings
@@ -261,7 +279,7 @@ public class SettingsService : ISettingsService
     // Statistics and tracking methods
     public DateTime? GetBackupLastDate()
     {
-        var binaryDate = Preferences.Get(BackupLastDateKey, 0L);
+        var binaryDate = Preferences.Get(LastBackupDateKey, 0L);
         return binaryDate == 0L ? null : DateTime.FromBinary(binaryDate);
     }
 
@@ -274,5 +292,69 @@ public class SettingsService : ISettingsService
     {
         var currentCount = GetExportCount();
         Preferences.Set(ExportCountKey, currentCount + 1);
+    }
+    
+    // Synchronous helper methods for UI
+    public bool GetThemeIsDarkMode()
+    {
+        var themeString = Preferences.Get(ThemeKey, AppTheme.System.ToString());
+        return Enum.TryParse<AppTheme>(themeString, out var theme) && theme == AppTheme.Dark;
+    }
+
+    public string GetThemeColor()
+    {
+        var themeString = Preferences.Get(ThemeKey, AppTheme.System.ToString());
+        return Enum.TryParse<AppTheme>(themeString, out var theme) ? theme.ToString() : AppTheme.System.ToString();
+    }
+
+    public bool GetOcrAutoSave()
+    {
+        return Preferences.Get(AutoSaveAfterOcrKey, true);
+    }
+
+    public string GetOcrDefaultLanguage()
+    {
+        return Preferences.Get(DefaultOcrLanguageKey, "en");
+    }
+
+    public string GetExportDefaultFormat()
+    {
+        return Preferences.Get(DefaultExportFormatKey, "TXT");
+    }
+
+    public bool GetExportIncludeMetadata()
+    {
+        return Preferences.Get("export_include_metadata", false);
+    }
+
+    public void SetExportDefaultFormat(string format)
+    {
+        Preferences.Set(DefaultExportFormatKey, format);
+    }
+
+    public void SetExportIncludeMetadata(bool includeMetadata)
+    {
+        Preferences.Set("export_include_metadata", includeMetadata);
+    }
+
+    public void SetThemeColor(string color)
+    {
+        Preferences.Set(ThemeColorKey, color);
+    }
+
+    public void SetThemeIsDarkMode(bool isDarkMode)
+    {
+        var theme = isDarkMode ? AppTheme.Dark : AppTheme.Light;
+        Preferences.Set(ThemeKey, theme.ToString());
+    }
+
+    public void SetOcrAutoSave(bool autoSave)
+    {
+        Preferences.Set(AutoSaveAfterOcrKey, autoSave);
+    }
+
+    public void SetOcrDefaultLanguage(string language)
+    {
+        Preferences.Set(DefaultOcrLanguageKey, language);
     }
 }

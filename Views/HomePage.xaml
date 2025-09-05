@@ -346,7 +346,6 @@
                 CornerRadius="28"
                 HorizontalOptions="End"
                 VerticalOptions="End"
-                Margin="16"
-                HasShadow="True" />
+                Margin="16" />
     </Grid>
 </ContentPage>

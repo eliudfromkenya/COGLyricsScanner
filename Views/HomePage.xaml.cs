@@ -1,7 +1,8 @@
 using COGLyricsScanner.ViewModels;
 using Microsoft.Maui.Controls;
 
-namespace COGLyricsScanner.Views;
+namespace COGLyricsScanner.Views
+{
 
 public partial class HomePage : ContentPage
 {
@@ -24,4 +25,5 @@ public partial class HomePage : ContentPage
         base.OnDisappearing();
         await ViewModel.OnDisappearingAsync();
     }
+}
 }

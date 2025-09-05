@@ -1,7 +1,9 @@
 using COGLyricsScanner.Services;
 using COGLyricsScanner.Helpers;
+using MauiAppTheme = Microsoft.Maui.ApplicationModel.AppTheme;
 
-namespace COGLyricsScanner.Views;
+namespace COGLyricsScanner.Views
+{
 
 public partial class SettingsPage : ContentPage
 {
@@ -9,6 +11,7 @@ public partial class SettingsPage : ContentPage
     private readonly IThemeService _themeService;
     private readonly IExportService _exportService;
     private readonly IOcrService _ocrService;
+    private readonly IDatabaseService _databaseService;
 
     public SettingsPage()
     {
@@ -18,6 +21,7 @@ public partial class SettingsPage : ContentPage
         _themeService = ServiceHelper.GetService<IThemeService>();
         _exportService = ServiceHelper.GetService<IExportService>();
         _ocrService = ServiceHelper.GetService<IOcrService>();
+        _databaseService = ServiceHelper.GetService<IDatabaseService>();
         
         LoadSettings();
     }
@@ -105,7 +109,7 @@ public partial class SettingsPage : ContentPage
         try
         {
             _settingsService.SetThemeColor("Blue");
-            await _themeService.SetThemeAsync("Blue");
+            await _themeService.SetThemeAsync(COGLyricsScanner.Services.AppTheme.Light);
             UpdateThemeButtons("Blue");
         }
         catch (Exception ex)
@@ -119,7 +123,7 @@ public partial class SettingsPage : ContentPage
         try
         {
             _settingsService.SetThemeColor("Green");
-            await _themeService.SetThemeAsync("Green");
+            await _themeService.SetThemeAsync(COGLyricsScanner.Services.AppTheme.Light);
             UpdateThemeButtons("Green");
         }
         catch (Exception ex)
@@ -186,7 +190,7 @@ public partial class SettingsPage : ContentPage
     {
         try
         {
-            var result = await _exportService.BackupDatabaseAsync();
+            var result = await _exportService.CreateBackupAsync(Path.Combine(FileSystem.AppDataDirectory, "backup.db"));
             if (result)
             {
                 await DisplayAlert("Success", "Database backup completed successfully.", "OK");
@@ -212,7 +216,7 @@ public partial class SettingsPage : ContentPage
             
             if (confirm)
             {
-                var result = await _exportService.RestoreDatabaseAsync();
+                var result = await _exportService.RestoreBackupAsync(Path.Combine(FileSystem.AppDataDirectory, "backup.db"));
                 if (result)
                 {
                     await DisplayAlert("Success", "Database restored successfully. Please restart the app.", "OK");
@@ -239,7 +243,7 @@ public partial class SettingsPage : ContentPage
             
             if (confirm)
             {
-                _settingsService.ResetAllSettings();
+                await _settingsService.ResetAllSettingsAsync();
                 LoadSettings();
                 await _themeService.InitializeAsync();
                 await DisplayAlert("Success", "Settings have been reset to default values.", "OK");
@@ -262,4 +266,5 @@ public partial class SettingsPage : ContentPage
             await DisplayAlert("Error", $"Failed to navigate to about page: {ex.Message}", "OK");
         }
     }
+}
 }

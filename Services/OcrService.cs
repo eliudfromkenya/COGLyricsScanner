@@ -6,7 +6,7 @@ namespace COGLyricsScanner.Services;
 
 public class OcrService : IOcrService
 {
-    private readonly IOcrService _ocrService;
+    private readonly Plugin.Maui.OCR.IOcrService _ocrService;
     private float _lastConfidenceScore;
     private readonly List<string> _supportedLanguages;
 
@@ -97,11 +97,7 @@ public class OcrService : IOcrService
             var stopwatch = Stopwatch.StartNew();
             
             // Use the OCR plugin to recognize text
-            var ocrResult = await _ocrService.RecognizeTextAsync(imageBytes, new OcrOptions
-            {
-                Language = language,
-                TryHard = true
-            });
+            var ocrResult = await _ocrService.RecognizeTextAsync(imageBytes, tryHard: true);
 
             stopwatch.Stop();
 

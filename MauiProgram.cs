@@ -24,7 +24,7 @@ public static class MauiProgram
 
         // Register Services
         builder.Services.AddSingleton<IDatabaseService, DatabaseService>();
-        builder.Services.AddSingleton<IOcrService, OcrService>();
+        builder.Services.AddSingleton<Services.IOcrService, OcrService>();
         builder.Services.AddSingleton<IThemeService, ThemeService>();
         builder.Services.AddSingleton<IExportService, ExportService>();
         builder.Services.AddSingleton<ISettingsService, SettingsService>();

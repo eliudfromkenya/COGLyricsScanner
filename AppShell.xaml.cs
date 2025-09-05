@@ -24,10 +24,10 @@ public partial class AppShell : Shell
         Routing.RegisterRoute("about", typeof(AboutPage));
         
         // Register detail pages
-        Routing.RegisterRoute("hymn-detail", typeof(HymnDetailPage));
+        // Routing.RegisterRoute("hymn-detail", typeof(HymnDetailPage));
         Routing.RegisterRoute("collection-detail", typeof(CollectionDetailPage));
-        Routing.RegisterRoute("export", typeof(ExportPage));
-        Routing.RegisterRoute("backup", typeof(BackupPage));
+        // Routing.RegisterRoute("export", typeof(ExportPage));
+        // Routing.RegisterRoute("backup", typeof(BackupPage));
     }
 
     private void SetupShellEvents()

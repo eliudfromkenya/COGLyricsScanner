@@ -17,7 +17,13 @@ public interface IDatabaseService
     Task<List<Hymn>> GetHymnsByTagAsync(string tag);
     Task<Hymn?> GetHymnAsync(int id);
     Task<int> SaveHymnAsync(Hymn hymn);
-    Task<bool> DeleteHymnAsync(int id);
+    Task<int> AddHymnAsync(Hymn hymn);
+    Task<bool> UpdateHymnAsync(Hymn hymn);
+    Task<bool> DeleteHymnAsync(int hymnId);
+    Task<List<Hymn>> GetCollectionHymnsAsync(int collectionId);
+    Task<List<HymnCollection>> GetHymnCollectionsByCollectionIdAsync(int collectionId);
+    Task<bool> DeleteHymnCollectionAsync(int hymnCollectionId);
+    Task<List<Collection>> GetCollectionsByHymnIdAsync(int hymnId);
     Task<bool> ToggleFavoriteAsync(int hymnId);
     Task UpdateViewCountAsync(int hymnId);
 
@@ -47,6 +53,8 @@ public interface IDatabaseService
     Task<int> GetTotalHymnsCountAsync();
     Task<int> GetTotalBooksCountAsync();
     Task<int> GetTotalCollectionsCountAsync();
+    Task<int> GetFavoriteHymnsCountAsync();
+    Task<List<HymnBook>> GetAllHymnBooksAsync();
     Task<List<string>> GetAvailableLanguagesAsync();
     Task<List<string>> GetAvailableTagsAsync();
 

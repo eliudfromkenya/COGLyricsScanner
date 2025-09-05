@@ -1,4 +1,5 @@
-namespace COGLyricsScanner.Views;
+namespace COGLyricsScanner.Views
+{
 
 public partial class AboutPage : ContentPage
 {
@@ -60,4 +61,5 @@ public partial class AboutPage : ContentPage
             await DisplayAlert("Error", $"Failed to open email client: {ex.Message}", "OK");
         }
     }
+}
 }

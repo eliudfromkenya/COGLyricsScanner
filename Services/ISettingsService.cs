@@ -23,6 +23,8 @@ public interface ISettingsService
     Task SetDefaultExportFormatAsync(string format);
     Task<string> GetExportDirectoryAsync();
     Task SetExportDirectoryAsync(string directory);
+    Task<bool> GetExportIncludeMetadataAsync();
+    Task SetExportIncludeMetadataAsync(bool includeMetadata);
     
     // Search settings
     Task<bool> GetCaseSensitiveSearchAsync();
@@ -46,6 +48,20 @@ public interface ISettingsService
     DateTime? GetBackupLastDate();
     int GetExportCount();
     void IncrementExportCount();
+    
+    // Synchronous helper methods for UI
+    bool GetThemeIsDarkMode();
+    string GetThemeColor();
+    bool GetOcrAutoSave();
+    string GetOcrDefaultLanguage();
+    string GetExportDefaultFormat();
+    bool GetExportIncludeMetadata();
+    void SetExportDefaultFormat(string format);
+    void SetExportIncludeMetadata(bool includeMetadata);
+    void SetThemeColor(string color);
+    void SetThemeIsDarkMode(bool isDarkMode);
+    void SetOcrAutoSave(bool autoSave);
+    void SetOcrDefaultLanguage(string language);
 
     // Reset settings
     Task ResetAllSettingsAsync();

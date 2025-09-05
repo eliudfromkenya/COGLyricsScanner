@@ -116,7 +116,7 @@
                    CornerRadius="8"
                    Padding="16">
                 <StackLayout Spacing="12">
-                    <Label Text="Backup & Data" 
+                    <Label Text="Backup and Data" 
                            FontSize="18" 
                            FontAttributes="Bold"
                            TextColor="{DynamicResource PrimaryTextColor}" />

@@ -109,7 +109,7 @@ public partial class HomePageViewModel : BaseViewModel
             try
             {
                 // Load hymns
-                var allHymns = await _databaseService.GetAllHymnsAsync();
+                var allHymns = await _databaseService.GetHymnsAsync();
                 Hymns.Clear();
                 foreach (var hymn in allHymns)
                 {
@@ -126,7 +126,7 @@ public partial class HomePageViewModel : BaseViewModel
                 }
 
                 // Load collections
-                var colls = await _databaseService.GetAllCollectionsAsync();
+                var colls = await _databaseService.GetCollectionsAsync();
                 Collections.Clear();
                 Collections.Add(new Collection { Id = 0, Name = "All Collections" }); // Add "All" option
                 foreach (var collection in colls)
@@ -173,9 +173,8 @@ public partial class HomePageViewModel : BaseViewModel
     {
         try
         {
-            var stats = await _databaseService.GetStatisticsAsync();
-            TotalHymns = stats.TotalHymns;
-            TotalCollections = stats.TotalCollections;
+            TotalHymns = await _databaseService.GetTotalHymnsCountAsync();
+            TotalCollections = await _databaseService.GetTotalCollectionsCountAsync();
             TotalFavorites = await _databaseService.GetFavoriteHymnsCountAsync();
         }
         catch (Exception ex)
@@ -297,7 +296,7 @@ public partial class HomePageViewModel : BaseViewModel
         filtered = SortBy switch
         {
             "Title" => SortAscending ? filtered.OrderBy(h => h.Title) : filtered.OrderByDescending(h => h.Title),
-            "Number" => SortAscending ? filtered.OrderBy(h => h.Number ?? int.MaxValue) : filtered.OrderByDescending(h => h.Number ?? int.MinValue),
+            "Number" => SortAscending ? filtered.OrderBy(h => int.TryParse(h.Number, out var n) ? n : int.MaxValue) : filtered.OrderByDescending(h => int.TryParse(h.Number, out var n) ? n : int.MinValue),
             "Created Date" => SortAscending ? filtered.OrderBy(h => h.CreatedDate) : filtered.OrderByDescending(h => h.CreatedDate),
             "Modified Date" => SortAscending ? filtered.OrderBy(h => h.ModifiedDate) : filtered.OrderByDescending(h => h.ModifiedDate),
             "View Count" => SortAscending ? filtered.OrderBy(h => h.ViewCount) : filtered.OrderByDescending(h => h.ViewCount),
@@ -434,7 +433,9 @@ public partial class HomePageViewModel : BaseViewModel
         {
             try
             {
-                var success = await _exportService.ExportHymnsAsync(FilteredHymns.ToList(), exportFormat);
+                var fileName = $"hymns_export_{DateTime.Now:yyyyMMdd_HHmmss}.{exportFormat.ToString().ToLower()}";
+                var filePath = Path.Combine(FileSystem.CacheDirectory, fileName);
+                var success = await _exportService.ExportHymnsAsync(FilteredHymns.ToList(), exportFormat, filePath);
                 if (success)
                 {
                     await ShowSuccessAsync($"Exported {FilteredHymns.Count} hymns successfully!");

@@ -51,15 +51,16 @@
     <Color x:Key="DarkShadow">#00000040</Color>
 
     <!-- Dynamic Colors (will change based on theme) -->
-    <Color x:Key="PageBackgroundColor">{AppThemeBinding Light={StaticResource LightBackground}, Dark={StaticResource DarkBackground}}</Color>
-    <Color x:Key="SurfaceColor">{AppThemeBinding Light={StaticResource LightSurface}, Dark={StaticResource DarkSurface}}</Color>
-    <Color x:Key="SurfaceVariantColor">{AppThemeBinding Light={StaticResource LightSurfaceVariant}, Dark={StaticResource DarkSurfaceVariant}}</Color>
-    <Color x:Key="OnBackgroundColor">{AppThemeBinding Light={StaticResource LightOnBackground}, Dark={StaticResource DarkOnBackground}}</Color>
-    <Color x:Key="OnSurfaceColor">{AppThemeBinding Light={StaticResource LightOnSurface}, Dark={StaticResource DarkOnSurface}}</Color>
-    <Color x:Key="OnPrimaryColor">{AppThemeBinding Light={StaticResource LightOnPrimary}, Dark={StaticResource DarkOnPrimary}}</Color>
-    <Color x:Key="OnSecondaryColor">{AppThemeBinding Light={StaticResource LightOnSecondary}, Dark={StaticResource DarkOnSecondary}}</Color>
-    <Color x:Key="OutlineColor">{AppThemeBinding Light={StaticResource LightOutline}, Dark={StaticResource DarkOutline}}</Color>
-    <Color x:Key="ShadowColor">{AppThemeBinding Light={StaticResource LightShadow}, Dark={StaticResource DarkShadow}}</Color>
+    <!-- Note: AppThemeBinding for Color resources is handled in code-behind or through styles -->
+    <Color x:Key="PageBackgroundColor">#FFFFFF</Color>
+    <Color x:Key="SurfaceColor">#F8F9FA</Color>
+    <Color x:Key="SurfaceVariantColor">#E8F5E8</Color>
+    <Color x:Key="OnBackgroundColor">#212121</Color>
+    <Color x:Key="OnSurfaceColor">#424242</Color>
+    <Color x:Key="OnPrimaryColor">#FFFFFF</Color>
+    <Color x:Key="OnSecondaryColor">#FFFFFF</Color>
+    <Color x:Key="OutlineColor">#E0E0E0</Color>
+    <Color x:Key="ShadowColor">#00000020</Color>
 
     <!-- Gradient Colors -->
     <LinearGradientBrush x:Key="PrimaryGradient" StartPoint="0,0" EndPoint="1,1">

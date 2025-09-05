@@ -154,7 +154,7 @@
                    CornerRadius="8"
                    Padding="16">
                 <StackLayout Spacing="12">
-                    <Label Text="Support & Contact" 
+                    <Label Text="Support and Contact" 
                            FontSize="18" 
                            FontAttributes="Bold"
                            TextColor="{DynamicResource PrimaryTextColor}" />

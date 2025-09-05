@@ -128,8 +128,8 @@ public class CollectionsPageViewModel : BaseViewModel
             {
                 Name = name,
                 Description = description,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now
+                CreatedDate = DateTime.Now,
+                ModifiedDate = DateTime.Now
             };
 
             await _databaseService.SaveCollectionAsync(collection);
@@ -145,7 +145,7 @@ public class CollectionsPageViewModel : BaseViewModel
         {
             collection.Name = name;
             collection.Description = description;
-            collection.UpdatedAt = DateTime.Now;
+            collection.ModifiedDate = DateTime.Now;
 
             await _databaseService.SaveCollectionAsync(collection);
             await LoadCollectionsAsync();
@@ -199,7 +199,9 @@ public class CollectionsPageViewModel : BaseViewModel
             
             if (hymns.Any())
             {
-                var success = await _exportService.ExportHymnsAsync(hymns, ExportFormat.JSON);
+                var fileName = $"collection_{collection.Name}_{DateTime.Now:yyyyMMdd_HHmmss}.json";
+                var filePath = Path.Combine(FileSystem.CacheDirectory, fileName);
+                var success = await _exportService.ExportHymnsAsync(hymns, ExportFormat.JSON, filePath);
                 if (success)
                 {
                     await ShowSuccessAsync($"Collection '{collection.Name}' exported successfully.");

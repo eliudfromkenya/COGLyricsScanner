@@ -115,7 +115,7 @@
                                                FontSize="12"
                                                TextColor="{DynamicResource SecondaryTextColor}">
                                             <Label.Text>
-                                                <MultiBinding StringFormat="{0} hymns">
+                                                <MultiBinding StringFormat="{}{0} hymns">
                                                     <Binding Path="HymnCount" />
                                                 </MultiBinding>
                                             </Label.Text>

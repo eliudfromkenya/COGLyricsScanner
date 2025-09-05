@@ -267,6 +267,6 @@ The app will:
 ---
 
 **Document Version**: 1.0  
-**Last Updated**: [Current Date]  
-**Prepared By**: Development Team  
-**Approved By**: Project Stakeholders
+**Last Updated**: 5th Sept, 2025  
+**Prepared By**: Eliud Amukambwa  
+**Approved By**: Eliud Amukambwa

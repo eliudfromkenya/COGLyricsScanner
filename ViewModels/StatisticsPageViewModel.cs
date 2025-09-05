@@ -176,8 +176,8 @@ public class StatisticsPageViewModel : BaseViewModel
             var hymns = await _databaseService.GetHymnsAsync();
             var sevenDaysAgo = DateTime.Now.AddDays(-7);
 
-            RecentlyAddedCount = hymns.Count(h => h.CreatedAt >= sevenDaysAgo);
-            RecentlyModifiedCount = hymns.Count(h => h.UpdatedAt >= sevenDaysAgo && h.UpdatedAt != h.CreatedAt);
+            RecentlyAddedCount = hymns.Count(h => h.CreatedDate >= sevenDaysAgo);
+            RecentlyModifiedCount = hymns.Count(h => h.ModifiedDate >= sevenDaysAgo && h.ModifiedDate != h.CreatedDate);
 
             var mostViewed = hymns.OrderByDescending(h => h.ViewCount).FirstOrDefault();
             MostViewedHymn = mostViewed != null ? $"{mostViewed.Title} ({mostViewed.ViewCount} views)" : "None";

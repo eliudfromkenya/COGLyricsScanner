@@ -138,14 +138,14 @@
                                 AutoSize="TextChanges"
                                 Margin="{Binding ShowLineNumbers, Converter={StaticResource BoolToEditorMarginConverter}}"
                                 TextChanged="OnLyricsTextChanged"
-                                Scrolled="OnLyricsScrolled" />
+                            />
                     </Grid>
                 </Frame>
                 
                 <!-- Tags and Notes -->
                 <Frame Style="{DynamicResource CardStyle}">
                     <StackLayout Spacing="12">
-                        <Label Text="Tags & Notes" Style="{DynamicResource SubtitleLabelStyle}" />
+                        <Label Text="Tags and Notes" Style="{DynamicResource SubtitleLabelStyle}" />
                         
                         <Entry Text="{Binding HymnTags}"
                                Placeholder="Tags (comma-separated)"

@@ -1,7 +1,8 @@
 using COGLyricsScanner.ViewModels;
 using COGLyricsScanner.Models;
 
-namespace COGLyricsScanner.Views;
+namespace COGLyricsScanner.Views
+{
 
 public partial class CollectionsPage : ContentPage
 {
@@ -138,4 +139,5 @@ public partial class CollectionsPage : ContentPage
             await DisplayAlert("Error", $"Failed to delete collection: {ex.Message}", "OK");
         }
     }
+}
 }

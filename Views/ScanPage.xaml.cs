@@ -1,6 +1,7 @@
 using COGLyricsScanner.ViewModels;
 
-namespace COGLyricsScanner.Views;
+namespace COGLyricsScanner.Views
+{
 
 public partial class ScanPage : ContentPage
 {
@@ -29,4 +30,5 @@ public partial class ScanPage : ContentPage
             await viewModel.OnDisappearingAsync();
         }
     }
+}
 }

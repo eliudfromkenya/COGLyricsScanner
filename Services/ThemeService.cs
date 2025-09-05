@@ -3,7 +3,7 @@ namespace COGLyricsScanner.Services;
 public class ThemeService : IThemeService
 {
     private const string ThemeKey = "app_theme";
-    private AppTheme _currentTheme = AppTheme.Unspecified;
+    private AppTheme _currentTheme = AppTheme.System;
     
     public AppTheme CurrentTheme => _currentTheme;
     public bool IsDarkMode => _currentTheme == AppTheme.Dark;
@@ -36,7 +36,7 @@ public class ThemeService : IThemeService
         {
             AppTheme.Light => AppTheme.Dark,
             AppTheme.Dark => AppTheme.Light,
-            AppTheme.Unspecified => AppTheme.Dark,
+            AppTheme.System => AppTheme.Dark,
             _ => AppTheme.Light
         };
         
@@ -47,7 +47,13 @@ public class ThemeService : IThemeService
     {
         if (Application.Current != null)
         {
-            Application.Current.UserAppTheme = _currentTheme;
+            Application.Current.UserAppTheme = _currentTheme switch
+            {
+                AppTheme.Light => Microsoft.Maui.ApplicationModel.AppTheme.Light,
+                AppTheme.Dark => Microsoft.Maui.ApplicationModel.AppTheme.Dark,
+                AppTheme.System => Microsoft.Maui.ApplicationModel.AppTheme.Unspecified,
+                _ => Microsoft.Maui.ApplicationModel.AppTheme.Unspecified
+            };
         }
     }
     
@@ -55,7 +61,7 @@ public class ThemeService : IThemeService
     {
         try
         {
-            await Preferences.SetAsync(ThemeKey, theme.ToString());
+            Preferences.Set(ThemeKey, theme.ToString());
         }
         catch (Exception ex)
         {
@@ -67,7 +73,7 @@ public class ThemeService : IThemeService
     {
         try
         {
-            var savedTheme = await Preferences.GetAsync(ThemeKey, AppTheme.Unspecified.ToString());
+            var savedTheme = Preferences.Get(ThemeKey, AppTheme.System.ToString());
             
             if (Enum.TryParse<AppTheme>(savedTheme, out var theme))
             {
@@ -80,6 +86,18 @@ public class ThemeService : IThemeService
         }
         
         // Default to system theme
-        return AppTheme.Unspecified;
+        return AppTheme.System;
+    }
+
+    public async Task SetThemeAsync(AppTheme theme)
+    {
+        SetTheme(theme);
+        await SaveThemePreferenceAsync(theme);
+    }
+
+    public async Task ToggleDarkModeAsync()
+    {
+        ToggleTheme();
+        await SaveThemePreferenceAsync(_currentTheme);
     }
 }

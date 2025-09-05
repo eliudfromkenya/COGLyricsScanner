@@ -23,7 +23,7 @@ public partial class EditPageViewModel : BaseViewModel
     private string hymnTitle = string.Empty;
 
     [ObservableProperty]
-    private int? hymnNumber;
+    private string? hymnNumber;
 
     [ObservableProperty]
     private string hymnLyrics = string.Empty;
@@ -141,7 +141,7 @@ public partial class EditPageViewModel : BaseViewModel
     {
         try
         {
-            var collections = await _databaseService.GetAllCollectionsAsync();
+            var collections = await _databaseService.GetCollectionsAsync();
             AvailableCollections.Clear();
             foreach (var collection in collections)
             {
@@ -170,7 +170,7 @@ public partial class EditPageViewModel : BaseViewModel
     {
         try
         {
-            var hymn = await _databaseService.GetHymnByIdAsync(id);
+            var hymn = await _databaseService.GetHymnAsync(id);
             if (hymn != null)
             {
                 CurrentHymn = hymn;
@@ -187,9 +187,9 @@ public partial class EditPageViewModel : BaseViewModel
                 IsNewHymn = false;
                 
                 // Load hymn book
-                if (hymn.HymnBookId.HasValue)
+                if (hymn.HymnBookId > 0)
                 {
-                    SelectedHymnBook = AvailableHymnBooks.FirstOrDefault(b => b.Id == hymn.HymnBookId.Value);
+                    SelectedHymnBook = AvailableHymnBooks.FirstOrDefault(b => b.Id == hymn.HymnBookId);
                 }
                 
                 // Load collections
@@ -270,7 +270,7 @@ public partial class EditPageViewModel : BaseViewModel
                         Tags = HymnTags,
                         Notes = HymnNotes,
                         IsFavorite = IsFavorite,
-                        HymnBookId = SelectedHymnBook?.Id,
+                        HymnBookId = SelectedHymnBook?.Id ?? 0,
                         CreatedDate = DateTime.Now,
                         ModifiedDate = DateTime.Now
                     };
@@ -290,7 +290,7 @@ public partial class EditPageViewModel : BaseViewModel
                     CurrentHymn.Tags = HymnTags;
                     CurrentHymn.Notes = HymnNotes;
                     CurrentHymn.IsFavorite = IsFavorite;
-                    CurrentHymn.HymnBookId = SelectedHymnBook?.Id;
+                    CurrentHymn.HymnBookId = SelectedHymnBook?.Id ?? 0;
                     CurrentHymn.ModifiedDate = DateTime.Now;
                     
                     await _databaseService.UpdateHymnAsync(CurrentHymn);
@@ -581,7 +581,7 @@ public partial class EditPageViewModel : BaseViewModel
 
     // Property change handlers
     partial void OnHymnTitleChanged(string value) => MarkAsChanged();
-    partial void OnHymnNumberChanged(int? value) => MarkAsChanged();
+    partial void OnHymnNumberChanged(string? value) => MarkAsChanged();
     partial void OnHymnLyricsChanged(string value)
     {
         MarkAsChanged();

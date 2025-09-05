@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using COGLyricsScanner.Models;
 using COGLyricsScanner.Services;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 
 namespace COGLyricsScanner.ViewModels;
 
@@ -47,6 +48,8 @@ public partial class ScanPageViewModel : BaseViewModel
 
     [ObservableProperty]
     private ObservableCollection<string> recentScans = new();
+
+    public ICommand OnAppearingCommand => new RelayCommand(async () => await OnAppearingAsync());
 
     public ScanPageViewModel(IOcrService ocrService, IDatabaseService databaseService, ISettingsService settingsService)
     {

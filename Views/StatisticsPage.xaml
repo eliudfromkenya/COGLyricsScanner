@@ -228,7 +228,7 @@
                                            HorizontalOptions="End"
                                            TextColor="{DynamicResource SecondaryTextColor}">
                                         <Label.Text>
-                                            <MultiBinding StringFormat="{0} hymns">
+                                            <MultiBinding StringFormat="{}{0} hymns">
                                                 <Binding Path="HymnCount" />
                                             </MultiBinding>
                                         </Label.Text>
@@ -246,7 +246,7 @@
                    CornerRadius="8"
                    Padding="16">
                 <StackLayout Spacing="12">
-                    <Label Text="Export & Backup" 
+                    <Label Text="Export and Backup" 
                            FontSize="18" 
                            FontAttributes="Bold"
                            TextColor="{DynamicResource PrimaryTextColor}" />
@@ -262,7 +262,7 @@
                         <Label Grid.Column="1"
                                TextColor="{DynamicResource SecondaryTextColor}">
                             <Label.Text>
-                                <MultiBinding StringFormat="{0:MMM dd, yyyy HH:mm}">
+                                <MultiBinding StringFormat="{}{0:MMM dd, yyyy HH:mm}">
                                     <Binding Path="LastBackupDate" FallbackValue="Never" />
                                 </MultiBinding>
                             </Label.Text>
@@ -292,17 +292,16 @@
                             Command="{Binding RefreshCommand}" />
                 </StackLayout>
             </Frame>
-            
+
+
+            <!-- Loading Overlay -->
+            <Grid IsVisible="{Binding IsLoading}"
+       BackgroundColor="#80000000">
+                <ActivityIndicator IsRunning="{Binding IsLoading}"
+                        Color="{DynamicResource Primary}"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center" />
+            </Grid>
         </StackLayout>
-    </ScrollView>
-    
-    <!-- Loading Overlay -->
-    <Grid IsVisible="{Binding IsLoading}"
-          BackgroundColor="#80000000">
-        <ActivityIndicator IsRunning="{Binding IsLoading}"
-                           Color="{DynamicResource Primary}"
-                           VerticalOptions="Center"
-                           HorizontalOptions="Center" />
-    </Grid>
-    
+    </ScrollView> 
 </ContentPage>

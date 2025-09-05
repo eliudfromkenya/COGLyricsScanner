@@ -14,4 +14,6 @@ public interface IThemeService
     Task InitializeAsync();
     Task SaveThemePreferenceAsync(AppTheme theme);
     Task<AppTheme> GetSavedThemeAsync();
+    Task SetThemeAsync(AppTheme theme);
+    Task ToggleDarkModeAsync();
 }
