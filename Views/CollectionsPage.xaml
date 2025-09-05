@@ -65,10 +65,28 @@
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Grid Padding="16,8">
-                            <Border BackgroundColor="{DynamicResource CardBackgroundColor}"
+                            <Border x:Name="CollectionBorder"
+                                    BackgroundColor="{DynamicResource CardBackgroundColor}"
                                     Stroke="{DynamicResource BorderColor}"
                                     StrokeShape="RoundRectangle 8"
                                     Padding="16">
+                                
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup Name="CommonStates">
+                                        <VisualState Name="Normal">
+                                            <VisualState.Setters>
+                                                <Setter Property="Scale" Value="1.0" />
+                                                <Setter Property="Opacity" Value="1.0" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                        <VisualState Name="Selected">
+                                            <VisualState.Setters>
+                                                <Setter Property="Scale" Value="0.95" />
+                                                <Setter Property="Opacity" Value="0.8" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
                                 
                                 <Grid RowDefinitions="Auto,Auto,Auto" 
                                       ColumnDefinitions="*,Auto"

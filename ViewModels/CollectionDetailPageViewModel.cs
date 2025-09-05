@@ -9,8 +9,8 @@ namespace COGLyricsScanner.ViewModels;
 public class CollectionDetailPageViewModel : BaseViewModel
 {
     private readonly IDatabaseService _databaseService;
-    private readonly Collection _collection;
-    private readonly System.Timers.Timer _searchTimer;
+    private Collection _collection = null!;
+    private System.Timers.Timer _searchTimer = null!;
     
     private ObservableCollection<HymnItemViewModel> _hymns;
     private ObservableCollection<HymnItemViewModel> _filteredHymns;
@@ -27,13 +27,33 @@ public class CollectionDetailPageViewModel : BaseViewModel
         _collection = collection ?? throw new ArgumentNullException(nameof(collection));
         _databaseService = ServiceHelper.GetService<IDatabaseService>();
         
+        InitializeCommonProperties();
+        InitializeViewModel(collection);
+    }
+
+    public CollectionDetailPageViewModel(int collectionId)
+    {
+        _databaseService = ServiceHelper.GetService<IDatabaseService>();
+        
+        InitializeCommonProperties();
+        
+        // Load collection from database
+        Task.Run(async () =>
+        {
+            var collection = await _databaseService.GetCollectionAsync(collectionId);
+            if (collection != null)
+            {
+                _collection = collection;
+                await MainThread.InvokeOnMainThreadAsync(() => InitializeViewModel(collection));
+            }
+        });
+    }
+
+    private void InitializeCommonProperties()
+    {
         _hymns = new ObservableCollection<HymnItemViewModel>();
         _filteredHymns = new ObservableCollection<HymnItemViewModel>();
         _searchText = string.Empty;
-        _collectionName = collection.Name;
-        _collectionDescription = collection.Description ?? string.Empty;
-        _createdDate = collection.CreatedDate;
-        _updatedDate = collection.ModifiedDate;
         
         // Initialize search timer
         _searchTimer = new System.Timers.Timer(300);
@@ -47,6 +67,15 @@ public class CollectionDetailPageViewModel : BaseViewModel
         ShowHymnOptionsCommand = new Command<HymnItemViewModel>(async (hymn) => await ShowHymnOptionsAsync(hymn));
         AddHymnsCommand = new Command(async () => await AddHymnsAsync());
         ShowOptionsCommand = new Command(async () => await ShowCollectionOptionsAsync());
+        ExportCollectionCommand = new Command(async () => await ExportCollectionAsync());
+    }
+
+    private void InitializeViewModel(Collection collection)
+    {
+        _collectionName = collection.Name;
+        _collectionDescription = collection.Description ?? string.Empty;
+        _createdDate = collection.CreatedDate;
+        _updatedDate = collection.ModifiedDate;
         
         Title = collection.Name;
     }
@@ -112,12 +141,13 @@ public class CollectionDetailPageViewModel : BaseViewModel
         set => SetProperty(ref _filteredHymns, value);
     }
 
-    public new ICommand RefreshCommand { get; }
-    public ICommand ViewHymnCommand { get; }
-    public ICommand ToggleFavoriteCommand { get; }
-    public ICommand ShowHymnOptionsCommand { get; }
-    public ICommand AddHymnsCommand { get; }
-    public ICommand ShowOptionsCommand { get; }
+    public new ICommand RefreshCommand { get; private set; } = null!;
+    public ICommand ViewHymnCommand { get; private set; } = null!;
+    public ICommand ToggleFavoriteCommand { get; private set; } = null!;
+    public ICommand ShowHymnOptionsCommand { get; private set; } = null!;
+    public ICommand AddHymnsCommand { get; private set; } = null!;
+    public ICommand ShowOptionsCommand { get; private set; } = null!;
+    public ICommand ExportCollectionCommand { get; private set; } = null!;
 
     public override async Task OnAppearingAsync()
     {

@@ -52,7 +52,7 @@
                 </Border>
 
                 <!-- Search and Actions -->
-                <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+                <Grid ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="8">
                     <SearchBar Grid.Column="0"
                                Text="{Binding SearchText}"
                                Placeholder="Search hymns in collection..."
@@ -61,12 +61,19 @@
                                PlaceholderColor="{DynamicResource OnSurfaceVariant}" />
                     
                     <Button Grid.Column="1"
+                            Text="📤"
+                            Command="{Binding ExportCollectionCommand}"
+                            Style="{DynamicResource IconButtonStyle}"
+                            FontSize="16"
+                            ToolTipProperties.Text="Export Collection" />
+                    
+                    <Button Grid.Column="2"
                             Text="Add Hymns"
                             Command="{Binding AddHymnsCommand}"
                             Style="{DynamicResource SecondaryButtonStyle}"
                             FontSize="12" />
                     
-                    <Button Grid.Column="2"
+                    <Button Grid.Column="3"
                             Text="⋮"
                             Command="{Binding ShowOptionsCommand}"
                             Style="{DynamicResource IconButtonStyle}"

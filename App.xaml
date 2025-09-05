@@ -18,6 +18,8 @@
             <converters:BoolToFavoriteIconConverter x:Key="BoolToFavoriteIconConverter" />
             <converters:BoolToFavoriteColorConverter x:Key="BoolToFavoriteColorConverter" />
             <converters:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+            <converters:StringToBoolConverter x:Key="StringToBoolConverter" />
+            <converters:DateTimeToVisibilityConverter x:Key="DateTimeToVisibilityConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

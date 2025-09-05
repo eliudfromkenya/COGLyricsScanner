@@ -47,6 +47,9 @@ public partial class App : Application
             var themeService = ServiceHelper.GetService<IThemeService>();
             await themeService.InitializeAsync();
             themeService.ApplyTheme();
+            
+            // Navigate to collections page as the default homepage
+            await Shell.Current.GoToAsync("//collections");
         }
         catch (Exception ex)
         {
