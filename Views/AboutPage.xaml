@@ -18,7 +18,7 @@
                     <Label Text="🎵" 
                            FontSize="48"
                            HorizontalOptions="Center" />
-                    <Label Text="COG Lyrics Scanner" 
+                    <Label Text="Nakuru West COG Lyrics Scanner" 
                            FontSize="24" 
                            FontAttributes="Bold"
                            HorizontalOptions="Center"

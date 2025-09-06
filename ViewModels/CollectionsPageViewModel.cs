@@ -218,7 +218,7 @@ public class CollectionsPageViewModel : BaseViewModel
     {
         try
         {
-            await Shell.Current.GoToAsync($"//collection-detail?collectionId={collection.Id}");
+            await Shell.Current.GoToAsync($"//CollectionModal?collectionId={collection.Id}");
         }
         catch (Exception ex)
         {

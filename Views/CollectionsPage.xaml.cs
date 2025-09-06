@@ -34,19 +34,16 @@ public partial class CollectionsPage : ContentPage
 
     private async void OnAddCollectionClicked(object sender, EventArgs e)
     {
-        try
-        {
-            var name = await DisplayPromptAsync("New Collection", "Enter collection name:", "Create", "Cancel", "My Collection");
-            if (!string.IsNullOrWhiteSpace(name))
+            try
             {
-                var description = await DisplayPromptAsync("Collection Description", "Enter description (optional):", "Create", "Cancel", "");
-                await _viewModel.CreateCollectionAsync(name.Trim(), description?.Trim());
+                var pg = new CollectionModalPage();
+                await Shell.Current.Navigation.PushModalAsync(pg);
             }
-        }
-        catch (Exception ex)
-        {
-            await DisplayAlert("Error", $"Failed to create collection: {ex.Message}", "OK");
-        }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"Failed to create collection: {ex.Message}", "OK");
+            }
+            
     }
 
     private async void OnCollectionTapped(object sender, TappedEventArgs e)
@@ -55,12 +52,29 @@ public partial class CollectionsPage : ContentPage
         {
             if (e.Parameter is Collection collection)
             {
-                await _viewModel.NavigateToCollectionAsync(collection);
+                // The sender should be the Border element from the TapGestureRecognizer
+                if (sender is Border border)
+                {
+                    // Trigger selection visual state
+                    VisualStateManager.GoToState(border, "Selected");
+                    
+                    // Add a subtle scale animation
+                    await border.ScaleTo(0.95, 100, Easing.CubicOut);
+                    await Task.Delay(50); // Brief pause to show selection
+                    await border.ScaleTo(1.0, 100, Easing.CubicOut);
+                    
+                    // Reset to normal state
+                    VisualStateManager.GoToState(border, "Normal");
+                }
+                    var pg = new CollectionDetailPage(collection);
+                   await Shell.Current.Navigation.PushModalAsync(pg);
+
+               // await _viewModel.NavigateToCollectionAsync(collection);
             }
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Error", $"Failed to open collection: {ex.Message}", "OK");
+            await DisplayAlert("Error", $"Failed to navigate to collection: {ex.Message}", "OK");
         }
     }
 
@@ -106,16 +120,11 @@ public partial class CollectionsPage : ContentPage
     {
         try
         {
-            var name = await DisplayPromptAsync("Edit Collection", "Collection name:", "Save", "Cancel", collection.Name);
-            if (!string.IsNullOrWhiteSpace(name) && name != collection.Name)
-            {
-                var description = await DisplayPromptAsync("Edit Description", "Description (optional):", "Save", "Cancel", collection.Description ?? "");
-                await _viewModel.UpdateCollectionAsync(collection, name.Trim(), description?.Trim());
-            }
+            await Shell.Current.GoToAsync($"collection-modal?collectionId={collection.Id}");
         }
         catch (Exception ex)
         {
-            await DisplayAlert("Error", $"Failed to edit collection: {ex.Message}", "OK");
+            await DisplayAlert("Error", $"Failed to open edit modal: {ex.Message}", "OK");
         }
     }
 
@@ -132,6 +141,36 @@ public partial class CollectionsPage : ContentPage
             if (confirm)
             {
                 await _viewModel.DeleteCollectionAsync(collection);
+            }
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Error", $"Failed to delete collection: {ex.Message}", "OK");
+        }
+    }
+
+    private async void OnEditCollectionClicked(object sender, EventArgs e)
+    {
+        try
+        {
+            if (sender is Button button && button.CommandParameter is Collection collection)
+            {
+                await EditCollection(collection);
+            }
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Error", $"Failed to edit collection: {ex.Message}", "OK");
+        }
+    }
+
+    private async void OnDeleteCollectionClicked(object sender, EventArgs e)
+    {
+        try
+        {
+            if (sender is Button button && button.CommandParameter is Collection collection)
+            {
+                await DeleteCollection(collection);
             }
         }
         catch (Exception ex)

@@ -1,12 +1,16 @@
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using COGLyricsScanner.Models;
 using COGLyricsScanner.Services;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.VisualBasic;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
+using Collection = COGLyricsScanner.Models.Collection;
 
 namespace COGLyricsScanner.ViewModels;
 
-[QueryProperty(nameof(HymnId), "HymnId")]
+[QueryProperty(nameof(HymnId), "hymnId")]
+[QueryProperty(nameof(CollectionId), "collectionId")]
 public partial class EditPageViewModel : BaseViewModel
 {
     private readonly IDatabaseService _databaseService;
@@ -15,6 +19,9 @@ public partial class EditPageViewModel : BaseViewModel
 
     [ObservableProperty]
     private int hymnId;
+
+    [ObservableProperty]
+    private int collectionId;
 
     [ObservableProperty]
     private Hymn? currentHymn;
@@ -84,7 +91,7 @@ public partial class EditPageViewModel : BaseViewModel
 
     private Timer? _autoSaveTimer;
     private readonly object _autoSaveLock = new();
-
+    
     public EditPageViewModel(IDatabaseService databaseService, IExportService exportService, ISettingsService settingsService)
     {
         _databaseService = databaseService;
@@ -279,6 +286,12 @@ public partial class EditPageViewModel : BaseViewModel
                     CurrentHymn = newHymn;
                     HymnId = newHymn.Id;
                     IsNewHymn = false;
+                    
+                    // Add to collection if CollectionId is specified
+                    if (CollectionId > 0)
+                    {
+                        await _databaseService.AddHymnToCollectionAsync(newHymn.Id, CollectionId);
+                    }
                 }
                 else
                 {
@@ -492,6 +505,48 @@ public partial class EditPageViewModel : BaseViewModel
         ShowLineNumbers = !ShowLineNumbers;
         await _settingsService.SetShowLineNumbersAsync(ShowLineNumbers);
     }
+
+    [RelayCommand]
+    private async Task OpenScanPageAsync()
+    {
+        try
+        {
+            var parameters = new Dictionary<string, object>();
+            
+            if (HymnId > 0)
+            {
+                parameters["hymnId"] = HymnId;
+                parameters["existingLyrics"] = HymnLyrics ?? string.Empty;
+            }
+            
+            if (parameters.Count > 0)
+            {
+                await Shell.Current.GoToAsync("//scan", parameters);
+            }
+            else
+            {
+                await Shell.Current.GoToAsync("//scan");
+            }
+        }
+        catch (Exception ex)
+        {
+            await HandleErrorAsync(ex, $"Failed to go scanning page: {ex.Message}");
+        }
+    }   
+
+    [RelayCommand]
+    private async Task BackAsync()
+    {       
+        try
+        {
+            //await GoBackAsync();
+            await Shell.Current.GoToAsync($"//collection-detail?collectionId={collectionId}");
+        }
+        catch (Exception ex)
+        {
+            await HandleErrorAsync(ex, $"Failed to go back: {ex.Message}");
+        }
+    }   
 
     private bool ValidateHymn()
     {

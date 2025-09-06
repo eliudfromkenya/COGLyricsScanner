@@ -3,15 +3,11 @@ using System.Globalization;
 
 namespace COGLyricsScanner.Converters;
 
-public class BoolToEditorMarginConverter : IValueConverter
+public class StringToBoolConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is bool showLineNumbers && showLineNumbers)
-        {
-            return new Thickness(44, 8, 8, 8); // Left margin for line numbers
-        }
-        return new Thickness(8);
+        return !string.IsNullOrWhiteSpace(value?.ToString());
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -28,7 +28,7 @@
                                 Toggled="OnDarkModeToggled" />
                     </Grid>
                     
-                    <Label Text="Theme Color" 
+                    <!--<Label Text="Theme Color" 
                            TextColor="{DynamicResource SecondaryTextColor}" />
                     <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
                         <Button x:Name="BlueThemeButton"
@@ -42,7 +42,7 @@
                                 BackgroundColor="#4CAF50"
                                 TextColor="White"
                                 Clicked="OnGreenThemeClicked" />
-                    </Grid>
+                    </Grid>-->
                 </StackLayout>
             </Border>
             
@@ -138,7 +138,7 @@
             </Border>
             
             <!-- Animation Demos -->
-            <Border BackgroundColor="{DynamicResource CardBackgroundColor}"
+            <!--<Border BackgroundColor="{DynamicResource CardBackgroundColor}"
                     Stroke="{DynamicResource BorderColor}"
                     StrokeShape="RoundRectangle 8"
                     Padding="16">
@@ -155,7 +155,7 @@
                             Style="{DynamicResource OutlineButtonStyle}"
                             Clicked="OnBreathingAnimationsClicked" />
                 </StackLayout>
-            </Border>
+            </Border>-->
 
             <!-- About Section -->
             <Border BackgroundColor="{DynamicResource CardBackgroundColor}"

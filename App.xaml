@@ -20,6 +20,7 @@
             <converters:InvertedBoolConverter x:Key="InvertedBoolConverter" />
             <converters:StringToBoolConverter x:Key="StringToBoolConverter" />
             <converters:DateTimeToVisibilityConverter x:Key="DateTimeToVisibilityConverter" />
+            <converters:StringToEmptyMessageConverter x:Key="StringToEmptyMessageConverter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -3,19 +3,23 @@ using System.Globalization;
 
 namespace COGLyricsScanner.Converters;
 
-public class BoolToEditorMarginConverter : IValueConverter
+public class InvertedBoolConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is bool showLineNumbers && showLineNumbers)
+        if (value is bool boolValue)
         {
-            return new Thickness(44, 8, 8, 8); // Left margin for line numbers
+            return !boolValue;
         }
-        return new Thickness(8);
+        return true;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        throw new NotImplementedException();
+        if (value is bool boolValue)
+        {
+            return !boolValue;
+        }
+        return false;
     }
 }

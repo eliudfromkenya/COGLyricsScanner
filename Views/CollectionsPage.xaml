@@ -89,8 +89,9 @@
                                 </VisualStateManager.VisualStateGroups>
                                 
                                 <Grid RowDefinitions="Auto,Auto,Auto" 
-                                      ColumnDefinitions="*,Auto"
-                                      RowSpacing="8">
+                                      ColumnDefinitions="*,Auto,Auto"
+                                      RowSpacing="8"
+                                      ColumnSpacing="8">
                                     
                                     <!-- Collection Name -->
                                     <Label Grid.Row="0" 
@@ -100,22 +101,35 @@
                                            FontAttributes="Bold"
                                            TextColor="{DynamicResource PrimaryTextColor}" />
                                     
-                                    <!-- Actions Menu -->
+                                    <!-- Edit Button -->
                                     <Button Grid.Row="0" 
                                             Grid.Column="1"
-                                            Text="⋮"
-                                            FontSize="18"
-                                            WidthRequest="40"
-                                            HeightRequest="40"
-                                            CornerRadius="20"
+                                            Text="✏️"
+                                            FontSize="16"
+                                            WidthRequest="36"
+                                            HeightRequest="36"
+                                            CornerRadius="18"
                                             BackgroundColor="Transparent"
-                                            TextColor="{DynamicResource SecondaryTextColor}"
-                                            Clicked="OnCollectionMenuClicked"
+                                            TextColor="{DynamicResource Primary}"
+                                            Clicked="OnEditCollectionClicked"
+                                            CommandParameter="{Binding}" />
+                                    
+                                    <!-- Delete Button -->
+                                    <Button Grid.Row="0" 
+                                            Grid.Column="2"
+                                            Text="🗑️"
+                                            FontSize="16"
+                                            WidthRequest="36"
+                                            HeightRequest="36"
+                                            CornerRadius="18"
+                                            BackgroundColor="Transparent"
+                                            TextColor="{DynamicResource Danger}"
+                                            Clicked="OnDeleteCollectionClicked"
                                             CommandParameter="{Binding}" />
                                     
                                     <!-- Description -->
                                     <Label Grid.Row="1" 
-                                           Grid.ColumnSpan="2"
+                                           Grid.ColumnSpan="3"
                                            Text="{Binding Description}" 
                                            FontSize="14"
                                            TextColor="{DynamicResource SecondaryTextColor}"
@@ -124,7 +138,7 @@
                                     
                                     <!-- Stats and Date -->
                                     <Grid Grid.Row="2" 
-                                          Grid.ColumnSpan="2"
+                                          Grid.ColumnSpan="3"
                                           ColumnDefinitions="Auto,*,Auto"
                                           ColumnSpacing="16">
                                         

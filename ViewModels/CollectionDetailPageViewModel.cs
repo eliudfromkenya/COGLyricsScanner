@@ -1,7 +1,7 @@
-using System.Collections.ObjectModel;
+using COGLyricsScanner.Helpers;
 using COGLyricsScanner.Models;
 using COGLyricsScanner.Services;
-using COGLyricsScanner.Helpers;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
 
 namespace COGLyricsScanner.ViewModels;
@@ -65,6 +65,8 @@ public class CollectionDetailPageViewModel : BaseViewModel
         ViewHymnCommand = new Command<HymnItemViewModel>(async (hymn) => await ViewHymnAsync(hymn));
         ToggleFavoriteCommand = new Command<HymnItemViewModel>(async (hymn) => await ToggleFavoriteAsync(hymn));
         ShowHymnOptionsCommand = new Command<HymnItemViewModel>(async (hymn) => await ShowHymnOptionsAsync(hymn));
+        EditHymnCommand = new Command<HymnItemViewModel>(async (hymn) => await EditHymnAsync(hymn));
+        DeleteHymnCommand = new Command<HymnItemViewModel>(async (hymn) => await DeleteHymnAsync(hymn));
         AddHymnsCommand = new Command(async () => await AddHymnsAsync());
         ShowOptionsCommand = new Command(async () => await ShowCollectionOptionsAsync());
         ExportCollectionCommand = new Command(async () => await ExportCollectionAsync());
@@ -145,6 +147,8 @@ public class CollectionDetailPageViewModel : BaseViewModel
     public ICommand ViewHymnCommand { get; private set; } = null!;
     public ICommand ToggleFavoriteCommand { get; private set; } = null!;
     public ICommand ShowHymnOptionsCommand { get; private set; } = null!;
+    public ICommand EditHymnCommand { get; private set; } = null!;
+    public ICommand DeleteHymnCommand { get; private set; } = null!;
     public ICommand AddHymnsCommand { get; private set; } = null!;
     public ICommand ShowOptionsCommand { get; private set; } = null!;
     public ICommand ExportCollectionCommand { get; private set; } = null!;
@@ -289,10 +293,8 @@ public class CollectionDetailPageViewModel : BaseViewModel
                 "Cancel",
                 null,
                 "View Details",
-                "Edit",
                 "Remove from Collection",
-                "Export",
-                "Delete Hymn"
+                "Export"
             );
             
             switch (action)
@@ -300,17 +302,11 @@ public class CollectionDetailPageViewModel : BaseViewModel
                 case "View Details":
                     await ViewHymnAsync(hymnViewModel);
                     break;
-                case "Edit":
-                    await Shell.Current.GoToAsync($"//Edit?hymnId={hymnViewModel.Id}");
-                    break;
                 case "Remove from Collection":
                     await RemoveFromCollectionAsync(hymnViewModel);
                     break;
                 case "Export":
                     await ExportHymnAsync(hymnViewModel);
-                    break;
-                case "Delete Hymn":
-                    await DeleteHymnAsync(hymnViewModel);
                     break;
             }
         }
@@ -320,45 +316,30 @@ public class CollectionDetailPageViewModel : BaseViewModel
         }
     }
 
+    private async Task EditHymnAsync(HymnItemViewModel hymnViewModel)
+    {
+        if (hymnViewModel == null) return;
+        
+        try
+        {
+            await Shell.Current.GoToAsync($"//Edit?hymnId={hymnViewModel.Id}");
+        }
+        catch (Exception ex)
+        {
+            HandleError(ex, "Failed to open hymn editor");
+        }
+    }
+
     private async Task AddHymnsAsync()
     {
         try
         {
-            // Get all hymns not in this collection
-            var allHymns = await _databaseService.GetHymnsAsync();
-            var collectionHymns = await _databaseService.GetCollectionHymnsAsync(_collection.Id);
-            var collectionHymnIds = collectionHymns.Select(h => h.Id).ToHashSet();
-            
-            var availableHymns = allHymns.Where(h => !collectionHymnIds.Contains(h.Id)).ToList();
-            
-            if (!availableHymns.Any())
-            {
-                await Application.Current.MainPage.DisplayAlert("No Hymns Available", "All hymns are already in this collection.", "OK");
-                return;
-            }
-            
-            // Show selection page (simplified - in a real app, you'd navigate to a selection page)
-            var hymnTitles = availableHymns.Select(h => h.Title).ToArray();
-            var selectedTitle = await Application.Current.MainPage.DisplayActionSheet(
-                "Select Hymn to Add",
-                "Cancel",
-                null,
-                hymnTitles.Take(10).ToArray() // Limit to first 10 for demo
-            );
-            
-            if (!string.IsNullOrEmpty(selectedTitle) && selectedTitle != "Cancel")
-            {
-                var selectedHymn = availableHymns.FirstOrDefault(h => h.Title == selectedTitle);
-                if (selectedHymn != null)
-                {
-                    await _databaseService.AddHymnToCollectionAsync(_collection.Id, selectedHymn.Id);
-                    await LoadHymnsAsync();
-                }
-            }
+            // Navigate to EditPage for creating a new hymn and adding it to this collection
+            await Shell.Current.GoToAsync($"edit?collectionId={_collection.Id}");
         }
         catch (Exception ex)
         {
-            HandleError(ex, "Failed to add hymns to collection");
+            HandleError(ex, "Failed to open hymn editor");
         }
     }
 
@@ -486,8 +467,14 @@ public class CollectionDetailPageViewModel : BaseViewModel
 
     private async Task EditCollectionAsync()
     {
-        // In a real app, navigate to collection edit page
-        await Application.Current.MainPage.DisplayAlert("Edit Collection", "Collection editing not implemented in this demo.", "OK");
+        try
+        {
+            await Shell.Current.GoToAsync($"//CollectionModal?collectionId={_collection.Id}");
+        }
+        catch (Exception ex)
+        {
+            HandleError(ex, "Failed to open collection editor");
+        }
     }
 
     private async Task ExportCollectionAsync()
@@ -500,12 +487,44 @@ public class CollectionDetailPageViewModel : BaseViewModel
             // Get hymns in the collection
             var hymns = await databaseService.GetCollectionHymnsAsync(_collection.Id);
             
+            if (!hymns.Any())
+            {
+                await Application.Current.MainPage.DisplayAlert("Export Collection", "Cannot export an empty collection.", "OK");
+                return;
+            }
+            
+            // Let user choose export format
+            var format = await Application.Current.MainPage.DisplayActionSheet(
+                "Export Format",
+                "Cancel",
+                null,
+                "Text (.txt)", "Word (.docx)", "PDF (.pdf)");
+
+            if (string.IsNullOrEmpty(format) || format == "Cancel")
+                return;
+
+            var exportFormat = format switch
+            {
+                "Text (.txt)" => ExportFormat.TXT,
+                "Word (.docx)" => ExportFormat.DOCX,
+                "PDF (.pdf)" => ExportFormat.PDF,
+                _ => ExportFormat.TXT
+            };
+            
+            var extension = exportFormat switch
+            {
+                ExportFormat.TXT => ".txt",
+                ExportFormat.DOCX => ".docx",
+                ExportFormat.PDF => ".pdf",
+                _ => ".txt"
+            };
+            
             // Generate file path
-            var fileName = $"{_collection.Name.Replace(" ", "_")}_Export.txt";
+            var fileName = $"{_collection.Name.Replace(" ", "_")}_Export{extension}";
             var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             var filePath = Path.Combine(documentsPath, fileName);
             
-            await exportService.ExportCollectionAsync(_collection, hymns, ExportFormat.TXT, filePath);
+            await exportService.ExportCollectionAsync(_collection, hymns, exportFormat, filePath);
             
             await Application.Current.MainPage.DisplayAlert("Export Complete", $"Collection exported to: {filePath}", "OK");
         }
@@ -517,8 +536,37 @@ public class CollectionDetailPageViewModel : BaseViewModel
 
     private async Task ShareCollectionAsync()
     {
-        // In a real app, implement sharing functionality
-        await Application.Current.MainPage.DisplayAlert("Share Collection", "Collection sharing not implemented in this demo.", "OK");
+        try
+        {
+            var exportService = ServiceHelper.GetService<IExportService>();
+            var databaseService = ServiceHelper.GetService<IDatabaseService>();
+            
+            // Get hymns in the collection
+            var hymns = await databaseService.GetCollectionHymnsAsync(_collection.Id);
+            
+            if (!hymns.Any())
+            {
+                await Application.Current.MainPage.DisplayAlert("Share Collection", "Cannot share an empty collection.", "OK");
+                return;
+            }
+            
+            // Create a temporary file for sharing
+            var fileName = $"{_collection.Name.Replace(" ", "_")}_Collection.txt";
+            var tempFilePath = Path.Combine(FileSystem.Current.CacheDirectory, fileName);
+            
+            await exportService.ExportCollectionAsync(_collection, hymns, ExportFormat.TXT, tempFilePath);
+            
+            // Share the file
+            await Share.Default.RequestAsync(new ShareFileRequest
+            {
+                Title = $"Share {_collection.Name} Collection",
+                File = new ShareFile(tempFilePath)
+            });
+        }
+        catch (Exception ex)
+        {
+            HandleError(ex, "Failed to share collection");
+        }
     }
 
     private async Task DeleteCollectionAsync()
@@ -558,3 +606,4 @@ public class CollectionDetailPageViewModel : BaseViewModel
         return firstLine.Length > 100 ? firstLine.Substring(0, 100) + "..." : firstLine;
     }
 }
+

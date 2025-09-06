@@ -7,6 +7,8 @@ using System.Windows.Input;
 
 namespace COGLyricsScanner.ViewModels;
 
+[QueryProperty(nameof(HymnId), "hymnId")]
+[QueryProperty(nameof(ExistingLyrics), "existingLyrics")]
 public partial class ScanPageViewModel : BaseViewModel
 {
     private readonly IOcrService _ocrService;
@@ -48,6 +50,18 @@ public partial class ScanPageViewModel : BaseViewModel
 
     [ObservableProperty]
     private ObservableCollection<string> recentScans = new();
+
+    [ObservableProperty]
+    private bool isAppendMode;
+
+    [ObservableProperty]
+    private string existingText = string.Empty;
+
+    [ObservableProperty]
+    private int hymnId;
+
+    [ObservableProperty]
+    private string existingLyrics = string.Empty;
 
     public ICommand OnAppearingCommand => new RelayCommand(async () => await OnAppearingAsync());
 
@@ -157,7 +171,7 @@ public partial class ScanPageViewModel : BaseViewModel
         }
         catch (Exception ex)
         {
-            await HandleErrorAsync(ex, "Failed to take photo");
+            await HandleErrorAsync(ex, $"Failed to take photo: {ex.Message}");
         }
     }
 
@@ -210,8 +224,17 @@ public partial class ScanPageViewModel : BaseViewModel
             // Perform OCR
             var recognizedText = await _ocrService.RecognizeTextAsync(localFilePath, SelectedLanguage);
             
-            ScannedText = recognizedText;
-            HasScannedText = !string.IsNullOrWhiteSpace(recognizedText);
+            // Append to existing text if in append mode, otherwise replace
+            if (IsAppendMode && !string.IsNullOrWhiteSpace(ScannedText))
+            {
+                ScannedText += "\n\n" + recognizedText;
+            }
+            else
+            {
+                ScannedText = recognizedText;
+            }
+            
+            HasScannedText = !string.IsNullOrWhiteSpace(ScannedText);
             ConfidenceScore = await _ocrService.GetLastConfidenceScoreAsync();
 
             if (HasScannedText)
@@ -316,7 +339,37 @@ public partial class ScanPageViewModel : BaseViewModel
             return;
         }
 
-        // Create temporary hymn for editing
+        int targetHymnId;
+        
+        if (HymnId > 0)
+        {
+            // Update existing hymn with scanned text
+            var existingHymn = await _databaseService.GetHymnAsync(HymnId);
+            if (existingHymn != null)
+            {
+                existingHymn.Lyrics = ScannedText;
+                existingHymn.ModifiedDate = DateTime.Now;
+                await _databaseService.UpdateHymnAsync(existingHymn);
+                targetHymnId = existingHymn.Id;
+            }
+            else
+            {
+                // Hymn not found, create new one
+                targetHymnId = await CreateNewHymnWithScannedTextAsync();
+            }
+        }
+        else
+        {
+            // Create new hymn
+            targetHymnId = await CreateNewHymnWithScannedTextAsync();
+        }
+        
+        // Navigate to edit page
+        await NavigateToEditPageAsync(targetHymnId);
+    }
+
+    private async Task<int> CreateNewHymnWithScannedTextAsync()
+    {
         var tempHymn = new Hymn
         {
             Title = "Scanned Text",
@@ -326,11 +379,8 @@ public partial class ScanPageViewModel : BaseViewModel
             ModifiedDate = DateTime.Now
         };
 
-        // Save temporarily
         await _databaseService.AddHymnAsync(tempHymn);
-        
-        // Navigate to edit page
-        await NavigateToEditPageAsync(tempHymn.Id);
+        return tempHymn.Id;
     }
 
     [RelayCommand]
@@ -342,6 +392,25 @@ public partial class ScanPageViewModel : BaseViewModel
         ConfidenceScore = 0;
         OcrProgress = 0;
         OcrStatus = string.Empty;
+        IsAppendMode = false;
+        ExistingText = string.Empty;
+    }
+
+    [RelayCommand]
+    private async Task AddMoreContentAsync()
+    {
+        if (!HasScannedText)
+        {
+            await ShowErrorAsync("No content to append to");
+            return;
+        }
+
+        // Enable append mode and store current text
+        IsAppendMode = true;
+        ExistingText = ScannedText;
+        
+        // Show message to user
+        await ShowMessageAsync("Append Mode", "Take another photo or pick an image. The new content will be added to the existing text.");
     }
 
     [RelayCommand]
@@ -430,5 +499,21 @@ public partial class ScanPageViewModel : BaseViewModel
     {
         await base.OnAppearingAsync();
         await LoadRecentScansAsync();
+        
+        // Load existing lyrics if provided
+        if (!string.IsNullOrWhiteSpace(ExistingLyrics) && string.IsNullOrWhiteSpace(ScannedText))
+        {
+            ScannedText = ExistingLyrics;
+            HasScannedText = true;
+        }
+    }
+
+    partial void OnExistingLyricsChanged(string value)
+    {
+        if (!string.IsNullOrWhiteSpace(value) && string.IsNullOrWhiteSpace(ScannedText))
+        {
+            ScannedText = value;
+            HasScannedText = true;
+        }
     }
 }

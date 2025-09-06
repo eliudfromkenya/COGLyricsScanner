@@ -153,6 +153,6 @@
         </Grid>
     </Shell.FlyoutHeader>
 
-   
+    <ShellContent Route="collection-detail" ContentTemplate="{DataTemplate views:CollectionDetailPage}" />        
 
 </Shell>

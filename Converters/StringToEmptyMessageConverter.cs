@@ -3,15 +3,18 @@ using System.Globalization;
 
 namespace COGLyricsScanner.Converters;
 
-public class BoolToEditorMarginConverter : IValueConverter
+public class StringToEmptyMessageConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is bool showLineNumbers && showLineNumbers)
+        var searchText = value?.ToString();
+        
+        if (string.IsNullOrWhiteSpace(searchText))
         {
-            return new Thickness(44, 8, 8, 8); // Left margin for line numbers
+            return "No hymns found.\nTry adjusting your filters or create a new hymn.";
         }
-        return new Thickness(8);
+        
+        return $"No results for '{searchText}'.\nTry a different search term or create a new hymn.";
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

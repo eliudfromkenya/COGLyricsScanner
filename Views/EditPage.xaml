@@ -81,7 +81,7 @@
                 
                 <!-- Editor Controls -->
                 <Border Style="{DynamicResource CardStyle}">
-                    <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto" ColumnSpacing="8">
+                    <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto,Auto" ColumnSpacing="8">
                         <Label Grid.Column="0" Text="Editor" Style="{DynamicResource SubtitleLabelStyle}" VerticalOptions="Center" />
                         
                         <Button Grid.Column="1"
@@ -110,6 +110,14 @@
                                 Text="#"
                                 WidthRequest="40"
                                 HeightRequest="40" />
+                        
+                        <Button Grid.Column="5"
+                                Command="{Binding OpenScanPageCommand}"
+                                Style="{DynamicResource OutlineButtonStyle}"
+                                Text="📷"
+                                WidthRequest="40"
+                                HeightRequest="40"
+                                ToolTipProperties.Text="Scan Lyrics" />
                     </Grid>
                 </Border>
                 
@@ -207,25 +215,39 @@
                 </Border>
                 
                 <!-- Action Buttons -->
-                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="12">
+                <Grid ColumnDefinitions="*,*"  RowDefinitions="Auto,Auto" ColumnSpacing="12">
                     <Button Grid.Column="0"
                             Command="{Binding SaveHymnCommand}"
                             Style="{DynamicResource BaseButtonStyle}"
                             Text="Save"
+                            Margin="5"
                             IsEnabled="{Binding HasUnsavedChanges}" />
                     
                     <Button Grid.Column="1"
                             Command="{Binding ExportHymnCommand}"
                             Style="{DynamicResource SecondaryButtonStyle}"
                             Text="Export"
+                            Margin="5"
                             IsEnabled="{Binding CurrentHymn, Converter={StaticResource ObjectToBoolConverter}}" />
-                    
-                    <Button Grid.Column="2"
+
+
+                    <Button Grid.Column="0"
+                            Grid.Row="1"
                             Command="{Binding DeleteHymnCommand}"
                             Style="{DynamicResource OutlineButtonStyle}"
                             Text="Delete"
+                            Margin="5"
                             TextColor="{DynamicResource Error}"
                             IsEnabled="{Binding CurrentHymn, Converter={StaticResource ObjectToBoolConverter}}" />
+                    
+                    <Button Grid.Column="1"
+                            Grid.Row="1"
+                            Margin="5"
+                            Command="{Binding BackCommand}"
+                            Style="{DynamicResource OutlineButtonStyle}"
+                            Text="← Back"
+                            TextColor="{DynamicResource Error}"
+                            />
                 </Grid>
                 
                 <!-- Unsaved Changes Indicator -->

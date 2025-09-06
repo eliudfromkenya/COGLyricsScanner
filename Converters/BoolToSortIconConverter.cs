@@ -1,17 +1,16 @@
-using Microsoft.Maui.Controls;
 using System.Globalization;
 
 namespace COGLyricsScanner.Converters;
 
-public class BoolToEditorMarginConverter : IValueConverter
+public class BoolToSortIconConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is bool showLineNumbers && showLineNumbers)
+        if (value is bool ascending)
         {
-            return new Thickness(44, 8, 8, 8); // Left margin for line numbers
+            return ascending ? "↑" : "↓";
         }
-        return new Thickness(8);
+        return "↑";
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

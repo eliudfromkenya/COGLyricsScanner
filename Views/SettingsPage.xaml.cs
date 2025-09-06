@@ -39,7 +39,7 @@ public partial class SettingsPage : ContentPage
             // Theme settings
             DarkModeSwitch.IsToggled = _settingsService.GetThemeIsDarkMode();
             var themeColor = _settingsService.GetThemeColor();
-            UpdateThemeButtons(themeColor);
+            // UpdateThemeButtons(themeColor); // Commented out as theme buttons are not in use
 
             // OCR settings
             AutoSaveSwitch.IsToggled = _settingsService.GetOcrAutoSave();
@@ -74,6 +74,8 @@ public partial class SettingsPage : ContentPage
         }
     }
 
+    // Theme buttons are commented out in XAML, so this method is not needed
+    /*
     private void UpdateThemeButtons(string themeColor)
     {
         // Reset button styles
@@ -90,6 +92,7 @@ public partial class SettingsPage : ContentPage
             GreenThemeButton.Style = (Style)Application.Current.Resources["BaseButtonStyle"];
         }
     }
+    */
 
     private async void OnDarkModeToggled(object sender, ToggledEventArgs e)
     {
@@ -110,7 +113,7 @@ public partial class SettingsPage : ContentPage
         {
             _settingsService.SetThemeColor("Blue");
             await _themeService.SetThemeAsync(COGLyricsScanner.Services.AppTheme.Light);
-            UpdateThemeButtons("Blue");
+            // UpdateThemeButtons("Blue"); // Commented out as theme buttons are not in use
         }
         catch (Exception ex)
         {
@@ -124,7 +127,7 @@ public partial class SettingsPage : ContentPage
         {
             _settingsService.SetThemeColor("Green");
             await _themeService.SetThemeAsync(COGLyricsScanner.Services.AppTheme.Light);
-            UpdateThemeButtons("Green");
+            // UpdateThemeButtons("Green"); // Commented out as theme buttons are not in use
         }
         catch (Exception ex)
         {

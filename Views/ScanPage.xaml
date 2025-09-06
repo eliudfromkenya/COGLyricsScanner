@@ -75,7 +75,7 @@
                     <StackLayout Spacing="15">
                         <Label Text="OCR Settings" Style="{StaticResource SubtitleLabelStyle}" />
                         
-                        <Grid RowDefinitions="Auto,Auto" ColumnDefinitions="*,Auto" RowSpacing="10">
+                        <Grid RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,Auto" RowSpacing="10">
                             <Label 
                                 Grid.Row="0" Grid.Column="0"
                                 Text="Language:" 
@@ -89,11 +89,21 @@
                             
                             <Label 
                                 Grid.Row="1" Grid.Column="0"
-                                Text="Auto-save after scan:" 
+                                Text="Append Mode:" 
                                 Style="{StaticResource BodyLabelStyle}" 
                                 VerticalOptions="Center" />
                             <Switch 
                                 Grid.Row="1" Grid.Column="1"
+                                IsToggled="{Binding IsAppendMode}" 
+                                VerticalOptions="Center" />
+                            
+                            <Label 
+                                Grid.Row="2" Grid.Column="0"
+                                Text="Auto-save after scan:" 
+                                Style="{StaticResource BodyLabelStyle}" 
+                                VerticalOptions="Center" />
+                            <Switch 
+                                Grid.Row="2" Grid.Column="1"
                                 IsToggled="{Binding AutoSaveEnabled}" 
                                 ThumbColor="{DynamicResource PrimaryColor}"
                                 OnColor="{DynamicResource PrimaryColor}" />
@@ -124,13 +134,19 @@
                     Padding="20"
                     IsVisible="{Binding HasScannedText}">
                     <StackLayout Spacing="15">
-                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="10">
                             <Label 
                                 Grid.Column="0"
                                 Text="Scanned Text" 
                                 Style="{StaticResource SubtitleLabelStyle}" />
                             <Label 
                                 Grid.Column="1"
+                                Text="(Appended)" 
+                                Style="{StaticResource CaptionLabelStyle}" 
+                                TextColor="{DynamicResource SecondaryColor}"
+                                IsVisible="{Binding IsAppendMode}" />
+                            <Label 
+                                Grid.Column="2"
                                 Text="{Binding ConfidenceScore, StringFormat='Confidence: {0:F0}%'}" 
                                 Style="{StaticResource CaptionLabelStyle}" 
                                 TextColor="{DynamicResource PrimaryColor}" />
@@ -148,7 +164,7 @@
                             </ScrollView>
                         </Border>
                         
-                        <Grid ColumnDefinitions="*,*,*" ColumnSpacing="10">
+                        <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="8">
                             <Button 
                                 Grid.Column="0"
                                 Text="Save" 
@@ -161,6 +177,11 @@
                                 Command="{Binding EditScannedTextCommand}" />
                             <Button 
                                 Grid.Column="2"
+                                Text="Add More" 
+                                Style="{StaticResource OutlineButtonStyle}"
+                                Command="{Binding AddMoreContentCommand}" />
+                            <Button 
+                                Grid.Column="3"
                                 Text="Clear" 
                                 Style="{StaticResource OutlineButtonStyle}"
                                 Command="{Binding ClearScanCommand}" />

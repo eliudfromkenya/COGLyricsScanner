@@ -119,7 +119,7 @@
                                                                   CommandParameter="{Binding .}" />
                                         </Border.GestureRecognizers>
 
-                                        <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="12">
+                                        <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto" ColumnSpacing="8">
                                             <!-- Hymn Info -->
                                             <StackLayout Grid.Column="0" Spacing="4">
                                                 <Label Text="{Binding Title}"
@@ -159,15 +159,33 @@
                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CollectionDetailPageViewModel}}, Path=ToggleFavoriteCommand}"
                                                     CommandParameter="{Binding .}"
                                                     Style="{DynamicResource IconButtonStyle}"
-                                                    FontSize="18" />
+                                                    FontSize="16" />
+
+                                            <!-- Edit Button -->
+                                            <Button Grid.Column="2"
+                                                    Text="✏️"
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CollectionDetailPageViewModel}}, Path=EditHymnCommand}"
+                                                    CommandParameter="{Binding .}"
+                                                    Style="{DynamicResource IconButtonStyle}"
+                                                    FontSize="14"
+                                                    ToolTipProperties.Text="Edit Hymn" />
+
+                                            <!-- Delete Button -->
+                                            <Button Grid.Column="3"
+                                                    Text="🗑️"
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CollectionDetailPageViewModel}}, Path=DeleteHymnCommand}"
+                                                    CommandParameter="{Binding .}"
+                                                    Style="{DynamicResource IconButtonStyle}"
+                                                    FontSize="14"
+                                                    ToolTipProperties.Text="Delete Hymn" />
 
                                             <!-- More Options -->
-                                            <Button Grid.Column="2"
+                                            <Button Grid.Column="4"
                                                     Text="⋮"
                                                     Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:CollectionDetailPageViewModel}}, Path=ShowHymnOptionsCommand}"
                                                     CommandParameter="{Binding .}"
                                                     Style="{DynamicResource IconButtonStyle}"
-                                                    FontSize="16" />
+                                                    FontSize="14" />
                                         </Grid>
                                     </Border>
                                 </Grid>

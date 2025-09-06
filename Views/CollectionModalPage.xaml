@@ -100,11 +100,20 @@
                         </Grid>
                     </Border>
                 </StackLayout>
-                
+
+                <!-- Loading Overlay -->
+                <Grid IsVisible="{Binding IsLoading}"
+                    BackgroundColor="#80000000">
+                    <ActivityIndicator IsRunning="{Binding IsLoading}"
+                        Color="{DynamicResource Primary}"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center" />
+                </Grid>
+
             </StackLayout>
             
             <!-- Action Buttons -->
-            <Grid Grid.Row="2" ColumnDefinitions="*,*" ColumnSpacing="12">
+            <Grid Grid.Row="2" ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="12">
                 
                 <!-- Cancel Button -->
                 <Button Grid.Column="0"
@@ -125,31 +134,21 @@
                         HeightRequest="50"
                         Command="{Binding SaveCommand}"
                         IsEnabled="{Binding CanSave}" />
-                
-            </Grid>
-            
-            <!-- Delete Button (for edit mode) -->
-            <Button Grid.Row="3"
-                    Text="Delete Collection"
-                    FontSize="16"
-                    BackgroundColor="{DynamicResource ErrorColor}"
-                    TextColor="White"
-                    CornerRadius="8"
-                    HeightRequest="50"
-                    Margin="0,12,0,0"
-                    Command="{Binding DeleteCommand}"
-                    IsVisible="{Binding IsEditMode}" />
-            
+
+                <!-- Delete Button (for edit mode) -->
+                <Button Grid.Row="1"
+                       Text="Delete Collection"
+                       FontSize="16"
+                       BackgroundColor="{DynamicResource ErrorColor}"
+                       TextColor="White"
+                       CornerRadius="8"
+                       HeightRequest="50"
+                       Margin="0,12,0,0"
+                       Command="{Binding DeleteCommand}"
+                       IsVisible="{Binding IsEditMode}" />          
+
+            </Grid>   
         </Grid>
-    </ScrollView>
-    
-    <!-- Loading Overlay -->
-    <Grid IsVisible="{Binding IsLoading}"
-          BackgroundColor="#80000000">
-        <ActivityIndicator IsRunning="{Binding IsLoading}"
-                           Color="{DynamicResource Primary}"
-                           VerticalOptions="Center"
-                           HorizontalOptions="Center" />
-    </Grid>
+    </ScrollView>  
     
 </ContentPage>

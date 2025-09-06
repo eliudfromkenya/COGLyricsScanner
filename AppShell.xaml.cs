@@ -23,11 +23,13 @@ public partial class AppShell : Shell
         Routing.RegisterRoute("statistics", typeof(StatisticsPage));
         Routing.RegisterRoute("about", typeof(AboutPage));
         Routing.RegisterRoute("breathing-animations", typeof(BreathingAnimationsDemo));
-        
+        Routing.RegisterRoute("edit", typeof(EditPage));
+
         // Register detail pages
         // Routing.RegisterRoute("hymn-detail", typeof(HymnDetailPage));
         Routing.RegisterRoute("collection-detail", typeof(CollectionDetailPage));
         Routing.RegisterRoute("collection-modal", typeof(CollectionModalPage));
+        Routing.RegisterRoute("scan", typeof(ScanPage));
         // Routing.RegisterRoute("export", typeof(ExportPage));
         // Routing.RegisterRoute("backup", typeof(BackupPage));
     }

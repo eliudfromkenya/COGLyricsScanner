@@ -3,15 +3,15 @@ using System.Globalization;
 
 namespace COGLyricsScanner.Converters;
 
-public class BoolToEditorMarginConverter : IValueConverter
+public class DateTimeToVisibilityConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value is bool showLineNumbers && showLineNumbers)
+        if (value is DateTime dateTime)
         {
-            return new Thickness(44, 8, 8, 8); // Left margin for line numbers
+            return dateTime != DateTime.MinValue;
         }
-        return new Thickness(8);
+        return false;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
