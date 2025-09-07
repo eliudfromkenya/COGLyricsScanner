@@ -224,7 +224,7 @@ public class CollectionDetailPageViewModel : BaseViewModel
                 (!string.IsNullOrEmpty(h.Number) && h.Number.ToLowerInvariant().Contains(searchLower))
             );
         }
-        
+
         FilteredHymns.Clear();
         foreach (var hymn in filtered)
         {
@@ -245,8 +245,12 @@ public class CollectionDetailPageViewModel : BaseViewModel
                 hymn.ViewCount++;
                 await _databaseService.UpdateHymnAsync(hymn);
                 
-                // Navigate to edit page
-                await Shell.Current.GoToAsync($"//Edit?hymnId={hymn.Id}");
+                // Navigate to hymn view page
+                var navigationParameter = new Dictionary<string, object>
+                {
+                    { "hymn", hymn }
+                };
+                await Shell.Current.GoToAsync("hymn-view", navigationParameter);
             }
         }
         catch (Exception ex)
@@ -288,25 +292,44 @@ public class CollectionDetailPageViewModel : BaseViewModel
         
         try
         {
+            var favoriteText = hymnViewModel.IsFavorite ? "Remove from Favorites" : "Add to Favorites";
+            
             var action = await Application.Current.MainPage.DisplayActionSheet(
                 hymnViewModel.Title,
                 "Cancel",
                 null,
+                "Edit",
                 "View Details",
+                favoriteText,
+                "Share",
+                "Export",
                 "Remove from Collection",
-                "Export"
+                "Delete Hymn"
             );
             
             switch (action)
             {
+                case "Edit":
+                    await EditHymnAsync(hymnViewModel);
+                    break;
                 case "View Details":
                     await ViewHymnAsync(hymnViewModel);
+                    break;
+                case "Add to Favorites":
+                case "Remove from Favorites":
+                    await ToggleFavoriteAsync(hymnViewModel);
+                    break;
+                case "Share":
+                    await ShareHymnAsync(hymnViewModel);
+                    break;
+                case "Export":
+                    await ExportHymnAsync(hymnViewModel);
                     break;
                 case "Remove from Collection":
                     await RemoveFromCollectionAsync(hymnViewModel);
                     break;
-                case "Export":
-                    await ExportHymnAsync(hymnViewModel);
+                case "Delete Hymn":
+                    await DeleteHymnAsync(hymnViewModel);
                     break;
             }
         }
@@ -322,7 +345,7 @@ public class CollectionDetailPageViewModel : BaseViewModel
         
         try
         {
-            await Shell.Current.GoToAsync($"//Edit?hymnId={hymnViewModel.Id}");
+            await Shell.Current.GoToAsync($"//edit?hymnId={hymnViewModel.Id}&collectionId={_collection?.Id ?? 0}");
         }
         catch (Exception ex)
         {
@@ -414,6 +437,7 @@ public class CollectionDetailPageViewModel : BaseViewModel
                 var fileName = $"{hymn.Title.Replace(" ", "_").Replace("/", "_")}.txt";
                 var filePath = Path.Combine(FileSystem.Current.CacheDirectory, fileName);
                 await exportService.ExportHymnAsync(hymn, ExportFormat.TXT, filePath);
+                await Application.Current.MainPage.DisplayAlert("Export Complete", $"Hymn exported to: {filePath}", "OK");
             }
         }
         catch (Exception ex)
@@ -422,12 +446,42 @@ public class CollectionDetailPageViewModel : BaseViewModel
         }
     }
 
+    private async Task ShareHymnAsync(HymnItemViewModel hymnViewModel)
+    {
+        try
+        {
+            var hymn = await _databaseService.GetHymnAsync(hymnViewModel.Id);
+            
+            if (hymn != null)
+            {
+                var shareText = $"{hymn.Title}\n\n{hymn.Lyrics}";
+                await Share.Default.RequestAsync(new ShareTextRequest
+                {
+                    Text = shareText,
+                    Title = $"Share {hymn.Title}"
+                });
+            }
+        }
+        catch (Exception ex)
+        {
+            HandleError(ex, "Failed to share hymn");
+        }
+    }
+
+
+
     private void OnHymnSelected(Hymn hymn)
     {
-        if (hymn != null)
+       try {
+         if (hymn != null)
         {
-            Shell.Current.GoToAsync($"//edit?HymnId={hymn.Id}");
+            Shell.Current.GoToAsync($"//edit?HymnId={hymn.Id}&collectionId={_collection?.Id ?? 0}");
         }
+       }
+        catch (Exception ex)
+        {
+            HandleError(ex, "Failed to navigate: "+ex.Message);
+} 
     }
 
     private async void OnFavoriteToggled(Hymn hymn)
@@ -606,4 +660,3 @@ public class CollectionDetailPageViewModel : BaseViewModel
         return firstLine.Length > 100 ? firstLine.Substring(0, 100) + "..." : firstLine;
     }
 }
-

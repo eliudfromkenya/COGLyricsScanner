@@ -35,6 +35,7 @@ public static class MauiProgram
         builder.Services.AddTransient<HomePageViewModel>();
         builder.Services.AddTransient<CollectionsPageViewModel>();
         builder.Services.AddTransient<StatisticsPageViewModel>();
+        builder.Services.AddTransient<HymnViewPageViewModel>();
 
         // Register Views
         builder.Services.AddTransient<ScanPage>();
@@ -46,6 +47,7 @@ public static class MauiProgram
         builder.Services.AddTransient<BreathingAnimationsDemo>();
         builder.Services.AddTransient<SettingsPage>();
         builder.Services.AddTransient<AboutPage>();
+        builder.Services.AddTransient<HymnViewPage>();
 
 #if DEBUG
         builder.Logging.AddDebug();

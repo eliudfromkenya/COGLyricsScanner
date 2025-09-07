@@ -4,15 +4,42 @@ using Microsoft.Maui.Controls;
 namespace COGLyricsScanner.Views
 {
 
-public partial class EditPage : ContentPage
+public partial class EditPage : ContentPage, IQueryAttributable
 {
     private EditPageViewModel ViewModel => (EditPageViewModel)BindingContext;
     private bool _isUpdatingLineNumbers = false;
+
+    public EditPage()
+    {
+        InitializeComponent();
+        BindingContext = new EditPageViewModel();
+    }
 
     public EditPage(EditPageViewModel viewModel)
     {
         InitializeComponent();
         BindingContext = viewModel;
+    }
+
+    public void ApplyQueryAttributes(IDictionary<string, object> query)
+    {
+        if (query.TryGetValue("hymnId", out var hymnIdObj) && 
+            int.TryParse(hymnIdObj.ToString(), out var hymnId))
+        {
+            if (BindingContext is EditPageViewModel viewModel)
+            {
+                _ = Task.Run(async () => await viewModel.LoadHymnAsync(hymnId));
+            }
+        }
+        
+        if (query.TryGetValue("collectionId", out var collectionIdObj) && 
+            int.TryParse(collectionIdObj.ToString(), out var collectionId))
+        {
+            if (BindingContext is EditPageViewModel viewModel)
+            {
+                viewModel.SetDefaultCollection(collectionId);
+            }
+        }
     }
 
     protected override async void OnAppearing()

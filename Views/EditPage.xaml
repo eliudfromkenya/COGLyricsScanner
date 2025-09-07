@@ -307,5 +307,9 @@
                         HeightRequest="32" />
             </Grid>
         </Border>
+        
+        <!-- Floating Home Button -->
+        <Button Style="{StaticResource FloatingHomeButton}"
+                Command="{Binding NavigateToCollectionCommand}" />
     </Grid>
 </ContentPage>

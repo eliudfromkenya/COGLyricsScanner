@@ -4,12 +4,14 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.VisualBasic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Windows.Input;
 using Collection = COGLyricsScanner.Models.Collection;
 
 namespace COGLyricsScanner.ViewModels;
 
 [QueryProperty(nameof(HymnId), "hymnId")]
+[QueryProperty(nameof(HymnBookId), "hymnBookId")]
 [QueryProperty(nameof(CollectionId), "collectionId")]
 public partial class EditPageViewModel : BaseViewModel
 {
@@ -19,6 +21,9 @@ public partial class EditPageViewModel : BaseViewModel
 
     [ObservableProperty]
     private int hymnId;
+
+    [ObservableProperty]
+    private int hymnBookId;
 
     [ObservableProperty]
     private int collectionId;
@@ -91,6 +96,22 @@ public partial class EditPageViewModel : BaseViewModel
 
     private Timer? _autoSaveTimer;
     private readonly object _autoSaveLock = new();
+    
+    public EditPageViewModel()
+    {
+        // Get services from dependency injection
+        _databaseService = ServiceHelper.GetService<IDatabaseService>();
+        _exportService = ServiceHelper.GetService<IExportService>();
+        _settingsService = ServiceHelper.GetService<ISettingsService>();
+        
+        Title = "Edit Hymn";
+        
+        // Initialize auto-save timer
+        _autoSaveTimer = new Timer(AutoSaveCallback, null, Timeout.Infinite, Timeout.Infinite);
+        
+        // Initialize
+        _ = InitializeAsync();
+    }
     
     public EditPageViewModel(IDatabaseService databaseService, IExportService exportService, ISettingsService settingsService)
     {
@@ -173,7 +194,32 @@ public partial class EditPageViewModel : BaseViewModel
         }
     }
 
-    private async Task LoadHymnAsync(int id)
+    partial void OnHymnBookIdChanged(int value)
+    {
+        if (value > 0 && AvailableHymnBooks?.Any() == true)
+        {
+            SelectedHymnBook = AvailableHymnBooks.FirstOrDefault(hb => hb.Id == value);
+        }
+    }
+
+    partial void OnCollectionIdChanged(int value)
+    {
+        if (value > 0 && AvailableCollections?.Any() == true)
+        {
+            var collection = AvailableCollections.FirstOrDefault(c => c.Id == value);
+            if (collection != null && !HymnCollections.Contains(collection))
+            {
+                HymnCollections.Add(collection);
+            }
+        }
+    }
+
+    public void SetDefaultCollection(int collectionId)
+    {
+        CollectionId = collectionId;
+    }
+
+    public async Task LoadHymnAsync(int id)
     {
         try
         {
@@ -252,6 +298,45 @@ public partial class EditPageViewModel : BaseViewModel
         catch (Exception ex)
         {
             await HandleErrorAsync(ex, "Failed to load hymn collections");
+        }
+    }
+
+    [RelayCommand]
+    private async Task NavigateToCollection()
+    {
+        try{
+            if (CurrentHymn == null)
+        {
+            // If no hymn, navigate to collections page
+            await Shell.Current.GoToAsync("//Collections");
+            return;
+        }
+
+        try
+        {
+            // Get collections for this hymn through the junction table
+            var collections = await _databaseService.GetCollectionsByHymnIdAsync(CurrentHymn.Id);
+            
+            if (collections?.Any() == true)
+            {
+                // Navigate to the first collection this hymn belongs to
+                var firstCollection = collections.First();
+                await Shell.Current.GoToAsync($"//collections/collection-detail?collectionId={firstCollection.Id}");
+                return;
+            }
+            
+            // Fallback to collections page if no collection found
+            await Shell.Current.GoToAsync("//collections");
+        }
+        catch (Exception ex)
+        {
+            // Fallback to collections page on error
+            await Shell.Current.GoToAsync("//collections");
+        }
+        }
+        catch (Exception ex)
+        {
+            HandleError(ex, "Failed to navigate: " + ex.Message);
         }
     }
 
@@ -517,6 +602,16 @@ public partial class EditPageViewModel : BaseViewModel
             {
                 parameters["hymnId"] = HymnId;
                 parameters["existingLyrics"] = HymnLyrics ?? string.Empty;
+            }
+            
+            if (HymnBookId > 0)
+            {
+                parameters["hymnBookId"] = HymnBookId;
+            }
+            
+            if (CollectionId > 0)
+            {
+                parameters["collectionId"] = CollectionId;
             }
             
             if (parameters.Count > 0)

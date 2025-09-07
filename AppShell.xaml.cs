@@ -26,7 +26,7 @@ public partial class AppShell : Shell
         Routing.RegisterRoute("edit", typeof(EditPage));
 
         // Register detail pages
-        // Routing.RegisterRoute("hymn-detail", typeof(HymnDetailPage));
+        Routing.RegisterRoute("hymn-view", typeof(HymnViewPage));
         Routing.RegisterRoute("collection-detail", typeof(CollectionDetailPage));
         Routing.RegisterRoute("collection-modal", typeof(CollectionModalPage));
         Routing.RegisterRoute("scan", typeof(ScanPage));

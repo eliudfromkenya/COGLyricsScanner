@@ -5,8 +5,9 @@
              Title="{Binding Title}"
              BackgroundColor="{DynamicResource PageBackgroundColor}">
     
-    <ScrollView>
-        <Grid Padding="20" RowDefinitions="Auto,*,Auto" RowSpacing="20">
+    <Grid>
+        <ScrollView>
+            <Grid Padding="20" RowDefinitions="Auto,*,Auto" RowSpacing="20">
             
             <!-- Header -->
             <StackLayout Grid.Row="0" Spacing="8">
@@ -148,7 +149,12 @@
                        IsVisible="{Binding IsEditMode}" />          
 
             </Grid>   
-        </Grid>
-    </ScrollView>  
+            </Grid>
+        </ScrollView>
+        
+        <!-- Floating Home Button -->
+        <Button Style="{StaticResource FloatingHomeButton}"
+                Command="{Binding NavigateToCollectionsCommand}" />
+    </Grid>
     
 </ContentPage>

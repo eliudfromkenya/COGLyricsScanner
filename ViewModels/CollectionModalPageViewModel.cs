@@ -102,6 +102,7 @@ public class CollectionModalPageViewModel : BaseViewModel
     public ICommand SaveCommand { get; private set; } = null!;
     public ICommand CancelCommand { get; private set; } = null!;
     public ICommand DeleteCommand { get; private set; } = null!;
+    public ICommand NavigateToCollectionsCommand { get; private set; } = null!;
 
     #endregion
 
@@ -112,6 +113,7 @@ public class CollectionModalPageViewModel : BaseViewModel
         SaveCommand = new Command(async () => await SaveCollectionAsync(), () => CanSave);
         CancelCommand = new Command(async () => await CancelAsync());
         DeleteCommand = new Command(async () => await DeleteCollectionAsync());
+        NavigateToCollectionsCommand = new Command(async () => await NavigateToCollectionsAsync());
     }
 
     private void InitializeForCreate()
@@ -293,6 +295,18 @@ public class CollectionModalPageViewModel : BaseViewModel
         catch (Exception ex)
         {
             HandleError(ex, "Failed to close modal");
+        }
+    }
+
+    private async Task NavigateToCollectionsAsync()
+    {
+        try
+        {
+            await Shell.Current.GoToAsync("//collections");
+        }
+        catch (Exception ex)
+        {
+            HandleError(ex, "Failed to navigate to collections");
         }
     }
 

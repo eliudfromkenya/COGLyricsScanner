@@ -47,5 +47,27 @@ public partial class CollectionDetailPage : ContentPage, IQueryAttributable
             await _viewModel.OnDisappearingAsync();
         }
     }
+
+    private async void OnItemTapped(object sender, TappedEventArgs e)
+    {
+        if (sender is Border border)
+        {
+            // Trigger pressed animation
+            await border.ScaleTo(0.95, 100, Easing.CubicOut);
+            await border.FadeTo(0.8, 50);
+            
+            // Return to normal state
+            await Task.WhenAll(
+                border.ScaleTo(1.0, 150, Easing.CubicOut),
+                border.FadeTo(1.0, 100)
+            );
+            
+            // Execute the ViewHymnCommand
+            if (_viewModel?.ViewHymnCommand?.CanExecute(border.BindingContext) == true)
+            {
+                _viewModel.ViewHymnCommand.Execute(border.BindingContext);
+            }
+        }
+    }
 }
 }

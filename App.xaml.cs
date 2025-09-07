@@ -12,7 +12,7 @@ public partial class App : Application
     {
         InitializeComponent();
 
-        MainPage = new AppShell();
+        MainPage = new SplashPage();
     }
 
     protected override Window CreateWindow(IActivationState? activationState)

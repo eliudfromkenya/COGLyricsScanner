@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="COGLyricsScanner.Views.HymnViewPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:viewmodels="clr-namespace:COGLyricsScanner.ViewModels"
+             x:DataType="viewmodels:HymnViewPageViewModel"
+             Title="{Binding Hymn.Title}"
+             BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundLight}, Dark={StaticResource BackgroundDark}}">
+
+    <Shell.TitleView>
+        <Grid ColumnDefinitions="*,Auto,Auto">
+            <Label Grid.Column="0" 
+                   Text="{Binding Hymn.Title}" 
+                   FontSize="18" 
+                   FontAttributes="Bold" 
+                   VerticalOptions="Center" 
+                   TextColor="{AppThemeBinding Light={StaticResource PrimaryDarkText}, Dark={StaticResource PrimaryLightText}}" />
+            
+            <Button Grid.Column="1"
+                    Text="Edit"
+                    Command="{Binding EditHymnCommand}"
+                    Style="{StaticResource SecondaryButtonStyle}"
+                    Margin="5,0" />
+            
+            <Button Grid.Column="2"
+                    Text="⋮"
+                    Command="{Binding ShowMoreOptionsCommand}"
+                    Style="{StaticResource SecondaryButtonStyle}"
+                    FontSize="20"
+                    Padding="10,5" />
+        </Grid>
+    </Shell.TitleView>
+
+    <Grid>
+        <ScrollView>
+        <StackLayout Padding="20" Spacing="20">
+            
+            <!-- Hymn Header -->
+            <Border Style="{StaticResource CardBorderStyle}">
+                <StackLayout Padding="20" Spacing="15">
+                    <Label Text="{Binding Hymn.Title}" 
+                           FontSize="24" 
+                           FontAttributes="Bold" 
+                           HorizontalOptions="Center" 
+                           TextColor="{AppThemeBinding Light={StaticResource PrimaryDarkText}, Dark={StaticResource PrimaryLightText}}" />
+                    
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Spacing="20">
+                        <Label Text="{Binding Hymn.Number, StringFormat='#{0}'}" 
+                               FontSize="16" 
+                               FontAttributes="Bold" 
+                               TextColor="{StaticResource Primary}" />
+                        
+                        <Label Text="{Binding Hymn.Collection}" 
+                               FontSize="14" 
+                               TextColor="{AppThemeBinding Light={StaticResource SecondaryDarkText}, Dark={StaticResource SecondaryLightText}}" 
+                               IsVisible="{Binding Hymn.Collection, Converter={StaticResource StringToBoolConverter}}" />
+                    </StackLayout>
+                    
+                    <!-- Author label removed as Hymn model doesn't have Author property -->
+                </StackLayout>
+            </Border>
+
+            <!-- Hymn Content -->
+            <Border Style="{StaticResource CardBorderStyle}">
+                <StackLayout Padding="20">
+                    <Label Text="{Binding Hymn.Content}" 
+                           FontSize="16" 
+                           LineHeight="1.5" 
+                           TextColor="{AppThemeBinding Light={StaticResource PrimaryDarkText}, Dark={StaticResource PrimaryLightText}}" 
+                           HorizontalTextAlignment="Start" 
+                           VerticalTextAlignment="Start" />
+                </StackLayout>
+            </Border>
+
+            <!-- Hymn Metadata -->
+            <Border Style="{StaticResource CardBorderStyle}" 
+                    IsVisible="{Binding HasMetadata}">
+                <StackLayout Padding="20" Spacing="10">
+                    <Label Text="Details" 
+                           FontSize="18" 
+                           FontAttributes="Bold" 
+                           TextColor="{AppThemeBinding Light={StaticResource PrimaryDarkText}, Dark={StaticResource PrimaryLightText}}" />
+                    
+                    <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto" ColumnSpacing="15" RowSpacing="8">
+                        
+                        <!-- Category -->
+                        <Label Grid.Row="0" Grid.Column="0" 
+                               Text="Category:" 
+                               FontAttributes="Bold" 
+                               TextColor="{AppThemeBinding Light={StaticResource SecondaryDarkText}, Dark={StaticResource SecondaryLightText}}" 
+                               IsVisible="{Binding Hymn.Category, Converter={StaticResource StringToBoolConverter}}" />
+                        <Label Grid.Row="0" Grid.Column="1" 
+                               Text="{Binding Hymn.Category}" 
+                               TextColor="{AppThemeBinding Light={StaticResource PrimaryDarkText}, Dark={StaticResource PrimaryLightText}}" 
+                               IsVisible="{Binding Hymn.Category, Converter={StaticResource StringToBoolConverter}}" />
+                        
+                        <!-- Key -->
+                        <Label Grid.Row="1" Grid.Column="0" 
+                               Text="Key:" 
+                               FontAttributes="Bold" 
+                               TextColor="{AppThemeBinding Light={StaticResource SecondaryDarkText}, Dark={StaticResource SecondaryLightText}}" 
+                               IsVisible="{Binding Hymn.Key, Converter={StaticResource StringToBoolConverter}}" />
+                        <Label Grid.Row="1" Grid.Column="1" 
+                               Text="{Binding Hymn.Key}" 
+                               TextColor="{AppThemeBinding Light={StaticResource PrimaryDarkText}, Dark={StaticResource PrimaryLightText}}" 
+                               IsVisible="{Binding Hymn.Key, Converter={StaticResource StringToBoolConverter}}" />
+                        
+                        <!-- Created Date -->
+                        <Label Grid.Row="2" Grid.Column="0" 
+                               Text="Created:" 
+                               FontAttributes="Bold" 
+                               TextColor="{AppThemeBinding Light={StaticResource SecondaryDarkText}, Dark={StaticResource SecondaryLightText}}" />
+                        <Label Grid.Row="2" Grid.Column="1" 
+                               Text="{Binding Hymn.CreatedAt, StringFormat='{0:MMM dd, yyyy}'}" 
+                               TextColor="{AppThemeBinding Light={StaticResource PrimaryDarkText}, Dark={StaticResource PrimaryLightText}}" />
+                        
+                        <!-- Last Modified -->
+                        <Label Grid.Row="3" Grid.Column="0" 
+                               Text="Modified:" 
+                               FontAttributes="Bold" 
+                               TextColor="{AppThemeBinding Light={StaticResource SecondaryDarkText}, Dark={StaticResource SecondaryLightText}}" 
+                               IsVisible="{Binding Hymn.LastModified, Converter={StaticResource DateTimeToVisibilityConverter}}" />
+                        <Label Grid.Row="3" Grid.Column="1" 
+                               Text="{Binding Hymn.LastModified, StringFormat='{0:MMM dd, yyyy}'}" 
+                               TextColor="{AppThemeBinding Light={StaticResource PrimaryDarkText}, Dark={StaticResource PrimaryLightText}}" 
+                               IsVisible="{Binding Hymn.LastModified, Converter={StaticResource DateTimeToVisibilityConverter}}" />
+                    </Grid>
+                </StackLayout>
+            </Border>
+
+        </StackLayout>
+        </ScrollView>
+        
+        <!-- Floating Home Button -->
+        <Button Style="{StaticResource FloatingHomeButton}"
+                Command="{Binding NavigateToCollectionCommand}" />
+    </Grid>
+
+</ContentPage>

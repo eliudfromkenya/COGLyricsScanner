@@ -441,5 +441,29 @@
         <Setter Property="SelectedTabColor" Value="{AppThemeBinding Light={StaticResource Gray950}, Dark={StaticResource Gray200}}" />
     </Style>
 
+    <!-- Floating Home Button Style -->
+    <Style x:Key="FloatingHomeButton" TargetType="Button">
+        <Setter Property="BackgroundColor" Value="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
+        <Setter Property="CornerRadius" Value="28" />
+        <Setter Property="WidthRequest" Value="56" />
+        <Setter Property="HeightRequest" Value="56" />
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Margin" Value="16" />
+        <Setter Property="HorizontalOptions" Value="End" />
+        <Setter Property="VerticalOptions" Value="Start" />
+        <Setter Property="Shadow">
+            <Setter.Value>
+                <Shadow Brush="Black" Offset="0,4" Radius="8" Opacity="0.3" />
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ImageSource">
+            <Setter.Value>
+                <FontImageSource FontFamily="MaterialIcons"
+                               Glyph="🏠"
+                               Color="{AppThemeBinding Light={StaticResource White}, Dark={StaticResource PrimaryDarkText}}" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 </ResourceDictionary>
 

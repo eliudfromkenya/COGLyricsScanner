@@ -68,7 +68,7 @@
                     </Label.Shadow>
                 </Label>
                 
-                <Label Text="Digitize hymns with AI precision" 
+                <Label Text="Digitize hymns with precision" 
                        FontSize="16" 
                        TextColor="White" 
                        Opacity="0.9" 

@@ -9,11 +9,19 @@ namespace COGLyricsScanner.ViewModels;
 
 [QueryProperty(nameof(HymnId), "hymnId")]
 [QueryProperty(nameof(ExistingLyrics), "existingLyrics")]
+[QueryProperty(nameof(HymnBookId), "hymnBookId")]
+[QueryProperty(nameof(CollectionId), "collectionId")]
 public partial class ScanPageViewModel : BaseViewModel
 {
     private readonly IOcrService _ocrService;
     private readonly IDatabaseService _databaseService;
     private readonly ISettingsService _settingsService;
+
+    [ObservableProperty]
+    private int hymnBookId;
+
+    [ObservableProperty]
+    private int collectionId;
 
     [ObservableProperty]
     private string scannedText = string.Empty;
@@ -132,6 +140,19 @@ public partial class ScanPageViewModel : BaseViewModel
         catch (Exception ex)
         {
             await HandleErrorAsync(ex, "Failed to load recent scans");
+        }
+    }
+
+    [RelayCommand]
+    private async Task NavigateToCollections()
+    {
+        try
+        {
+            await Shell.Current.GoToAsync("//collections");
+        }
+        catch (Exception ex)
+        {
+            await HandleErrorAsync(ex, "Failed to navigate to collections");
         }
     }
 
@@ -288,7 +309,8 @@ public partial class ScanPageViewModel : BaseViewModel
                 Lyrics = ScannedText,
                 Language = SelectedLanguage,
                 CreatedDate = DateTime.Now,
-                ModifiedDate = DateTime.Now
+                ModifiedDate = DateTime.Now,
+                HymnBookId = HymnBookId
             };
 
             await _databaseService.AddHymnAsync(hymn);
@@ -318,7 +340,8 @@ public partial class ScanPageViewModel : BaseViewModel
                 Lyrics = ScannedText,
                 Language = SelectedLanguage,
                 CreatedDate = DateTime.Now,
-                ModifiedDate = DateTime.Now
+                ModifiedDate = DateTime.Now,
+                HymnBookId = HymnBookId
             };
 
             await _databaseService.AddHymnAsync(hymn);
@@ -376,7 +399,8 @@ public partial class ScanPageViewModel : BaseViewModel
             Lyrics = ScannedText,
             Language = SelectedLanguage,
             CreatedDate = DateTime.Now,
-            ModifiedDate = DateTime.Now
+            ModifiedDate = DateTime.Now,
+            HymnBookId= HymnBookId
         };
 
         await _databaseService.AddHymnAsync(tempHymn);
